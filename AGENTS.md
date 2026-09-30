@@ -25,18 +25,19 @@ Claude, Perplexity, Gemini, Google AI Mode / AI Overviews, Copilot).
    explicitly says otherwise.
 3. **Always write our own titles.** Never reuse YouTube titles for episodes; write specific,
    keyword-led titles (≤60 chars) from `content/seo/keywords.md`. Also propose a matching YouTube
-   title in the PR description for the hosts to apply.
+   title via `pnpm youtube:metadata` (`content/seo/youtube.md`) for the hosts to apply.
 4. **Never add co-author trailers, tool attribution or any mention of AI assistance** to commits,
    PRs, code, comments or content.
 5. **No file over 100 lines** (ESLint `max-lines`). Small, single-purpose, imported modules.
 6. **Ground every claim** in a transcript (with `?t=` evidence) or a cited source. No invented facts.
    Date anything that can change ("In August 2026, …").
 
-## Living site loop (run every session, and whenever a `needs-writeup` PR exists)
+## Living site loop (run every session)
 
 1. **Sync streams:** `pnpm sync`. This reads https://www.youtube.com/@ibm-bob/streams, ingests any
    new Building with Bob stream (captions, metadata, transcript) into `data/` and prints what's new.
-   CI runs it every 6 hours (`.github/workflows/sync-streams.yml`) and opens a PR.
+   CI runs it every 6 hours (`.github/workflows/sync-streams.yml`) and pushes new streams straight
+   to `main`; any registered episode without a post in `content/episodes/` still needs one.
 2. **Assign each new entry** in `data/episodes.json`: set `project` (existing slug, or create
    `content/projects/<slug>.md` for a new project) and a keyword-led `slug`. Re-run `pnpm sync` to
    renumber. Numbering is global and chronological; `part` is the position within a project.
@@ -51,9 +52,9 @@ Claude, Perplexity, Gemini, Google AI Mode / AI Overviews, Copilot).
    web and new episodes, then updated. Answer engines weight recency heavily.
 7. **Verify:** `pnpm lint && pnpm typecheck && pnpm build`, then `pnpm start` and
    `pnpm audit:seo http://localhost:3000` (must pass with zero problems).
-8. **YouTube:** run `pnpm youtube:metadata` and put the new titles/descriptions from
-   `content/seo/youtube.md` in the PR description for the hosts to apply in YouTube Studio.
-9. **Ship:** commit and push. After Vercel deploys production, `.github/workflows/indexnow.yml`
+8. **YouTube:** run `pnpm youtube:metadata` so `content/seo/youtube.md` carries the new
+   titles/descriptions for the hosts to apply in YouTube Studio.
+9. **Ship:** commit and push to `main` (no PRs). After Vercel deploys production, `.github/workflows/indexnow.yml`
    pings IndexNow automatically (or run `pnpm indexnow`).
 
 ## SEO / GEO playbook (go hard)
