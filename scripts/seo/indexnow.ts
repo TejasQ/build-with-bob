@@ -4,7 +4,7 @@
  */
 const KEY = "d4eb6df7be7001b4bde3777fcbc356a7";
 const SITE = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://buildwithbob.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://build-with-bob.vercel.app"
 ).replace(/\/$/, "");
 
 async function main() {

@@ -1,7 +1,7 @@
 export const site = {
   name: "Building with Bob",
   shortName: "BwB",
-  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://buildwithbob.vercel.app").replace(
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? "https://build-with-bob.vercel.app").replace(
     /\/$/,
     "",
   ),

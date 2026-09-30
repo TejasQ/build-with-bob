@@ -8,7 +8,7 @@ import { readJson, readMarkdownDir } from "../../src/lib/content/files";
 import type { EpisodeMeta } from "../../src/lib/content/schema";
 
 const SITE = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://buildwithbob.vercel.app"
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://build-with-bob.vercel.app"
 ).replace(/\/$/, "");
 
 const stamp = (s: number) => {

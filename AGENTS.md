@@ -11,7 +11,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 # Building with Bob
 
 The website for _Building with Bob_, the livestream where Tejas Kumar and David Jones-Gilardi build
-open-source apps live with IBM Bob. Production: https://buildwithbob.vercel.app. Next.js 16 App
+open-source apps live with IBM Bob. Production: https://build-with-bob.vercel.app. Next.js 16 App
 Router, TypeScript, Tailwind CSS v4, fully static. Goal: be the most discoverable, most cited source
 on everything the show covers, across search engines (Google, Bing) and answer engines (ChatGPT,
 Claude, Perplexity, Gemini, Google AI Mode / AI Overviews, Copilot).
