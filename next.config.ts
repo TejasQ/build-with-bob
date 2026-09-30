@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Social cards read fonts and avatars from disk at runtime (e.g. /ask/* on demand).
+  outputFileTracingIncludes: { "/**": ["./assets/fonts/**", "./assets/og/**"] },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" },

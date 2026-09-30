@@ -4,17 +4,16 @@ import { PageCard } from "@/lib/og/templates/page";
 
 export const size = ogSize;
 export const contentType = ogContentType;
-export const alt = "Building with Bob: real apps, built live with IBM Bob";
+export const alt = "Every Building with Bob episode";
 
 export default async function Image() {
   const episodes = getEpisodes();
   return renderOg(
     await PageCard({
-      kind: "Livestream",
-      eyebrow: `${episodes.length} episodes · 2 open-source projects`,
-      title: "Real apps, built live with IBM Bob",
-      subtitle: "Every episode, write-up and searchable transcript.",
-      mascot: true,
+      kind: "Episodes",
+      eyebrow: `${episodes.length} live builds`,
+      title: "Every episode, with chapters, takeaways and transcripts",
+      collage: episodes.slice(0, 3).map((e) => e.videoId),
     }),
   );
 }

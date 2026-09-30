@@ -54,7 +54,7 @@ type PageMeta = {
   description: string;
   path: string;
   absoluteTitle?: boolean;
-  /** Social card path; defaults to the site-wide card. */
+  /** Social card path; defaults to the route's own opengraph-image. */
   image?: string;
 };
 
@@ -64,7 +64,7 @@ export function pageMetadata({
   description,
   path,
   absoluteTitle,
-  image = "/opengraph-image",
+  image = path === "/" ? "/opengraph-image" : `${path}/opengraph-image`,
 }: PageMeta): Metadata {
   return {
     // Skip the " | Building with Bob" suffix when it would push the title past ~60 chars.

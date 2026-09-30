@@ -31,6 +31,14 @@ Claude, Perplexity, Gemini, Google AI Mode / AI Overviews, Copilot).
 5. **No file over 100 lines** (ESLint `max-lines`). Small, single-purpose, imported modules.
 6. **Ground every claim** in a transcript (with `?t=` evidence) or a cited source. No invented facts.
    Date anything that can change ("In August 2026, …").
+7. **Every page gets an amazing, dynamic OG image built with Satori** (`next/og` `ImageResponse`):
+   an `opengraph-image.tsx` in the route segment, rendered with the shared design system in
+   `src/lib/og/` (IBM Plex TTF fonts, Bob gradients, `Frame`, `Headline`, templates for episode,
+   guide, project, host, question and page cards). Use real imagery: YouTube thumbnails, host
+   avatars (`assets/og/`), the Bob mascot (`assets/og/bob.svg`). `pageMetadata()` points OG and
+   Twitter images at the route's own card by default. Before shipping a new page type, research
+   current Satori practice, render the card, and look at it: no overflow, no clipped text,
+   titles sized by length. Never ship a generic or text-only fallback card.
 
 ## Living site loop (run every session)
 
