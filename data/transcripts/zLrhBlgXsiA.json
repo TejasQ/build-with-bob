@@ -1,0 +1,666 @@
+[
+{
+"start": 0,
+"text": "where we build things with Bob, our coding agent. Um, today once again I'm joined by my wonderful co-host David. \u2014 Hello TJS. Hello everybody. \u2014 It's good to see you. We uh so we are it's today's week two of building um Wallfly which is a fly on the wall. It's it's a it's a recorder for meetings and things where it connects. It's it's it's on your wearable. You tap record and then it just it's a fly on the wall. It sits it sits there and records your conversation uh with your optin with your consent and and then it goes to a database that you can search and sort and do all kinds of things so you remember your meetings."
+},
+{
+"start": 37,
+"text": "Yeah, I was actually, you know, funny enough to just I was I was literally just posting about this this morning, right, as I was kind of reminding folks, hey, we're doing our stream today and uh and and in my post I made the comment which I was being very serious about. I'm like, I I am absolutely one of those forgetful types who I can have a conversation with somebody and five minutes later I don't remember who you are, who I am, uh things like that. And so I was I was just kind of uh thinking about it. I was like, you know, that would actually be super super useful. I actually can't wait till the next time I'm at like a conference or something because we're going to build this thing, right?"
+},
+{
+"start": 68,
+"text": "And we should have it done, you know, by the time we go to another big conference or something. That'll be fun actually to use my wearable to uh record stuff. Hey, Tus. For some reason, I lost your audio, man. You're muted. There you go. \u2014 Maybe that's why. \u2014 Did you mute yourself because you were drinking? \u2014 I I did. Yeah. Water. \u2014 That's great. We can have that. Wait, wait. Are we gonna turn into this? This This is going to be building with Bob ASMR. \u2014 So funny. Um, so hey, we uh we buil So the Let's Let me just show you a quick uh to get everybody up to speed."
+},
+{
+"start": 103,
+"text": "I'll show you all \u2014 a quick architecture diagram. This is what we have in mind. \u2014 So we start here with a big record button. Um and this record button when you're done it uploads it through some API service on to a write path where we're going to use docklink to transcribe the conversation ideally to an SRT format because that has timestamps and then we can say like at minute five you said this later. And then we're going to store it in a DB which is a built-in vector database. So we can search not just based on keywords but also based on like semantic meaning right then when somebody wants to you know like hey what what did we talk about at the conference you just do the same thing you go from the user interface which in this case has more than a big record button it has like tabs like search and so on goes to the API and the API searches retrieves gets it back."
+},
+{
+"start": 149,
+"text": "That's kind of what we're going for. Um David you said you had an idea uh to start us off. \u2014 Yeah. So yeah let me let me grab the the screen here. Okay. So, you should hopefully see my screen with Bob. And this is the state we left it. By the way, I touched nothing. I promised you last week that I would touch nothing in the app. And uh and this is literally where we left it, right? Um so, we had uh done the initial spec coding, right? That was a really important step. If you remember, we had um this plan over here, the the Wallfly plan um where we went through we did that whole for for those of you who weren't with us, right?"
+},
+{
+"start": 186,
+"text": "you know, Tis and I, we spent a good \u2014 a good hour, right? Like working through like the whole spec, what is this thing, the architecture you were just talking about all that, right? So, we implemented that and then we we were left off when we started the app with this, right? Which was the the starting point. But I don't know about you, Tus, but I can look back over the plan and everything, but I really want to know where we are \u2014 in the app because it's been a week, right? We haven't touched it in a week. So, I'm going to say, \"Hey, Bob.\" I don't know. By the way, who else like talks to their agent like they're a person?"
+},
+{
+"start": 218,
+"text": "I always I I always do that. Like I start It's only my first one though. After that, I don't say, \"Hey Bob,\" anymore, but the first one's always, \"Hey, Bob.\" I don't know why I do it in Claude. I do know all of them honestly, but hey Bob. Um, give me a summary of where this application stands. What have we accomplished? And what do we need to do? \u2014 Wait, before you do that, I'm curious. \u2014 Too fast. Go ahead. \u2014 Fine. Why this way instead of just using the app?"
+},
+{
+"start": 252,
+"text": "Well, that's another way to do it, but like I could use Oh, personally, I mean, we could do it both, right? Um, I mean, we could click on things and I could see very quickly that there's stuff we haven't wired up. I know that we haven't wired up the database. We haven't wired up Dockling. We haven't wired this stuff up, right? So, I can I can see that, but I'm looking at it from a code perspective like because you remember we had a whole task list last week and I just want to make sure like, oh, here it goes, right? You know, from our plan, we had ST1 through ST8. Like, where is all of that? Um, and is there is there anything that we might be missing from the last time?"
+},
+{
+"start": 284,
+"text": "That's all. I mean, we could do that a multitude of ways, right? \u2014 Yeah. Awesome. Wow, that's a really good standing, bro. Um, it looks really, really, really accurate. Um, this is actually great. So, now, um, I think \u2014 Can we tell Bob to fix the record button? Like, why is it why does it have like a dot in the middle? You know what I mean? \u2014 Where? Wait, wait, here. Yeah, \u2014 it should just be a solid red. No. the record."
+},
+{
+"start": 315,
+"text": "Oh, I'm not recording. \u2014 No, but when you're not recording, too, like it should just be a red button. So, you click it and then it starts. \u2014 Oh, I see what you're saying. So, you want Do you want to tackle that first then? And kind of some of the UX pieces. Okay. \u2014 Yeah. Well, here. \u2014 It has to be UX. Like it, you know, I feel like the main differentiator with AI, especially now that almost anyone can build almost anything, is is the product actually like really good and tasteful, you know? \u2014 I Yes. Yeah. And so let's try and make make it tasteful. And \u2014 okay, \u2014 I'm really like, dude, like my mom's going to open this app and see like some gray circle with a white nipple and be like, \"What \u2014 is this?\" \u2014 Oh my god."
+},
+{
+"start": 354,
+"text": "All right. All right. Okay. Oh, that's too funny. All righty. Um, so we need to change the styling. I don't have to retype it. Yeah. Styling of the record button. It's simply gray. with a white button and hard to see. Let's make the gray portion. You said red. You wanted it to be red. \u2014 Let's Let's just make it a a solid red button."
+},
+{
+"start": 388,
+"text": "And when it's recording, we somehow indicate to the user that it's recording and then we can just let it decide how how it does that. \u2014 Okay. Okay. So, let's have a discussion with it then. Let's make the button a solid red. However, we need to communicate visually to the user when recording is in progress. Let's discuss. So, one thing I I don't know how you do I'm actually curious, tagious, like a lot of the times or or you know, misspell discuss like I just did, but a lot of times when I'm not ready for it to just code, I'll say let's discuss, let's talk about it, right?"
+},
+{
+"start": 425,
+"text": "Because I want to work out with it first. You know, I want to kind of make sure we're on the same page. Um there's another one like grill me, right? that you can do grow me which is really cool. Um have you what do you do right? Do you yolo it? Do you do you have a discussion with it first? Like what's your what's your approach? \u2014 No I just let it do its thing and then correct afterwards. \u2014 Okay. Okay. \u2014 So here here it offers us a shape shift. That was my first idea actually. Um \u2014 okay \u2014 was second was pulsing ring. \u2014 Okay. \u2014 Um color inversion. \u2014 I think C is my least favorite so far."
+},
+{
+"start": 457,
+"text": "Yeah, definitely. I think A and B combined would be great. \u2014 You want to do a hybrid? \u2014 Yeah, \u2014 let's go for a hybrid of A and B \u2014 and B. And And then for B, instead of the instead of the ring or halo, just make it pulse. Make the button itself pulse. \u2014 Okay. Okay. Ring or halo, just make the button itself pulse. Yeah, that shows something's ongoing, you know."
+},
+{
+"start": 489,
+"text": "Yep. \u2014 Why is uh why is your API off me 404ing all the time? All these requests. \u2014 I don't know. Well, you know, we haven't hooked up anything, right? So, so there's a very good chance that per the architecture, we have that off layer in there, but we haven't hooked it up to anything. So, I wonder if it's just trying with nothing. You know what I mean? \u2014 Yeah. Look, it still has a white dot in the middle. Can we tell Bob to like Like what? \u2014 Well, what do we want to do as an alternative, right? Um, \u2014 make it a solid red circle, man."
+},
+{
+"start": 521,
+"text": "Okay. What happens when we press on this though? \u2014 It should record. \u2014 Let's Yeah, that's that's correct. Because your IDE doesn't have the micro capability. That's correct. \u2014 That's right. That's right. \u2014 You know, should I do this then? Come over here. And there we go. Allow. Here we go. So, we can actually test it here. Yes, please allow. Okay, \u2014 that's that's nice. But the middle is always white. What? Why is that?"
+},
+{
+"start": 551,
+"text": "All right, so let's let's talk to it here. \u2014 And and and also let's make the middle just solid. And also instead of by pulse, I don't mean pulse and size. I mean pulse and opacity. \u2014 Yep. Yep. \u2014 Yep. But \u2014 this is so cool, dude. Uh what is it calling it? I guess the circle square solid color don't pulse shouldn't change the size."
+},
+{
+"start": 593,
+"text": "Ah, \u2014 button steady button just the opacity. \u2014 Opacity. \u2014 Opacity. \u2014 That's awesome. \u2014 Let's see. \u2014 Let's see what he say. The white circle in the middle is Yeah. Well, \u2014 oh, it's a glyph. It's using a glyph. Okay. Okay. \u2014 Approach it entirely. How cool. \u2014 Did it just make it smaller? Oh, that's I love it."
+},
+{
+"start": 625,
+"text": "I love it. It's like Yeah. Here. Did Did you notice that? Let's see. That's okay. So, it got that part. Okay. No, no, no, no. Let's Dude, \u2014 that's so funny. \u2014 Please remove \u2014 just made it smaller. \u2014 I'm I'm trying to think how I want to word this. So, it it clearly um Let's see. Let's see. Hologri removed. Well, it says it's okay. No, we \u2014 remove the solid white."
+},
+{
+"start": 658,
+"text": "Yeah. Yeah. Solid white inner indicator al together. We just want a solid color button. Yikes. \u2014 \u2014 You know, have you ever Sometimes I like \u2014 in a case like this where I'm like, dude, I've actually had I've actually There we go. I've actually had Bob and other uh AI assistants respond in kind at times."
+},
+{
+"start": 693,
+"text": "It's so much fun. It only It doesn't happen all the time, but I I actually had one then respond to me like with bro. \u2014 And I was like, no way. Oh, it's too funny. All right. All right. There we go. All right. I'm going to come over here where I get the full thing. \u2014 Wow, that's awesome, dude. \u2014 No, I don't think we need the square, though. If we have repulsing opacity, we're good. Yeah. \u2014 Yeah, I think you're right. You're right. You're totally right. Yeah. \u2014 Great. Great job. Now, let's not switch to a square."
+},
+{
+"start": 728,
+"text": "Um, when recording, keep the same circle. Oopsie. Circle. Oh my god. What is going on today? Button uh for for both states keep the current pulse. Okay. Now, this would have been a great see we're we're clearly vibing right now, right? This would have been one of those things that uh you know let's say you're going through like your your normal say like software development life cycle or something like that and you have you're going through design or you have a designer and they worked out that ahead of time, right?"
+},
+{
+"start": 769,
+"text": "Or if you've worked those kind of details out as what your UX is going to look like, that would be a perfect thing to just spec in, \u2014 right? Because then you you'd have the spec. You'd know exactly what you want it to look like. We're kind of obviously going as we're going here. All right, let's see. \u2014 Let's see here.Oop. All right. And boop. \u2014 Y there it is. So now now the next step is \u2014 we make it actually work. So what happens when you stop? \u2014 Nothing. So let's let's have Bob fill that part in. So I guess our prompt will be \u2014 well well actually real quick."
+},
+{
+"start": 800,
+"text": "Let me hold up real quick because to make that work, what do you what does that actually mean? Because right now we haven't hooked up the database. We haven't hooked up any of the stuff. So even if we do a recording, are we just recording locally or like how do we want to handle that part? Like where are we going with that? Guys, hang on. Can you scroll in your console? Um, \u2014 over here. Yeah. So, what's that error? Use layout effect. That's a Wait, wait, wait. \u2014 404. Um, there slash API recordings upload is a 400. You see that?"
+},
+{
+"start": 831,
+"text": "Yep. \u2014 So, let's open that in your codebase. Um, so if you go to on the left, if you actually just go to your IDE and go to Bob and press command T and type upload. \u2014 Oh, command T. You're gonna teach. Oh, \u2014 well, not not in browser. Sorry, not in browser. It \u2014 Oh, that it did that. It did that on its own, actually. \u2014 Um, press command. Okay, then command shift P. \u2014 Oh, there you go. \u2014 Delete the back. No, no, delete the Yeah. Now upload, \u2014 bro. Oh, the route. This one."
+},
+{
+"start": 861,
+"text": "The route.ts. Exactly. So, this now is failing with the 400 for some reason. And I'm guessing it's because we don't have any backend. \u2014 We don't have any backend. Yeah, I would think that's probably Yeah. Here's the 400. Yep. \u2014 Where is it sending? You know what I mean? Like it has to show us that it's sending it somewhere. \u2014 Well, here. \u2014 Collection. Get recording. So, now can you command click on get recording collection? \u2014 No. Yes. Exactly. Okay. Get DB. Now, let's command click on get DB."
+},
+{
+"start": 896,
+"text": "Yes. So, we need to set those environment variables. \u2014 Yeah. Easily enough. Easy. Easily done. Easily done. All right. How about this? Let me go ahead. \u2014 Time to use Astra. \u2014 Yes. So, so with that actually, and this is actually one of the things we want to tackle today, right? So, let me do this real quick. Um, I'm going to go ahead and create an Astra database in Astra, right? I can just do that. So, we're going to go \u2014 teach us how to do it also. You know what I mean? \u2014 Yeah. So, so like creating a database in Astra, especially a vectorless database, um, is honestly really easy. Um, I'm just logged in, by the way. I'm doing nothing else. I've got some other databases, but this is where I landed when I logged in."
+},
+{
+"start": 928,
+"text": "Where do you go? You go to astro.ibbm.com ibm.com or \u2014 astro.datastax.com. It is It is actually still astro.datastax.com. \u2014 What happens if you search on Google for Astrod? I'm just curious like where does it take you? You know what I mean? \u2014 Astrob. That's a good question. Oh, dataax astrod.ex \u2014 and then the the first link. \u2014 What happens if you click on it? \u2014 Does it take you to the logged in? \u2014 Oh, dude. \u2014 I'm logged in. Yeah. So it'll it'll it'll take you to a page where it'll it'll let you log in. But then you get dropped here, right?"
+},
+{
+"start": 960,
+"text": "If you didn't have any databases, I have some databases. So it's assuming I already know something. If you didn't have any databases, it have a bit more information. But generally, you have this big old create database button. We can do that. Now, what we want to do here is we we talked about this earlier, right? Part of the point of this whole thing is to have a vector-backed database that has a really neat feature in Astra which is called vectorize which means I automatically get to handle my input output embeddings all that kind of deal right um so I want the the default is that by the way right that's the serverless guy the serverless vector um so what are we going to call it just wallfly seems like \u2014 both wall why not right um and Amazon's fine US east 2 that's where I'm at for now you know you can actually go multi region with these, but we don't need to go there yet, right?"
+},
+{
+"start": 1005,
+"text": "We're not we're not there. We're just creating the first thing. Um, so boop, create. Now, that'll take a moment. And while it does that, it takes just a couple minutes and then it'll eventually populate the endpoint and the token. So, let's go back over here. Um, \u2014 move that to a different window so that when the token pops in, nobody sees it. \u2014 Well, that's what I'm going to do. You know what I'm going to do? I'm actually going to uh stop sharing for a moment \u2014 uh and hook that up for that very reason. Yeah. Yeah. Yeah. \u2014 Um we trust all of you. We trust all of you."
+},
+{
+"start": 1037,
+"text": "No, we don't. We don't. Like it's it's it's bad to say we trust like you know like zero trust security is actually good security. You know what's kind of crazy about that though tious is like today by today's standards it used to be if you if you popped a token up on the screen someone had to go through the trouble \u2014 of like pausing a video getting it recording it now they could literally just take a screenshot and send it to the AI and say go use this right \u2014 like it's it's like \u2014 you stop sharing by the way you're still sharing \u2014 no I'm yeah I'm just about to yeah um while we're waiting for this it'll just take a moment right because it'll only take me a second to get everything wired up as far as our uh&b actually."
+},
+{
+"start": 1078,
+"text": "Oh, we do have an EMV local. Okay. Um, is there what else? Like, okay, so clearly we need to hook up the database, right? Um, \u2014 well, we can just take it step by step. So, we hook up the database and then um we'll see what happens. Maybe our 400 error becomes a 401 error or something, you know. \u2014 I got you. I got you. Okay. Yeah. Yeah. Yeah. Let's not do too too much off the \u2014 I'm really excited about this. Yeah. Astra takes I give it less than five minutes. \u2014 Yeah. Less than I would agree. I would agree. In the meanwhile, there are three people watching. Uh, so if you're if you're leaving a if you're watching, leave us a comment."
+},
+{
+"start": 1112,
+"text": "Ask us questions about Astro and we'll try to answer them. \u2014 Oh, I see another thing that we're going to have to hook up obviously as our LLM. Um, we're and Dockling, you know, I can I can get that all kind of set to go, \u2014 dude. Nice. \u2014 Yeah, David's the SAS man. I'm a sass man. \u2014 Hey, Tish, you stop moving. You're either really still. Well, I hear you. You're very still, though. \u2014 Yeah. It's called being locked the f in."
+},
+{
+"start": 1144,
+"text": "Oh god. \u2014 All righty. Yeah, you get to watch you get to watch Z just playing the Tis statue. \u2014 Maybe I should play Fortnite. Would you would you go for it? Yeah, play Fortnite. No, but honestly, your video is frozen on my end, just FYI. I don't know if uh you \u2014 It's not frozen on the stream. I'm watching I'm watching the stream. \u2014 Oh, really? Interesting. It's frozen. It's frozen in Riverside. Fine. Okay. All right. All right."
+},
+{
+"start": 1176,
+"text": "Well, our local is there. So, while we're waiting right now for uh Astra, what I'm going to do is I'm going to also get into the Dockling SAS. Um \u2014 Duckling's ass. \u2014 No. Hey Jess. \u2014 People be like, \"Can he say that on the stream?\" \u2014 I mean, he just did. \u2014 Tagious. \u2014 This will show up in my performance review, \u2014 right?"
+},
+{
+"start": 1208,
+"text": "As positive feedback. Well done. \u2014 All right. Now, everybody knows like this is the fun when you're like hooking up your SAS. But the cool thing is once we have all these in place, it's a onetime thing, right? We do it one time, we get it done, and then we're able to uh move from there. Oh, \u2014 exactly. And what we're creating is that since this is an open source project, anyone should be able to clone this, pop in their own API keys for like Astra, doling, whatever, \u2014 and done, you know, just have it ready and working. So, \u2014 yeah."
+},
+{
+"start": 1240,
+"text": "Okay. Okay. You know what I'm going to do is I am going to uh there's my tardy docs app. Yes. Okay. So, what I'm going to do is I'm going to pull out um I've already got my dockling SAS configured in another project. So, I'm going to literally pull that here. \u2014 And what I did realize is we uh go ahead. \u2014 I need to plug in. So, give me a second. Okay. Cable. Got to get a jack. Okay. Okay, while you're doing that, I am setting things up."
+},
+{
+"start": 1282,
+"text": "Now, there is one thing that's probably going to change is that we need the actual service URL. Okay, now I've got my endpoint. I know I'm not sharing my screen. Um, but I'm going to grab my Astra endpoint real quick because again, I'm just populating myv.local. Uh, and don't share that stuff out. Hey Tus, you're back and you have video. Woohoo. \u2014 I have video. I have electricity. \u2014 Okay, \u2014 got it, man. \u2014 Great. So, what I'm doing, I'm almost there. Uh, so I have both my token and the endpoint for the database. That's wonderful."
+},
+{
+"start": 1313,
+"text": "Um, and those are set in the ENV local. Uh, I'm just checking to make sure. And I also set up the dockling stuff as well, uh, while we were waiting. So now uh if I were to come back into this screen, I should be able to go and let's share again. Okay, I'm going to sound effects. \u2014 You like the sound effects? That's you know I do that when it's just me too, right? I just kind of Yeah. \u2014 All right, so uh Tus, are you seeing my screen? \u2014 I am. \u2014 Okay, you see we're initializing, but I do have the Wallfly database here."
+},
+{
+"start": 1345,
+"text": "So it's just going to be another moment as it sets that up. Um, now the endpoint's okay, but notice what you don't see is you don't see my tokens, which is really good. Um, but what this was exactly what it would look like by the way. So once I am initially setting up an Astra database, I will eventually get an endpoint after a couple minutes, you know, because it's actually, you know, little little underlying details, you know, Astra itself is built on Apache Cassandra. So it's actually spinning up a multi-reion three node cluster right now. \u2014 Um, yeah, you know, it's like it's it's the real deal from a, you know, from a scalable database and it will actually scale with you."
+},
+{
+"start": 1375,
+"text": "I don't envision for what we're doing that we'll need to go past those three nodes. But anyway, a little little detail there. Um, and then you can say this generate token, but once I've shown it, it's not going to show to me again, right, for security reasons. So, that's good. And then it gives you some, you know, some examples of things. Um, but what we I'm just waiting for it right now. I'll come back to database and then I should probably real quick get rid of \u2014 I can't wait to to make our first recording and see uh what it looks like you know \u2014 right well there is another step here once the database is initialized like once it's ready to go we have to create a collection we've got to create something in Astra for it to store things in right \u2014 well I guess the good thing is Astra is schemaless so right the actual data structures will be be decided by the app, right?"
+},
+{
+"start": 1426,
+"text": "Yeah. So, let's let's actually do that, right? You're right. You're absolutely right. We need to Yes, it's schemalist, but you're still going to tell it you need some structure, right? You're going to tell it like um we we should have the conversation with the app um with Bob about the app and the architecture. What is it that we need to store and how, right? We talked about metadata last week and things like that. So, um why don't we do that? Um now, by the way, we're done with this particular task here. Um, so I'm just going to say commit. I say commit the tree because we finished this piece, right?"
+},
+{
+"start": 1458,
+"text": "It's nice and um, you know, nice and and very small and everything. We don't need to kind of muddy this up with the work we're just about to do. And by the way, while it does that, I can just come over here and I'll just say new task. It can work on these in parallel. I don't need to wait around for it or anything like that. Um, okay. Um, we've hooked up our Astra database and we need to one create a vector."
+},
+{
+"start": 1493,
+"text": "Well, no, I'm not going to tell that. Create a collection in Astra. \u2014 Hang on. \u2014 What? \u2014 Are we going to make Bob do it programmatically or are we going to do it with the Astra UI? Oh, I was gonna have Bob do it. \u2014 Oh, okay. \u2014 Yeah, why not? Why not? There's a Astra has a data API, right? Like, yeah. \u2014 Yeah, let's just do it that way. I mean, it's got MCP. It's got all that kind of stuff. So, let's see. Um, create a collection and Astra um work out the schema of our collection to store."
+},
+{
+"start": 1528,
+"text": "It's what? For storing recordings and metadata, right? \u2014 Yeah. Um note we can use the vectorize feature in Astra um to because we want to be able to search on these as well, right? \u2014 Yeah. \u2014 Um so what what is it that we want to search across? Do we want to search across metadata? Do Yeah, that's actually a good question because if we're going to do vector-based searches, we should probably give it some criteria on what we want to search about. \u2014 Yes. Um I think we will search on metadata but the most important thing to search on is transcripts."
+},
+{
+"start": 1564,
+"text": "Okay. Okay. Um search across recording transcripts now um search and meta and and metadata. Right. \u2014 David, hang on. I think it actually already has worked out a schema. I I would venture good money if you command shift F and search for \u2014 I don't know like db.colction collection or collection um you will see. Yeah. So there's I I think it already get recordings collection."
+},
+{
+"start": 1596,
+"text": "Look at that. \u2014 You know what I mean? So \u2014 I hear what you're saying. Yeah. Okay. How about this then? How about I will change tac \u2014 a little bit here. And uh I get rid of that. Give yourself some space. And what is the Yeah. Good. \u2014 Defined schema. \u2014 Exactly. \u2014 For recordings. Okay. Let's see. \u2014 That's good. \u2014 And while we're doing that, yay."
+},
+{
+"start": 1628,
+"text": "Our database is active. Wonderful. Perfect. \u2014 Wait, wait, wait. Since it's active, and did you set the environment variables, right? \u2014 Yep. \u2014 Let's try and make a recording while Bob works in the browser. \u2014 Oh, but we need to create a collection first. Yeah, we got to we we don't have the actual collection. We created the database, but now I need the collection inside that database. So, we'll Okay, let's see. Let's see the script. Oh. Oh, this is so funny. It already It already \u2014 It already did it. Okay. Okay. Let's see. Yes. Yes. Okay. Skip. Okay. So, you're right."
+},
+{
+"start": 1660,
+"text": "We did work some of this out last week, didn't we? \u2014 Yeah. \u2014 Okay. \u2014 Okay. Let's see. Oh, because we talked about it with metadata and everything. Yeah, that's right. \u2014 Yeah, \u2014 just there we go. I want that S. There we go. That was bothering me. Um, okay. Oh, okay. Oh, it is. Oh, look at that."
+},
+{
+"start": 1691,
+"text": "Look at that. That is the default embedding model in Astra \u2014 that is using Nvidia back GPUs, right? That's actually part of Vectorize. So just real quick just to show that if I were to come into that database and if I created a collection here you'll notice this embedding generation method right now you could bring your own right but Astra has like I said Nvidia models and GPUs baked into Astra as it is so I don't need to worry about that but now one thing it's saying it wants to use MV embed QA which is perfectly fine."
+},
+{
+"start": 1722,
+"text": "Um there is a newer model um and I want to say they're both 1024 dimensions. Yeah. Um, so you know, we'll just I wonder Well, actually, why don't we talk to it about that because I'm curious, would there be a better embedding model? Should we choose one or the other? Right. \u2014 Um, so let's see. Um, can you tell me the difference between the Nvidia and this one's called what now?"
+},
+{
+"start": 1756,
+"text": "MVM embed QAE5 MV naming things so great. \u2014 Wait, it was uh Oh, MV- embed. Yeah, MV dash embed QA. What? I think it was E5V5. E5V5 like Droid E5 V5 embedding models. Would either of these be better for our purposes?"
+},
+{
+"start": 1790,
+"text": "All right. Yeah, I'm glad you remembered that, by the way. Okay. \u2014 Yeah. \u2014 This is actually something interesting that just happened there. As I understand it, Bob's actually been trained on a bunch of uh IBM documentation. Did you notice when it went to the do that product knowledge thing? Yeah, \u2014 it was like, \"Oh, I'm going to use some IBM docs.\" Let's see what it does. Yeah. \u2014 Okay, cool. Go, go, go, go. Oh, cool."
+},
+{
+"start": 1823,
+"text": "Okay. Okay. So, it is the newer, better model. \u2014 Good. \u2014 Why don't we just use that then? \u2014 Yeah. Ah, yes. Yes. Let's use the newer, better, faster haha model. Did you get my song reference? Did it?"
+},
+{
+"start": 1855,
+"text": "No. \u2014 What? \u2014 I didn't. Is it hip-hop or something? \u2014 No. No. It's uh deaf punk. Now, one thing, by the way, I don't know if you saw it, but it just popped up on my end. It actually just popped up this uh document page. Yeah, it sent me right to that um because you could see it doing it right here. So, it's actually going through and kind of using the browser. So, it what it just what Bob is doing right now is it actually just spun up a Chrome dev tools. You could see it doing here and it's actually now like kind of going through the pages and it's looking for information."
+},
+{
+"start": 1888,
+"text": "But, you know something? Oh, here. That's okay, Bob. I can give you the model name. I see what it was doing. Yeah, I was looking up the exact model, but I know exactly what it is, so we don't need that. Okay. Uh, it's going to be in Okay, it's the one I typed. It's the one you typed as well. So, I was just trying to embed QA \u2014 E5V5. Yeah, \u2014 Bob, you're radiating, bro."
+},
+{
+"start": 1921,
+"text": "What's that? \u2014 Bob's rage baiting you. \u2014 Now, I don't think it matters, but just in case, I'm I I see in the tool that's all lowercase. I'm going to tell it that. That's what's in the tool. \u2014 And now it's going to create the collection, right? \u2014 Yeah, that's right. So, docs. So, no dimension field needed, right? Because it knows it automatically. That's right. That's right. Yep. Okay, great. It updated the seed script. Does the seed script include creating the Astra collection?"
+},
+{
+"start": 1958,
+"text": "Now, this will be the moment of truth. Yeah. \u2014 Yeah. \u2014 Oh, it's already there. Okay. Okay. Okay. Great. Um, the needed keys are in thev.local. I mean, you can just run it from your terminal, right? Are you trying to make Bob run it? \u2014 Yeah, I could. You're right. I could just run it from the terminal. I could I'm happy to do that. Um, you want to do it that way? Do you want to do it manual instead of have Bob do it \u2014 because then you save tokens? \u2014 Absolutely."
+},
+{
+"start": 1990,
+"text": "You're 100% correct on that. Yeah, let's do that. \u2014 Absolutely right. It's loading. \u2014 Absolutely. Absolutely. \u2014 Yeah, man. I'm I'm a I'm a frugal guy. I try to save tokens wherever I can, \u2014 you know. Okay. Now, I wondered Yep. See, I wondered if it would. It's not pointed. Um, \u2014 I think I know why. I think I know why it doesn't have end. This is a problem I would solve manually, but you can use Bob if you want. \u2014 No, no, no, no. Let's see. \u2014 So, if you open seed schema.ts from our \u2014 There it is."
+},
+{
+"start": 2021,
+"text": "I bet I bet you're right. It's looking instead of. \u2014 Right. Okay. \u2014 But it's looking for NV. Well, it's not finding it. Um, \u2014 right. Yeah, clearly it's not finding it. \u2014 I wait because env.local is not at the root, right? Where is it, bro? Like I think you can't probably \u2014 It's right here. \u2014 It's right here. So, it's Where'd you go? Yeah, \u2014 you probably shouldn't share your screen while you're \u2014 Yeah.V."
+},
+{
+"start": 2054,
+"text": "Yeah, I'm not. No, no, you're right. It's um \u2014 So, I would suggest just copying that. There's many envos, right? It's at it's at app. \u2014 Okay. So then I suggest copying that into the directory of packages db source or we can just ask Bob to solve it. \u2014 Yeah. No, we just I think we can just very easily say Yeah. Yeah. Here I'll do this and I'll say hey Bob we're not correctly pointing to the.local."
+},
+{
+"start": 2090,
+"text": "[sighs] \u2014 This is the highlight of my week, David. Work week. You know what I mean? Just like sit here and hack together. \u2014 It is fun. I agree. I agree. But we we're also hacking with Bob. I wish Bob could talk to us. \u2014 Bob does just not uh vocally. Man, we got to We have five people watching, but nobody's saying anything. Please talk to us in the comments. \u2014 Okay, let's see. So, it says that it Oh, see what it did. Yep, it applied it. So, let's do it again."
+},
+{
+"start": 2121,
+"text": "Guten Morgan. \u2014 Guten Morgan. Okay. Andun. Oh, that looks better already. Wonderall. Wonderful. Wonderbar. \u2014 Anyway, here's Wonder Wall. \u2014 Wonder Wall. All right. Cool. So, Bob clearly did that, right? I mean, and you know, it's funny. It It is true from a token savings standpoint to your point earlier. Um, especially Oh, okay. I'll go there in just a second. That's cool. Cosign. It used the right one. Wonderful. Uh, if I come over here, let's refresh. There it is."
+},
+{
+"start": 2154,
+"text": "Recordings. Excellent. Right. And \u2014 chimney. \u2014 Perfect. \u2014 Perfect. All right. So, now that we have our collection, \u2014 let's go make a recording. \u2014 Yes. And should it already be hooked up? \u2014 Let's try. Let's try. Let's try. \u2014 You just want to go for it? \u2014 Let's try. Let's try. Let's try. \u2014 Sometimes you have to run before you can walk, David. \u2014 No, not in your IDE. You can't. It will not work. \u2014 Oh, that's right. It won't let me record. Yep, you're right. I got to do it here. \u2014 So, you need to say something. You need to say something profound. \u2014 Say something profound."
+},
+{
+"start": 2187,
+"text": "How about that? Okay. So, what did it do? \u2014 What did it do? \u2014 Let's see. Let's scroll down. Let's find out. Okay. \u2014 It was lower. It was lower. \u2014 That's \u2014 400 again. \u2014 Oh, okay. So, \u2014 I have an idea. I have an idea. \u2014 What's your idea? We got to tell Bob, make the all of the logs as verbose as possible. \u2014 Yes. Yes. Absolutely. We need to make the logs verbose for debugging. Um, don't need to say anymore really."
+},
+{
+"start": 2225,
+"text": "Just let it do its thing. \u2014 Yeah, because when I see a 400, I want to know why. \u2014 Yep. Yep. \u2014 You need to restart the dev server perhaps per chance. possibly. Um, yeah, that's a good point. That's a good point. Yeah, you're not wrong. You're not wrong, Tis. \u2014 Am I wrong? \u2014 Well, we it's we need to make them more. We need to make the logs were more verbose. Anyway, \u2014 um, so we already did that. I just restarted, \u2014 right? We have new fresh thing. Let's see. Go profound. Saying things profound. Profound."
+},
+{
+"start": 2256,
+"text": "Okay. Okay. Same deal. And did we get the same? Well, \u2014 okay. Yeah, it was a 400 down there. \u2014 Yeah, I see it. Okay. All right. Let's see. \u2014 Okay. Okay. Um, ensure the slappi slash \u2014 Wait, wait. Why don't you just copy that log line um and be like, \"This needs to give me more details.\" You know what I mean? \u2014 You're right. You're right. \u2014 That That's all I see."
+},
+{
+"start": 2291,
+"text": "I my way of prompting these things is exactly like this. I'm like, why do I just see a line here? \u2014 There you go. \u2014 There we go. Now, I'll add \u2014 Good call, Tis. Good call. \u2014 Oh, thanks, David. Failed to parse multiiform form fields received. That's better. That's a lot better. Let's try again. \u2014 Okay, I'm just to be sure, let's go ahead and restart. Okay, great. And we're going to something even more profound."
+},
+{
+"start": 2325,
+"text": "How profound are we being right now, Tis? Are we being super profound? \u2014 Super profound. \u2014 Okay. And what do we get this time? \u2014 Form fields received. Missing or invalid audio field. Got object. Object that. Now we give that exact thing to Bob and Bob will fix it. \u2014 Yeah. I trying. \u2014 I'm not even gonna say anymore. Just do it, man. \u2014 There's an amazing song. It's called Am I Wrong by Nico and Vince. Uh, \u2014 okay. \u2014 I just I recommend it. Okay, cool. Th \u2014 This is actually something that I I'll admit as somebody who at one point I used to really enjoy kind of like troubleshooting."
+},
+{
+"start": 2362,
+"text": "Uh, this sounds crazy, but like, you know, kind of there was a satisfaction, right? Getting a satisfaction out of like finding this kind of stuff. But like you, uh, and like pretty much everybody else I know right now, uh, you know, it's kind of funny where you without even giving context. I mean, it's got context of our our conversation. Obviously, it knows what we're talking about, but I love being able to be like, just copy it and paste it right in there. All right, let's see. Okay. \u2014 Yeah. No, I agree with you, man. \u2014 I don't miss that part of it, honestly. It was satisfying to fix some bugs, but I don't miss the grind of that."
+},
+{
+"start": 2396,
+"text": "Okay, \u2014 it's asking you to retry. I guess there's more intelligent logging, and it wants, \u2014 you know, I'm also gonna clear that out. I don't think I have to say anything profound because it's not going to work anyway. \u2014 Well, let's see. Let's see. All right. Recording. Tap to stop. Hey, Wallfly. There you go. Okay. \u2014 Wallfly is crazy. \u2014 Okay. So, a little bit. \u2014 I think we just copy all that. \u2014 Oh, okay. You know what's crazy about this is before um Genai models and stuff were like really good at troubleshooting these things."
+},
+{
+"start": 2430,
+"text": "One of the very first things I had built um was a Babelfish app that would real time convert any language to another, if you remember that thing. \u2014 And the audio part was actually tricky. Like really honestly tricky. That was a lot of work to get that all working. \u2014 Um like the rest of it was \u2014 easy, but \u2014 that was the hardest part. \u2014 Yeah. \u2014 Okay. All right. All right. So, we're just pasting this in, right? It's complaining that it's not a blob."
+},
+{
+"start": 2463,
+"text": "Yes, because with our file upload library is not really parsing the file correctly. \u2014 Oh, yep. Okay. Okay. Okay. All right. Let's see. Let's give it a try, Captain. And we are recording again. \u2014 Oh, network error during upload was a little different."
+},
+{
+"start": 2498,
+"text": "String string. That doesn't really seem like that's working, huh? \u2014 I got string string, mate. \u2014 Okay. Do we need a different do we need a package or something? You know, honestly, I'm I'm not going to pretend that I'm an expert in working with audio in web browsers, right?"
+},
+{
+"start": 2531,
+"text": "Is there \u2014 we're using a package and the problem is the package is not serving the right format to the server. So there's a file system package that's you're you're like recording with and then this is supposed to serialize it and send it to the network layer and it's not sending the right thing. That's that's what's happening, \u2014 right? Exactly. Look, so instead of sending a URI reference, um, it's sending a base 64 string. This makes so much more sense. Um, is it finished? Is it working? What's going on? \u2014 No, it's done."
+},
+{
+"start": 2562,
+"text": "It it finished it. It made the change. \u2014 This makes sense. like because our problem was serialization but if we work now with B 64 and bite arrays it should work. \u2014 Okay, \u2014 let's let's try \u2014 try number 2005 \u2014 Kingsley. \u2014 Oh, that's different. Okay, \u2014 this is actually perfect because this will work on your Apple Watch and on your phone, but it doesn't work on the web. This is this is \u2014 Oh, interesting. Okay. \u2014 So, now we have to tell Bob this error and be like, \"It works, but not on the web yet."
+},
+{
+"start": 2598,
+"text": "Fix it.\" \u2014 That's so good. It's almost fixed. Like, if if you were testing on an iPhone, it would already be working. \u2014 Hey, David, question. Are you a token billionaire? No. Oh. Oh, that's a great qu. I don't know. Tis, I'm assuming that's like, have you have you gotten past a billion tokens? I'll tell you with Is that what you mean?"
+},
+{
+"start": 2629,
+"text": "I think with the amount that I use, probably, \u2014 but I've never looked. Yeah, I don't I don't know. That's funny. Let's see. Oh, Expo file system doesn't support web. Uh, okay. That's But we can just switch based on platform identifier, you know. Exactly. You look web use expo AV native use files bro. Exactly. That's great. That's what we need. \u2014 Okay. So now it says both paths produce a proper blob that the server's instance of blob will check will pass."
+},
+{
+"start": 2660,
+"text": "Okay. So theoretically it should detect what we're on and do it the right way. \u2014 Yes. Theo \u2014 Theo Brahma. \u2014 Okay. \u2014 Good morning Mr. West. \u2014 Good morning Mr. West. Yes. Oh. Oh, that was \u2014 Well, what happened there? All right, so it saw this. Okay, \u2014 we don't have a store in Verscell blog, brother. \u2014 Well, we told it we were going to use Verscell, right? \u2014 Yeah. So, we should tell it to make the store."
+},
+{
+"start": 2691,
+"text": "So, I think we should just copy and paste this these logs and be like, \"Bro, make the store.\" \u2014 Okay. So, help me help me understand what the Verscell store will do here. Verscell blob is literally just S3 but priced double. \u2014 Yeah. Yeah. So it's just it's just a place you upload your audio recordings. Um and so think of it like a bucket, you know, an S3 bucket. \u2014 Okay. \u2014 Dropbox folder. Uh we just didn't make one. \u2014 So this is good."
+},
+{
+"start": 2722,
+"text": "But now we just have to make a make a folder that it can go. It's \u2014 we need to go to Verscell and do this. Yeah. \u2014 Yeah. Um \u2014 do you already have an account? I do. Um, in fact, yeah, let me let me let me wire this up. \u2014 Can I can I copy this to my uh my TIS AI agent and have the \u2014 the TIS agent work on this? \u2014 Do we have a Versel or together? We don't, right? \u2014 I don't think so. \u2014 Okay. Well, there is a data stax marketing org, but it's I think \u2014 Yeah, we can't use that."
+},
+{
+"start": 2753,
+"text": "Yeah, \u2014 why not? Why not? \u2014 That's going away, dude. Let's just use it, man, for now. And then we'll \u2014 We should probably create our own. \u2014 I think so. Okay. So, let me make this. \u2014 What's it called? It's called um \u2014 Let me I'll copy this to you because you are now um Tis AI. \u2014 Yes. \u2014 All right. Going over to Tous AI. David. Yes. stages AI. \u2014 It's challenging because I need to I need to wait."
+},
+{
+"start": 2788,
+"text": "Would it make more sense for now \u2014 if we just have it have a local option \u2014 as we get \u2014 Okay. Okay. \u2014 Genius. \u2014 Okay. \u2014 Let's keep the um path for cell storage in play. But we also need a local option for when that's not available like right now. We could even make it switchable, right?"
+},
+{
+"start": 2822,
+"text": "We could \u2014 we can actually include in the prompt. Let's make it switchable by environment variable. \u2014 Um and and let's give let's be prescriptive. environment variable is versel underscore uh or actually it's it's this one they already have it blob readr token you know exactly \u2014 oh so if it's if it's empty or something like \u2014 uh how do you I would rather be explicit about it \u2014 yeah so if it's empty we use local and if it's not if it's empty \u2014 use local \u2014 yes if it's empty we use local temp dear temp and if it's not empty then we use the blob So, \u2014 makes sense."
+},
+{
+"start": 2862,
+"text": "Um, if it's Yeah. Yeah. Yeah. If it's empty, use you said temp. \u2014 Yeah, exactly. \u2014 Temp local what? \u2014 No, no, just uh remove the even from the slash and just do tmpdir, but no slash. Yeah, it'll \u2014 Oh, okay. And so TMPDR is like a platform agnostic way of saying whatever OS I'm on just use the temporary directory. If it's not use the environment variable, right? Exactly."
+},
+{
+"start": 2893,
+"text": "Okay. Okay. Okay. Yeah. Because that that'll make that that'll harden that a little bit, you know, es especially for development, right? You know, like \u2014 imagine all the we'd store on Versel just testing. It's like why are there like 50 recordings of some dude saying wf fly \u2014 man I love this um because this is how I build you know it's like we it's UX first it's so important \u2014 we just nail down the the usage and look what we're doing we're using it where it breaks we're saying fix it that this is the way to build to me because then we make sure we have like a nice smooth seamless tried test experience Um, \u2014 I will say that if I was doing this for a different app, right, if it was something that um, like from a test harness standpoint, I would already be wiring up my test harness with things as we're going."
+},
+{
+"start": 2951,
+"text": "Um, but I'm not worried about that here just yet. All right. So, all right. \u2014 I think a time will come where we add the test harness, but it will be when things are working, you know. \u2014 Yeah. Okay. So, Okay. No code. Okay. So, so, okay. All right. Let's give it a try. \u2014 Saying something profound for the thousandth time. Okay. \u2014 Oh, look at that though."
+},
+{
+"start": 2984,
+"text": "Oh, \u2014 cribing audio. \u2014 Okay. It's trying. What's the error, \u2014 dude? The good thing is Wait, wait. The recording was created. That's awesome. \u2014 Yep. \u2014 But I guess transcription failed. Is that log? \u2014 Oh, enrichment. Oh, it's Is it already trying to do the dockling step? \u2014 Yes. \u2014 Interesting. \u2014 No, let's paste the log into Bob and be like, why? \u2014 Yeah. No, for sure. Oh, it \u2014 so it's Yeah, so it's it's \u2014 that's right."
+},
+{
+"start": 3018,
+"text": "It's actually try. Okay, I see what's going on. All right. This is when we say Guten Morgan. That's awesome, dude. \u2014 Yeah. No, that was that was a good progress there. Honestly, like I said, this is the hardest part. Once we get the audio part solid, I think the rest of it will be very swimming. \u2014 No, I don't think so because I think then we're going to search and the search is going to be the same. It's not implemented and then we just give error error and then \u2014 No, I think the search will go faster. We can we can bet on that one. \u2014 Okay, let's see."
+},
+{
+"start": 3050,
+"text": "I think you're right because it's not so complicated with audios and bytes and things. \u2014 Oh, look at that. That's funny. Duckling assassin. Yeah, it can't reach. You're right. It can't reach local host to fetch the file. \u2014 Nice. Okay, good. It's doing it. There's a duplicate. Hey, this is so good, dude. Now, one thing we can also do, by the way, is I believe I have Dockling running locally at port 50001. Um, I could have done it with an LSF, right?"
+},
+{
+"start": 3084,
+"text": "But let's see. \u2014 Elsoft. \u2014 Elsoft. Elsoft. \u2014 That was my nickname in high school. Elsoft. \u2014 Really? \u2014 No. Oh, okay. \u2014 I don't know if I used Elsoft the right way. Right there. Oh, wait. Here it goes. I could swear. Oh, you know what I can do? Um, I'll just read this first. I should be able to I think what is it? Uh, local host. Locost 50001. \u2014 Sonic DMG. \u2014 Say again."
+},
+{
+"start": 3115,
+"text": "I said Sonic DMG. \u2014 Oh, yeah. Oh, yeah. It's there. It's there. Yep. It's there. It's there. It's there. There's a um What is it? Was it UI or is it admin? There is a screen. If it's at rude, I'm gonna laugh. No. Okay. But it's there. Dockling. I have Dockerling running locally as well. So, that's one thing we could do. We could actually just have it go local first before SAS to to see. But let's see. Um, okay. Okay. Right. Okay."
+},
+{
+"start": 3146,
+"text": "No change. Okay. But \u2014 let's try it. Let's try it. Let's try it. \u2014 Okay. I want to double check something with it though. Hold on. \u2014 Let's try it. Let's try it. \u2014 Okay. Okay, I see. I know I don't technically have to always restart like that, but it's bro's a safe player. \u2014 Record. Record. Record. Record. Okay. Oh, that's Oh, look at that. That's actually \u2014 Please set. \u2014 No, but I have I have those creds in place."
+},
+{
+"start": 3179,
+"text": "Um, \u2014 I know what it is. I know what it is. I know what it is. We set we had the um I know it's complaining about the key here. Let me stop sharing for just a second. I'm pretty darn sure when I looked at the envo last time. Um let's see. I've got both the Dockling. Yes, you need this. Okay, I'm going to I'll I'll tell you in a second. Um don't forget the Dockling SAS needs both. Not that dude that What?"
+},
+{
+"start": 3216,
+"text": "What are you laughing at? \u2014 Myself. \u2014 Okay. \u2014 Yeah, I'll share again. Okay, these are both currently stored in the uh env.local. Um, let's see."
+},
+{
+"start": 3248,
+"text": "Are we referencing them correctly? Hey, that's awesome, dude. That's so great. And a cat. \u2014 Oh my god. Oh my god. Let's see. \u2014 There's my favorite SNL sketch. Was this was Oh, bro. Just put your API key there. Hey, \u2014 I know, dude. You know what's funny? Okay, this is actually a great this is a great lesson in something because you remember how we talked last week about how Bob out of the gate is usually very stringent security-wise."
+},
+{
+"start": 3282,
+"text": "Well, I opened it up and essentially told it earlier like, \"Yeah, man. Go for it.\" Like you, so that's on me, right, of of doing that. But that is something to be I mean obviously when you're working in your own environment and everything right um that's that's one thing but it is it is kind of like a security hole right to allow your AI coding agents to work regularly you should probably put that in a store or like a credential or something you know what I mean which I clearly didn't do um let's see \u2014 I suggest pasting the API logs into the chat because Bob is \u2014 yeah because I think it doesn't know that it doesn't have the API key."
+},
+{
+"start": 3319,
+"text": "Uh yeah. \u2014 Yeah, it I'm with you. Yeah. Now I got to go change my key. It's okay. \u2014 Yeah. Two things. \u2014 Yeah, that makes more sense, right? Yeah. \u2014 Kind of going down the wrong path because we didn't give it the context of what happened. \u2014 Yeah. \u2014 So it fixed it to use X API key. \u2014 Now that's actually there's something interesting here. I don't know off the top of my head that dockling SAS supportcribe. I'm not sure if it does."
+},
+{
+"start": 3351,
+"text": "Let's fall out. \u2014 It's probably going to be an error again. \u2014 So, we I think it's one of those things where the trans Well, we'll see because like I I have another app that I built that I did transcript. Matter of fact, it was based off of yours, Davis. Nice. Nice. Nice. But it was based off your video. Uh your app, remember you did \u2014 you did a translation one with audio to rag and then I took it with video, right? Um, and if I remember that blah blah blah blah blah. Okay, \u2014 let's see. I wonder."
+},
+{
+"start": 3383,
+"text": "Oh, by the way, while we're doing that, are we just updating \u2014 failed effect? \u2014 Yeah. No, it did the same thing. Oh, but we see these. Yeah. So, it's trying, right? Transcription submit failed. That's what's going on, right? \u2014 Yeah, but 401 is unauthorized, right? So \u2014 I have a hunch that transcription doesn't exist in the dockling sass. I don't know set up for that. \u2014 Can you paste that error from Astra into Bob too? \u2014 Yeah. \u2014 And then and then we should maybe do we have docs or something or does does Bob know how to get docs?"
+},
+{
+"start": 3417,
+"text": "Uh let's see. \u2014 Man, this is the fun part. This is the fun part, bro. \u2014 You know what I'm saying? Here. Yeah. Here. Sure. \u2014 It's fun. \u2014 Um, uh, what was it again? Yeah. Yeah. Yeah. Transcription or not, please. \u2014 My battery is at 24%."
+},
+{
+"start": 3448,
+"text": "Oh, no. Fine. And check the dockling SAS docs. I think though in an you know like in the interim right um if it's not clear about that as far oh it's finding oh it's looking for docs on my other screen okay that's that's fun actually here I should \u2014 wow but this is not the SAS docs \u2014 you can steer you steer bro just be like no no the SAS \u2014 yeah it's trying to find it um let's See those are the docs from the opensource dockling project."
+},
+{
+"start": 3494,
+"text": "We need the IBM dockling SAS docs. \u2014 Oh, it's looking at supported format. It's funny. It's actually navigating itself right through everything and it's finding it. But there you go. There you go. Okay. Oh, it found it. Okay. Darkling says \u2014 features. I should leave that alone so it can I've done that before."
+},
+{
+"start": 3528,
+"text": "It's like, dude, what are you doing? Leave me alone, man. I'm trying to trying to browse here. That come over here. \u2014 Yeah, but if if I would say for today, you know, we've we've been in it up for an hour. We're making good progress, but this is I definitely argue that this is actually what we're doing now with the audio part is going to be the hardest thing of this app. I actually think it's one of the hardest. \u2014 Um, and to that if if we don't get the SAS thing resolved like right now, we can always go and check that out."
+},
+{
+"start": 3560,
+"text": "We'll see. Um, I think we just go dockling local, right? Like, you know, I've got I've got, you know, the the uh the MX hardware. that doc Duckling actually does a really nice job on um Apple uh Apple, you know, MacBooks like this. Um it uses specialized hardware. It has all sorts of things. So, I think for this case to get it going for an MVP, it's okay to do it local. \u2014 Yeah. Okay. Oh, it's using the swagger. That's fun. That's that's one way to actually Yep."
+},
+{
+"start": 3591,
+"text": "There. Oh, what' you do there, Bob? Oh, okay. I see swagger. \u2014 Yeah. I see \u2014 it wants permission. \u2014 Yep. \u2014 Running wait for \u2014 Yeah, it's right now it's it's actually going to my Chrome Dev Tools um and it is it is running through the API."
+},
+{
+"start": 3626,
+"text": "It's actually scanning it. \u2014 Let me probe the available endpoints directly using the API key is genius. Just curl, bro. Just curl from here. \u2014 Exactly. \u2014 There it goes. See my keys again? Darn it. \u2014 Yeah. \u2014 Simone. Uhhuh. \u2014 Yeah. Okay. How about this? Okay. How about this? \u2014 Wait, have you set the API key like that? Would you get it from X and stuff? you from duckling?"
+},
+{
+"start": 3658,
+"text": "Yeah. \u2014 Yeah. No, it's I have the duckling API key set and it's using it. Yeah. Wait, what? Oh, \u2014 no. Is it the one? \u2014 Do you see that? \u2014 Is it? Yeah, but is it the one, David? That it's like go to IBM what's step one. Did you do that? Did you follow that flow like IBM what's next to get the key or where did you get the key from? \u2014 Yeah, here. Let me um Well, I got the key from an app that I'm currently using with that. But let me let me go to my thing real quick. \u2014 I guess you can just follow Bob's steps and see if they're even valid."
+},
+{
+"start": 3690,
+"text": "Yeah. Yeah. Give me Yeah, let me um \u2014 This is amazing. \u2014 Let me get locked in. Well, okay. How about this? Well, I need to do both. But how about this? I'm going to I think we should still have the local option. I think that's a safe bet. And then while we're while Bob is doing that, I'm going to go into my dockling SAS and make sure I didn't like rotate a key or something like that, right? Um let's also Yeah. Yeah. Yeah. We should also have Yes. Let's allow um this app to use Dockling locally along with the SAS."
+},
+{
+"start": 3732,
+"text": "use an envir variable to switch between the two states. Then let's use dockling local for now. So then that way I can do that while I'm over here doing the other thing, you know. \u2014 Yeah. \u2014 And I know I'm not sharing my screen at the moment, so don't mind me. I I get that. Oh, I almost uh I almost went away from our our recording here."
+},
+{
+"start": 3763,
+"text": "Okay. Okay. Okay. All right. So, it's looking for Dockling here. I'll let I'll share my screen again. Okay. Share it. Oh, no. I need it. That's right. I need it. Okay. So, did you get the API key correct this time? \u2014 Well, I'm I'm letting it do its thing here. Oh, it's funny. It's looking now. It's actually It's like, \"Hey, I found your dockling, your local dockling. Now, I need to look at the API.\" So, it's actually going back to the docs again."
+},
+{
+"start": 3794,
+"text": "So, \u2014 my concern with this is it it may bloat the code a bit. No, but I guess we don't read the code anyway. So, \u2014 why would it bloat the code? I mean, we're just using a library. Yeah. \u2014 No, but it's more like if low code then all this huge branch of code if all this. \u2014 Yes. Yes. Well, I mean, I think this is a good interim step. We could work it out and then and then get that going, right? \u2014 Yeah. \u2014 Um Okay. Oh, interesting. Yeah, I think this is probably a better approach actually because that way it can work out the exact API like what what it really needs to go to."
+},
+{
+"start": 3832,
+"text": "It looks like it made up transcribe and that just wasn't something and that was failing on the SAS because it's like I don't have this. Okay, let's see. Okay, doling sure serve should already be running. Okay. Okay. \u2014 Nice. That's \u2014 okay. All right. Let's see what happens. \u2014 Looks good, man. \u2014 Let's see what happens. Hey, Tis. Having so much fun with you."
+},
+{
+"start": 3865,
+"text": "Okay. Oh, look at that though. Wow. \u2014 So, it's Oh, okay. Now, even though it said failed to fetch, it clearly \u2014 fetch. That might be a UX UI thing. Let's see what's going on here. \u2014 Enrichment fail incorrect API key for open AI. Ah. \u2014 Oh, because we haven't That's right. It tried to go to the LLM. \u2014 Well, after for enrichment. So, it it's transcribing, but it's not getting metadata and things like that. It needs an LLM for that."
+},
+{
+"start": 3897,
+"text": "Yes, that's right. That's right. So, \u2014 you got to get an open AI key. \u2014 Um, do we need Can we just use Oama? \u2014 Come on, man. Like, dude, \u2014 it's the same API. \u2014 I have that. \u2014 If you have \u2014 I have my Lama cloud and everything like ready to go. \u2014 Oh, your call. Your call. Your project. I \u2014 mean, do you want to give me a key? \u2014 No, but I assume you have one, right? Uh, let me Yeah, let me do that real quick."
+},
+{
+"start": 3930,
+"text": "Let me think about that. Let's Okay, how about this? Yeah, we use the old llama cloud. Let's wire up the um models \u2014 first. Wait, before any of this, can you paste the API logs before you start typing message and then type your message underneath the API log so it knows why you're saying this? \u2014 You know what I mean? \u2014 Yeah, I'll get Yeah, I'll No, we just want this part. Yeah, \u2014 exactly. \u2014 Yeah, right here. Yep, I got you. \u2014 Got transcript zero chars."
+},
+{
+"start": 3964,
+"text": "What's that about anyway? It'll know. It'll know uh 434, right? and uh cloudbased models are already referenced. Uh for this we could start with using QPT OSS. I mean I could use a newer model but I don't I don't think we need to, right? \u2014 Yeah. \u2014 Cloud."
+},
+{
+"start": 3996,
+"text": "That should work just fine. Um it should just be able to go right through that. I don't know if Yeah. Yeah. Yeah. Yeah. Yeah. Um blah blah blah blah blah. Um, a llama uses the same open AI API. Okay. Oh, also here are the logs from the latest error. Making progress. Yeah."
+},
+{
+"start": 4029,
+"text": "So, it it definitely tried. Now, I think something that would be nicer in our output is it's it's wonderful to see it's transcribing audio. Um, but this isn't very useful. I mean, yes, it was useful to see that it was doing a thing. Um, but it would be cool to see the output because even before the LLM, we should be able to get the output of the transcription, \u2014 right? Matter of fact, as I think about it too, I don't know if this would be as as worth it. you know, when we created the that video app and the audio transcription app, you know, a while ago, um I had it, as I say this out loud, it may not be used for this."
+},
+{
+"start": 4061,
+"text": "Yeah. I had it create um text files of each each of those. Why? Because well, I wanted to cach them because it's an expensive operation. But when you're recording a conversation, you're not going to record the same conversation twice, \u2014 right? It was because I was re I was reping the same videos. So, if I already had it, why do that expensive operation again? I don't know if that applies here, but it might still be worth and useful worth something to have it spit out a text file \u2014 of some sort. So, we can actually look at the thing, right?"
+},
+{
+"start": 4093,
+"text": "Yeah. \u2014 You know what I'm saying? Okay. \u2014 Yes. \u2014 Okay. Let's see. \u2014 It's actually just going to do that. If you look at the last message, it says it's going to spit out. It's going to spit out the trans. Yeah. Yeah. So, you can it will show the JSON shape from Dockling serve. So, then you can give it back to the L1. \u2014 Okay. So, let's see what happens. Okay, let's see what happens. \u2014 Let's do it. \u2014 Hello. Oh, hello Wallfly. Please record me and store it. Okay, now we're doing the thing."
+},
+{
+"start": 4124,
+"text": "So, clearly gets the it gets the transcript. Oh, let's see there. \u2014 Do you see? \u2014 Yeah. \u2014 Oh. Oh, but you need Dude, dude, you need Yeah, you're right because Actually, can you wait, wait, wait, can you paste from the line where it says raw result keys? \u2014 Okay, in a second. Yes, I will. \u2014 Okay, thanks. Because it's um it just doesn't dockling is not working. Yeah."
+},
+{
+"start": 4155,
+"text": "Here. Pama. No, you don't like that one. Is the password. I am David Jones Gelardi 123. \u2014 You got it. \u2014 Okay. Right. Um, so models cloud."
+},
+{
+"start": 4186,
+"text": "I know it's, you know, the the GPT ones are like old now, but they still they're actually they're still really great for uh Oh. Oh. Oh. Oh, oh, oh. I see what I did wrong. I see what I did wrong. That is It is GBT OSS. I see. That's my bad. That I put the colon in the wrong place. Okay. Uh, and what did you want to what did you want me to give it? I mean, I I think that was it, but \u2014 No, but we our transcript is still zero characters."
+},
+{
+"start": 4219,
+"text": "So, if you can paste from uh the raw result keys line um raw result keys line that that one where your cursor is from that line down. \u2014 Okay, I see it now. Okay, I got you. I got you. I Oh, wait. Full result. \u2014 All the way all the way down to the \u2014 file format not allowed. Yeah. \u2014 Okay. Okay. Also, our transcript seems to be zero bytes, which is incorrect."
+},
+{
+"start": 4253,
+"text": "Okay. I feel like we're so close to just, you know, I feel like on these shows I I feel like we always get it like like that's the minute after like right at the point that the show is going to close for the day. And I feel like it's class. Now, by the way, by the way, I want to point something out about this, right? this task limit reach. I can continue this. But notice that I have a setting and this is the default to say, hey, reaching the maximum 100 turns. And one of the things that the the Bob team has actually pointed out, and this is why Bob does this, is it's saying, you know, after 100 turns your quality, you know, the accuracy and stuff might start to drop, right?"
+},
+{
+"start": 4288,
+"text": "Um so I'm going to say, hey, continue. It's got all this context and everything. Yeah. But it could be a good indicator that maybe we should move into a different session, \u2014 right? Yeah. Um, one thing I've actually expressed to the team is I would love to see a case where instead of just saying continue or not. \u2014 Yeah, \u2014 there would be an option there that would say start new session with context. Are you right? And it would like condense it and bring it over. I think that'd be wonderful. Um, but \u2014 it would be cool if it just does that automatically too, right? \u2014 Oh, no, but Oh, yeah. No, it says no whisper and no llama, but you need dude."
+},
+{
+"start": 4320,
+"text": "Whisper is provided via dockling. I see what it's I see what it's complaining about. Yeah. You know something? What was that previous app? What did you call your tagious? The the v uh the audio recording one. What was fly? \u2014 No, no, no. The one before. Months ago. Months ago. You created the one with Dockling uh that did audio transcription stuff."
+},
+{
+"start": 4355,
+"text": "You created this really cool little repo that I used the code snippet from and created my \u2014 Was it was it um was it just like transcriber? Was was that was that it \u2014 something like that? Yeah. \u2014 Okay. Should I look for it or \u2014 please? Yeah, because actually what I'm also going to do while that's doing that is I'm going to come over to um mine because I'm going to cheat. I'm going to cheat here. I have because I I've worked this out before."
+},
+{
+"start": 4387,
+"text": "It's just been a while. What did I call this thing? God, I have too many repos, man. Video to open rag. Here it is. So, what I'm going to do is I'm gonna say that's right. Um, also here I'm gonna, you know, I'm gonna actually All right, I'm gonna let it finish what it's doing because it did tell me that we've hit like max turns. I should probably go to another session. Um, I have an idea. Let's see what this does real quick."
+},
+{
+"start": 4418,
+"text": "But if it doesn't get there, I think I'm gonna start a new session, but I'm gonna I'm gonna cheat a little bit. \u2014 Okay. \u2014 Oh, okay. Okay. You know, it's okay. How about this? Where am I at? Um, okay. Also, check project. Bloop. We figured out we previously figured out how to use Dockling for audio transcription in this project."
+},
+{
+"start": 4455,
+"text": "It might \u2014 nice. That's so smart. Okay, let's see. Oh, but that doing that. All right, if this doesn't work, I'm going to point it. Yeah, I already figured all that out, right? And it was based off the work that you did. Um, so why go through all that again? We already figured it out. Okay, let's see. Okay. Oh, okay."
+},
+{
+"start": 4487,
+"text": "It's doing its thing. Let's see. Is it the same deal? Let's see. Storing results. That's different. \u2014 Enrichment complete is awesome. So, it's literally just that the transcription is \u2014 failing. \u2014 Okay. Yeah, I think you're right. So, here I'm going to go like this. I'm going to come over here. We're by the way, we're noticing that the Astro part is all working, right? Like it's it's doing what we want there. So, that's cool. Um, right."
+},
+{
+"start": 4518,
+"text": "Okay. That was the transcription submit failed. That's what that was. Okay. So close. Oh, look at that. Oh, it's actually gonna Is it going to put it in temp? Yep. It's going to pull. That makes more sense. It It can pull it local and then look at the files. So, it's literally grabbing my repo. That's fun. \u2014 That's really awesome. \u2014 Well, yeah. You haven't pulled it yet, right? Oh, did you authent did it off? \u2014 Does it? \u2014 Well, it used G used the GH command, the CLI instead of just \u2014 Oh, there you go."
+},
+{
+"start": 4550,
+"text": "That's I remember. Yep. There you go. That's hilarious. That's great. \u2014 Wow, that's awesome. \u2014 Yeah, I remember I remember building all that and I remember this being a hairy this part was hairy. Um getting this right. So, let's see. That's right. But it does that via dockling. Okay. I could just tell it instead of worrying about um dockling serve, we can just have it run the doc just run."
+},
+{
+"start": 4586,
+"text": "Yeah, we just need the dockling library locally, I would think. \u2014 And then that allows to tie right into the SAS, too. Like I Yeah, that's \u2014 okay. What's it what did it find here? I see retry and you should get a real transcript. Come on. All right. We call this Cristiano Ronaldo."
+},
+{
+"start": 4619,
+"text": "How about now? Will you work this time? Okay, \u2014 we're doing the you know that failed to fetch thing. That's a UX thing because it's clearly going through it. Enriching. Enriching. Enriching. Complete. But what did we get? I feel like we need to I I really want to start saving the files. It says the error. File format not allowed. Recordings.org. That's what it says. That's the error. Can you You should maybe paste that to Bob. File format not allowed is nuts."
+},
+{
+"start": 4652,
+"text": "AUG. Why would you record AUG, brother? \u2014 Um, that's a file. Yeah, that's actually funny enough, that's what I use in my gaming platform. So, it's adding the ASR pipeline. That's I Yeah. Okay. Okay. But this is why we wanted to use SAS, right? Wouldn't SAS make all this problem go away? \u2014 I don't know actually because I don't know off the top of my head if the SAS supports the transcription."
+},
+{
+"start": 4685,
+"text": "So that's something honestly that's something I think um would be worth checking out. Let's see. Um, you know, Tis, is that something you could take a look at real quick and see if you can find anything in the duckling sass? How do you know I'm not already? \u2014 Oh, well then you would have told me, right?"
+},
+{
+"start": 4717,
+"text": "You would have told me. Uh, \u2014 yeah. Um, I think it should be supported, but let's see. Actually, real quick, while it's doing that, I'm gonna go pop over here and get into mine. Pantomime, dude. Pantomime. This is where we need every once in a while. Okay, I got in. Okay, great. API examples. Yeah, because I've done all sorts of document stuff with it."
+},
+{
+"start": 4750,
+"text": "I've just not done any kind of transcription. Let me, by the way, make sure my key Oh, my key did expire. That's why it was having a problem because it it it by default sets a TTL on it. Yeah. \u2014 So, you're telling me all this could have been avoided if you just got a new key. \u2014 Well, we'll see. We'll see. I don't know if that's going to be the truth. We'll see. \u2014 I'm gonna like face pal so bad if this was the case. I'm gonna like wish I was an octopus so I could face pal eight times."
+},
+{
+"start": 4783,
+"text": "You just be honest. You want to face pal me. \u2014 Be honest. You be like, \"Dude, dude, \u2014 I don't know about that.\" No. No. I'm not I'm a I'm a nonviolent bro. I'm I'm I only face pal myself. Face hands. \u2014 Let's see. I'm excited. It's That key expired and now we went down this whole rabbit hole of like \u2014 I think it's an okay rabbit hole though because I think it's something we need to do anyway. \u2014 Okay. Um, \u2014 save companies IBM. \u2014 And just to be sure, let me double check. Yeah, \u2014 sure."
+},
+{
+"start": 4815,
+"text": "Sure. Sure. Okay. And 747A. I'm still in my uh my lo my local \u2014 47A. That is correct. Okay. Okay. Okay. Okay. Okay. All right. We'll see in a second here. I'm going to have it. Okay. Okay. So, what I'm going to do is I'm going to share my screen again now that I'm not sharing all my stuff."
+},
+{
+"start": 4846,
+"text": "Great. Now, it it went for this. Right. It's looking for the P. Okay. Let's see. Quick sanity check. Quick sanity check before retrying. Okay. Whoa. Did you see that? It says it dropped the Dockling serve rest API for local mode entirely. \u2014 Yeah. Yeah. I It's still using local dockling. \u2014 Um but it just went to this temp project."
+},
+{
+"start": 4877,
+"text": "So let's see what happens here. Okay. Should I run a test? And it's like, yeah, but okay. Oh, fine. Yeah, you're right. You're right. Okay. Yeah, I don't have a temp recording to refer though. I don't have a slashtemp recording to refer to."
+},
+{
+"start": 4912,
+"text": "Oh, you're going to Oh, you're you're doing it for me. Okay. Oh, and it's doing it. Good. Okay. That's what I wanted it to do. So, are we going to try the SAS or like because I I'm kind of annoyed that we dropped the SAS entirely. Um because it should have been a feature flag. You know what I mean? \u2014 Oh, we did. No, it's feature flagged. We told it to I I told it to put \u2014 It just said \u2014 Oh, it was talking about Dockling serve locally. My Dockling serve, not this. Yes."
+},
+{
+"start": 4943,
+"text": "Yes. No, it's feature flagged. It's feature flagged. \u2014 Oh, good. Good. \u2014 Okay, \u2014 that's good. \u2014 Okay. All right, I'm with you. We have seven minutes to get the transcription out. \u2014 It's going to work, man. \u2014 Right. Okay. Um, I have an API key if you need one anyway. \u2014 Oh, for what? The suckling SAS. \u2014 Yeah. \u2014 No, I just got myself a brand new one. \u2014 Okay. Yeah."
+},
+{
+"start": 4975,
+"text": "What's up, David? \u2014 I'm also going to see if I can upload some audio to IBM Docklinks assass and see what happens. \u2014 Okay. \u2014 In the background. \u2014 Oh, yeah. That's a good call actually. Yeah, I've never I've never tried that before. \u2014 Interesting. I can already say it's kind of annoying because MP4s are not allowed to be uploaded. \u2014 Um \u2014 I don't think you you have to use Whisper though to like transcribe those, right? It doesn't do that. Like I Yeah, I just don't know if um I know I can do it through the Dockling package."
+},
+{
+"start": 5010,
+"text": "Um but I just don't know if that's supported in the SAS. Like I don't know if it's optimized for that, you know. \u2014 Yeah. \u2014 But now we're learning. We're learning all together live is what we're doing. Yeah. \u2014 Learning in real time. \u2014 Yeah. \u2014 Yeah. It doesn't allow MP3 uploads. \u2014 Okay. \u2014 From the UI, but it might from the API. \u2014 Okay. We'll see. I'm still looking into it. \u2014 Okay. Thank you for doing that. \u2014 Oh, you're welcome. Anytime, brother. Um, docs. Are there uh documentation?"
+},
+{
+"start": 5045,
+"text": "Here we go. Actually, let's shove this for a moment and attempt to use the dockling SAS again. My key was expired and I just set a new one inv.V.local. Okay."
+},
+{
+"start": 5080,
+"text": "See, switch to SAS mode. Yep. SAS mode. Turn up. That's awesome. Uh do do the second one. Say option two. Yeah, we want to uh Mhm. All right, let's do it."
+},
+{
+"start": 5117,
+"text": "Everything's already in place. This wonderful. Let's go. Did you restart the dev server \u2014 or have it yetious? \u2014 Oh, dude. All right, let's see. \u2014 Let's give it a try. Hello. \u2014 Hello, Tagious. \u2014 Oh, wait. Remember, it always does that. Remember, we got to go through this part. Transcribing audio is working is working."
+},
+{
+"start": 5150,
+"text": "Wow, it's a lot of uh stuff for what I just said. What is it transcribing here? What is going on? That's a good one. \u2014 Crazy. Oh, enrichment failed. Doc links as conversion. Conversion to what? Why? Can we have errors? \u2014 Let's see. Oh, but look at that though. It it definitely talked to it. So, that's good. transcribing. Okay. Upload. Okay. \u2014 Wait, why? I think we have Wait, this format WebM is Can we tell Bob to when you record from the web UI, save the output as MP4?"
+},
+{
+"start": 5192,
+"text": "Okay. Okay. \u2014 Nobody can read webm is such a dumb format for this kind of thing, man. Um. Yeah. \u2014 Yeah. Not. What is it? Web UI. \u2014 Web M. Web M. \u2014 Oh, that like that. \u2014 No, \u2014 WebM. Oh, that. Yeah. \u2014 Yeah. \u2014 Okay. \u2014 Yeah. Because I mean it's it's a nice format. It's it's nice and quick and small, but like it's not the best for compatibility, man. I think uh Okay."
+},
+{
+"start": 5223,
+"text": "Exactly. Let's see. We \u2014 So, it says Dockling SAS conversion field. Should we also paste that log line? Um, \u2014 man, I don't think we're going to get it working today. \u2014 Data failure. \u2014 If we don't, then we can This is just homework for us in the week and then we can come back next week and it's all working. \u2014 Yeah, that might be a good idea. That it could be a good approach. We could figure it out because like I said, I distinctly remember when building the other app, like I said, the the the transcription and diorization parts were tricky."
+},
+{
+"start": 5256,
+"text": "It was and it it had nothing to do with the the coding IDE or anything like that. It was actually just a lot of steps involved and everything. Um, and I feel like I agree with you that might be a good homework test that we can come back and kind of summarize like get that working kind of thing if we need to. Let's see. \u2014 Yeah. \u2014 Okay. Well, it's working on it. Oh, the browser can't actually record as MP4. Oh, \u2014 and so what we can say is next week when we stream, we will have a fully working pipeline. \u2014 Yeah, that could be part of our homework."
+},
+{
+"start": 5289,
+"text": "Yeah, a fully working right pipeline meaning I record it's in it's in Astra and it's it's it's ready to be searched you know. \u2014 Okay. So let's see interesting. Okay. Okay. Recording center is okay. Okay. All right. Um are we ready to test? Are we ready? Okay, David \u2014 Tis, \u2014 you have a really great t-shirt."
+},
+{
+"start": 5325,
+"text": "Thank you. I do like this t-shirt. \u2014 Lang flow. \u2014 Lang flow. Oh, what are you eating? \u2014 Nothing. It's just the velcro of my wall. \u2014 Oh, I thought you had a chip or something. I wasn't looking over there. Okay, let's see. Huh? Duckling Saski returning faux hunter. \u2014 No man, I updated that. I absolutely updated that. What \u2014 you talking about, Willis? Okay."
+},
+{
+"start": 5374,
+"text": "Okay, here you know what we're going to do? We're gonna we're so close. We're going to try one thing. Generate key wall fly. \u2014 Copy to clipboard. That is going to be E9. Okay. Boom. That is [clears throat] absolutely the correct one. I just I just made sure that the the key was over in fact overwritten \u2014 in case in case it lied to me."
+},
+{
+"start": 5408,
+"text": "Okay. And that is absolutely Yep. 47A. I double checked the the sir the endpoint. Yep. 47A. That's the one. Yep. Absolutely. Okay. The Dockling SAS API key is definitely now updated. Okay. Come back over. Okay. And do this last little thing. Okay. Okay. Okay. Okay. Okay. Okay. \u2014 Um it's checking it's doing a quick check to make sure that it doesn't get to 400 again on the duckling SAS."
+},
+{
+"start": 5446,
+"text": "I just updated. I just I just made sure like you ever have that thing where you you swear that you clicked on a thing and it says copy to buffer and then you paste and it gives you the page of the thing over here that you clicked earlier or something. You're like what? No. No man. So, I wonder if it kind of if I didn't realize like it missed it or something. \u2014 Yeah, \u2014 I thought it Oh my god. Oh, my curl used the O key. Yeah, thank you. Please. \u2014 Why? Why would it do that? \u2014 I don't know. When I thought it said I almost thought it said curses and it said curl, then I thought it was like curses. \u2014 Let's see."
+},
+{
+"start": 5478,
+"text": "There we Okay. Oh, okay. \u2014 Bro. \u2014 Okay. Key is valid. Okay. \u2014 How this is not very intelligent. I'mma be real. like try some old API. I guess maybe because the conversation is too long. Okay, cool. Everything is ready. Let's go test. \u2014 Let's do it. Let's do it. \u2014 And if it fails, we have homework, David. \u2014 Yep. Yep. Yep. Yep. \u2014 Homework. I don't want any homework. Please work. \u2014 Okay."
+},
+{
+"start": 5511,
+"text": "No, remember we haven't fixed the UX thing from there. So, it's doing its thing. \u2014 It says status. Oh, I saw the MP4 here by the way. You see that? \u2014 Hey, can you command click on it? I wonder if it would open your recording. \u2014 Oh, that's a good point. In a second. \u2014 It keeps saying started. Oh, failure. Oh, \u2014 okay. Yeah, let's see this. \u2014 We have homework. Uh oh. \u2014 Ah. \u2014 Oh, interesting. So maybe we have like a like a file translation problem or something like the audio is not actually getting recorded properly."
+},
+{
+"start": 5546,
+"text": "So that's the homework, right? Is um \u2014 yeah and you know now that I think about it that video to rag app was not recording from the web. I was literally grabbing YouTube videos and transcribing those down. They're already in the correct format. So I wonder if there's like a translation issue here. \u2014 Well, I mean what we're doing is we're recording from microphone. We're saving to an audio file and then doing. \u2014 So it's exactly I think the issue is \u2014 between the microphone and the file. \u2014 Yep. \u2014 I I think so. I think so."
+},
+{
+"start": 5577,
+"text": "So anyway, homework. We have homework and that's fine. That's fine. So we'll we'll get that all short up and and make it look fun and have all the things connected. I mean the cool thing at the end of this is the fact that we are in fact like if you noticed \u2014 we didn't at no point did I tell Bob how to use the data API \u2014 from Astra, right? But it created the collection. It did all this stuff. We're we're seeing things. Obviously, we're not seeing all the metadata and everything just because we are not getting it yet. Um, you know, so it it did all that easily enough. So, we have that part of it hooked up. Finally, uh got the right key for my Dockling SAS."
+},
+{
+"start": 5611,
+"text": "And it does seem like it's actually trying to do it, but it looks like we maybe have a translation issue with the uh the local stuff. So, um I'm per, you know, personally, I'm not concerned. I think I think this is one of those things we'll we'll get short up and uh we can we can show it next week. Dude, we're going to show it. It's going to be amazing next week. Uh, thank you for joining everybody. I can't wait to see you all next week with a nice project. \u2014 Absolutely."
+}
+]

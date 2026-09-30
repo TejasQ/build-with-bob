@@ -1,0 +1,602 @@
+[
+{
+"start": 0,
+"text": "with Bob. So, uh, we work on a product called Bob, which is a coding agent at IBM. And the whole point of this this series that we're in is to build technology, things that we want to exist using our favorite coding agent, Bob. And and by doing that, we get somewhat familiar with Bob. Um, you learn some fundamentals. Everybody just has a good time. Um, today I'm joined by my teammate and co-host, David. Hi, David. \u2014 Hello, Tus. Hello, everybody. \u2014 It's good to it's good to see you. Um, as you can tell, it's probably it's it's very hot here where I'm where I am in Berlin. Uh, but how's the weather where you're at?"
+},
+{
+"start": 32,
+"text": "Um, it is I have air conditioning, so I'm not gonna say anymore. Uh, no matter how hot it is outside, we're I'm just adding to the entropy of the universe with the air conditioning. That's all. Yeah, \u2014 we're still learning uh about that here in Europe. I'm really I'm really excited today because um look, today we're going to close the loop on our our recent project called Notebook LM. Uh it's called Killer Context. It's a clone of Notebook LM. open source. It's on GitHub. Uh you can find links um somewhere around this. If you can't find links, by the way, just ask in the chat and we'll give it to you."
+},
+{
+"start": 62,
+"text": "Um we love Notebook and we think it's a great way to learn uh and and upskill and get up to speed. And so we wanted to build our own open-source version of that using Bob, our coding agent. Um in past live streams, we've actually done that and it's it's become a product that I frankly love. Uh David, are you using it? Like do you still get value out of it? \u2014 Oh no, for sure. As a matter of fact, this has become kind of like my go-to for some of my uh, you know, Devril and and and such activities. Um, because it's nice because I can ingest all sorts of information into the notebook, but then uh kind of use it to like do some research, you know, get some things and I have my notes then later that I can reference."
+},
+{
+"start": 103,
+"text": "Um, so it's actually been pretty useful from that standpoint. Yeah. \u2014 Yeah. It's so cool. It's And I like also that it's custom software. We make it so we can if we find \u2014 whatever we want, right? Yeah. If something's missing, I'm like, I'm just gonna add that now. \u2014 Exactly. And and so where we're at with with Killer Context is it's working. Um definitely for us. Um and we're happy to put a bow on it. So today, what we're going to do is we're going to put a bow on it and we're going to finish the MVP of Killer Context. Now, Killer Context will stay open source on GitHub and we'll be building it."
+},
+{
+"start": 134,
+"text": "Um but the only difference is not on stream anymore because we have some cool stuff lined up that we're going to talk about at the end of the episode. So be sure to stick around for that. Um, but today we're going to take care of all of the onboarding user and developer experience of of killer context, wrap it up in a nice little package and then hand it off to GitHub and you in the open source world to use it and build on it with us and so on. Of course, we prefer if you do that with Bob and we're happy to use Bob to help you learn that. Um, that's today and we're going to step into that in a few minutes. Um, and then after that we'll talk about what's next. Does it sound good, David? \u2014 Sounds great. And then uh you know I guess I guess one thing we should probably do here real quick before we jump in to all the fun that you just talked about Tis um as as per normal uh usually after the last show I take the things that we did from the last show and I kind of see what can I do with them until the next show right without totally doing it right because uh because you're going to do something fun today."
+},
+{
+"start": 186,
+"text": "So I want to show real quick kind of some of the progress that was made over the last week. \u2014 Um and I'll just take just a couple minutes to do that. Let me share my screen real fast. \u2014 Boom. All right. So, hopefully you are seeing my screen here. And \u2014 you know, by now for those who have been following us, uh this should probably look like a familiar setup, but if you're new, um you'll see here on the lefth hand side is our notebook LM clone killer context. On the right hand side is open rag. And then I've just got some terminals because I also do things in various terminals."
+},
+{
+"start": 218,
+"text": "I want to be able to see like my dev, you know, debug logs and things like that. Um, but what I really want to show today, um, for those of you who were with us last week, you may have remembered that we originally started, uh, this out with an integration with open rag, um, that nice, you know, kind of easy to use rag pipeline under the hood. Um, and then we had recently added in some support for, um, Aster with the AI workbench. Now, I'm not going to focus on those. We we talked about that last week, but as part of the buildup to what we're going to do today, if you remember, we started off on a project to really make the the onboarding of the app super easy, right?"
+},
+{
+"start": 252,
+"text": "We wanted to make it so if you didn't have open rag or if you didn't have the whatever, it would just help you through that or install it for you or whatever. Um, so what I ended up doing is I I focused less on trying to auto install things and I focused more on the app itself. Like I it dawned on me as I was starting this work. I was like, you know, there's nothing in the app that says detects whether or not open rag is there or the workbench is there or what happens to a notebook. What happens if one of those things is not there yet? We've stored all this information locally, right? There's a local SQL like database that we're using after we've done all of the agentic stuff and things like that."
+},
+{
+"start": 286,
+"text": "So, um, so what I did is I I kind of really focused on just the UX and the app. And I'll show those to you here real quick. So, you notice first off, um, if you take a look over here, I guess I can blow it up just a little bit more or not. You can make me a liar. Go that way. Um, you'll see now that we have some nice new like little decals, right? Um, and you'll see this this workbench one is saying read only. What is that about, right? Well, what I've done is in the back end, I disabled work. I just turned off the workbench, right? It's just not there. But open rag is the app is detecting that, right? As a matter of fact, if I were to come over where nobody can see me, my million windows, because I do have a million windows."
+},
+{
+"start": 321,
+"text": "It's true. It's true. Be happy that I don't actually share out like everything that I'm doing, right? Okay, here we go. I'm I'm starting things up. And in a moment, it should detect this. But um so what it's really telling me though is if it's in readonly mode. There we go. See, it just detected the workbench. And now it went back to green. So great, right? But I'm going to go ahead and kill it again because we don't need it running from what I'm just about to do. All right. I'm going to kill that. Okay, now the workbench is dead. It takes a moment. Obviously, it's going to, you know, it's going to cycle and and pull. And then you'll see like a little banner and things like that."
+},
+{
+"start": 354,
+"text": "Um, so while that's doing that, if I come into a working notebook, you'll see I have like, you know, little pills and stuff like that. Just a little bit information. Um, you know, trying to ensure that the uh the user is never left guessing. Ah, there it is. It sees the workbench is offline. Read only. \u2014 Pull interval on that. \u2014 What's that? \u2014 What's the poll interval on that? \u2014 I think 10 seconds or something like that. \u2014 Cool. \u2014 Yeah. Yeah. Um, but then what I really wanted to show right here is notice now that it's detected this is off, but it's read only. And when I was working on this, I was like, you know, like we we store all the information once we've done the agentic work, right?"
+},
+{
+"start": 389,
+"text": "The information is local. There's no reason I should not be able to access that just because something is gone, right? So now you can see I can come over here. I've got access to all of my previous notes. I'm not online, right? It's not it's not online, but it is read only. I can still do the podcast and everything like that. Um, and it also just kind of um, you know, disables things that I should not be able to interact with, right? So, I can't create a new note type or anything like that. I can't send a chat conversation because the it's not online, right? Um, but it was just like kind of like a nice little quality of life thing to still ensure that there is some experience even if you lost the connection or if something happened um to one of the backend pieces."
+},
+{
+"start": 428,
+"text": "And then the final thing here is let me uh get out of this. Um, if I say uh mpm run in it, I should probably make that a little bigger here. There's a nice Now there's like a little selector menu, right? That will say, hey, do you want to configure a thing? It'll kind of do some auto detection or, you know, obviously I just saw that. So, so I did the starts. I I built in the start of what could turn into what we're going to do today, but I kept this part of it um pretty darn minimal."
+},
+{
+"start": 461,
+"text": "And uh with that though, that's all I wanted to show. I just kind of want to get us up to speed on the work I did, some of the work I did this week. And uh now I'm gonna turn it over to you, Tis. \u2014 Thanks. That's really awesome, by the way. That is so cool. Um it's it's now a living app that knows um what's available and what's not, \u2014 right? Um, so the question today is what's it going to take then um to make it to to put a bow on it and hand it off to a developer community. And I think we just have to go back."
+},
+{
+"start": 493,
+"text": "I think you've done a really great amount of work, David, on on the user experience while it's running. Um, but I think there may be work to do um on the user or developer experience before it's running. That getting started is so important, right? and and it would it would really be unfortunate if people can't even get it running locally. So let's today we'll go through that. We'll make sure it's smooth as smooth as can be um and then go from there. Uh we we last week started working on this um and we went down the path of detecting um do people have open rag or AI workbench installed, \u2014 right?"
+},
+{
+"start": 532,
+"text": "And this became very complicated very quickly. Um, and so we'll pull on the thread a little bit today and see if we can tease out just a wonderful onboarding path. Um, I wonder if if it's worth, you know what, for maximum empathy, I actually have it here cloned locally. Um, but for maximum empathy, I'll clone it again and we'll go through that journey. So, I'm going to share my screen and this is this is literally like first steps of anyone picking up killer context. So, I will also share system audio. Maybe if I share system audio, would it have your voice twice when you speak?"
+},
+{
+"start": 568,
+"text": "Um, hopefully Riverside's smart enough not to do that, but I guess we're going to find out. \u2014 We don't have audio. So, I'll infinity mirror a gtagekiller context. \u2014 I like the infinity mirror, man. \u2014 Thanks. Yeah, it's it's tasteful. All right. So, hey, check this out. The latest commit was by David Jones Gelardi. And David Jones Gelardi. Wow. Check that out. It's like \u2014 I'm Yeah, I'm doubled. I'm double. \u2014 All right, let's check the That's a nice commit message. Uh, okay. So, we'll go um and I already have it here, but I'll get clone this um into killer context 2 just to get the full developer experience."
+},
+{
+"start": 612,
+"text": "Okay, I'm going to follow the docs, make sure it's up to date. Quick start, start a backend. Pick one. Oh, this is nice, dude. git clone cd npm installed npm. Let's try that. \u2014 Oh, I just noticed I I noticed a little bug there in the uh the git clone. I mean, it's just an example, but that that should be the right repo even though it's an example. Yeah, it's the incorrect repo. Yep. \u2014 I wonder why Bob thought this was data stacks project and not mine. \u2014 Maybe because I I was doing it."
+},
+{
+"start": 644,
+"text": "Could be some context associated. Well, either one of us honestly now that I think about it. Okay, so I did install and then we'll npm run in it. In it, mate. Wow. AI workbench was found, open rag was not found. This is awesome, dude. This is \u2014 So, do you actually have I mean it Do you have AI workbench running and open rag is not running? Is that true? \u2014 Whoa, look at that. \u2014 Okay, so you do. Okay, that's I mean I I assumed as much, but yeah. \u2014 Configure both."
+},
+{
+"start": 675,
+"text": "Show back status. Launch app. Watch that. This is awesome. Hey, man. I actually think this is like pretty solid. \u2014 Well, okay. So, here's I guess I guess this this raises an interesting question, right? \u2014 Wait a second. \u2014 Yeah. Go on. Go on. Go on. \u2014 Why does it say AI workbench is offline when it's very clearly online? \u2014 That's a good question. \u2014 I guess it's time to ask Bob. \u2014 Oh, yeah. Maybe maybe we found a bug. Maybe we found a bug. That's interesting."
+},
+{
+"start": 706,
+"text": "No. And this, funny enough, this actually gets at it something, right? This this actually gets at something because um Oh, I love your yolo mode. That's hilarious. \u2014 I only work in yolo mode. \u2014 That's great. I didn't know about that option. \u2014 Yeah, \u2014 I always do it from within the shell itself, like the the uh shift tab. \u2014 I really don't like when AI agents ask me for permission. You can write that down that I said that because somebody's going to be like, \"Oh, it's going to come back to bite you.\" Guess what? It hasn't because I know what I'm doing. So, I'll trust this folder. Check it out."
+},
+{
+"start": 737,
+"text": "It's all red because it's dangerous. \u2014 Oh, it is. \u2014 I love it. I love it. You can just get rid of Yeah. Yeah. \u2014 npm run in it says uh AI workbench is available. Um but when I open the app, it says there's there's my \u2014 is definitely in yolo mode today. \u2014 This is how I work, man. I I also do the same thing. I I have it in the soul of mine to uh to have a a certain kind of um uh like sarcastic relationship because I find that I I just feel more more uh like together with it if that makes sense."
+},
+{
+"start": 779,
+"text": "Yeah. In German you would say you feel satish. Okay, so here's the deal, dude. I don't like this. Um why is thinking uh just expressed like this in bobshell? It's pretty nasty. Do I need to maybe upgrade? We'll we'll run this and then I'll see if I'm \u2014 Which version of Bob Shell are you on? Oh, it's 106 is the latest I believe. \u2014 Oh, patch version. Oh my goodness. Okay, I I'll update it. Um, but this I mean come on, you know. So the user I don't really care about the thoughts. Let's see what's happening. So we do docker ps. We check what's running."
+},
+{
+"start": 810,
+"text": "AI workbench is clearly running. Docker containers are running but app shows offline. Issue is that open search? What? No, it's not. \u2014 Oh, interesting. So, so there's clearly a confusion here because \u2014 Yeah. Yeah. Very much so. \u2014 Yeah. \u2014 I'll just interrupt and also npm on in it correctly identifies that AI workbench. \u2014 So, yeah, this very well could have been something that I missed that is off in the implementation."
+},
+{
+"start": 847,
+"text": "Yeah, I wonder what's happening now. like I just I can't something clearly is happening. Um but I don't know what. Um but we shall see. Whoa. There we go. Okay. So now something's something's happening. What's happening in Creole we say sak. It means what's happening. \u2014 Oh, I was going to ask you. Okay. Okay. \u2014 Yeah. Patient. \u2014 I feel like we need some uh hold music right here."
+},
+{
+"start": 878,
+"text": "Yeah. Or we need a more performant AI assistant. \u2014 I don't know. It depends. I, you know, I've actually, I will say lately I've used I've, you know, obviously, you know, I tend to prefer the IDE. Um, it's been downright zippy. I haven't, you know, but I haven't used BobShell as much. So, I don't have the same experience with it that I do the IDE. I mean, you are you are two versions behind TAS. Come on. Come on, TAS. \u2014 Fine. I'll just uh let's It's already taking so long enough that I would abandon anyway."
+},
+{
+"start": 909,
+"text": "How do I upgrade it? Can I just do a go upgrade? That would be awesome. Upgrade itself. \u2014 It does usually upgrade itself when it detects you're on an older version. Um so, \u2014 let me see my user wants to upgrade something, but they haven't specified what to upgrade. \u2014 Yeah, version 106 is the absolute latest. That's right. \u2014 Oh my gosh, dude. What's happening? It's like outputting. Oh my gosh, it keeps going. Um, \u2014 wow. \u2014 Oh, it did that as a command."
+},
+{
+"start": 940,
+"text": "Maybe just go into Bob itself. Bob shell and Yeah, straight up and then ask it about that. Usually it auto upgrades me. I'm Oh, there you're at 106. It did. It auto upgraded you. Yeah, it usually detects it and then the next time you start it, it'll do it. So, there it was. Okay. \u2014 Okay. Nice. Oh wow, look. It made it \u2014 better already. Okay. \u2014 Yeah, it is a lot better. Dang, that patch version was earlier minor version. It looks like But I still see weird like thinking uh output."
+},
+{
+"start": 976,
+"text": "Needless if you think about it, if you I I see that. I mean, I recognize you're in a shell. Maybe there's a different way to display that from from like a UX standpoint, but I mean I I feel like that's pretty on par with a lot of the agents out there that give you the underlying thinking uh information so you can see what it's doing. \u2014 It's not on par, David, because it's like leaking syntax. \u2014 Oh, I see what you're saying. Yeah, the way it looks like that. Okay. \u2014 I'd expect this from like 0.1.6, but from 1.0.6 that's just kind of unacceptable. Um like \u2014 you know what I It's it's it looks unfinished."
+},
+{
+"start": 1010,
+"text": "Um but check it out. So in it probes local host defaults from end files and the app \u2014 uses runtime end only. \u2014 Oh okay. \u2014 So this is something that needs to be corrected. \u2014 Yes. And it's correcting it. So dude there was a crazy jump from 104 to 106. Yeah. \u2014 That's incredible. What a difference. So the the lesson learned right now for anyone watching is if you're using BobShell and you're not on 106, right? Then it should auto detect that you're not on the latest version and then restart it."
+},
+{
+"start": 1044,
+"text": "It'll get you to that one and it looks like it's definitely a better experience. \u2014 Okay. Yeah. So npm rundev. Okay. So what's the root cause? So npm run in it only writes workbench URL into n.lo local if the back end was up during detection in it detective the workbench live that's right but the app process is running \u2014 you know what I wonder you know what I wonder cages \u2014 we detected that the app was there but we never ran the configure so you don't have the local envit and it gave you that option to configure but We didn't do that."
+},
+{
+"start": 1091,
+"text": "So, so matter of fact, that's now that I think about it, that's that's a step I missed because in my case, I had started configuring it first. I didn't start with just open rag or the workbench running without a configuration. \u2014 So, I totally missed that particular requirement. Right? So, I have a hunch that if you back out, you run the init, and then you configure it, I have a hunch it'll work. \u2014 Wait a second. Um, I just want to understand what the difference is between npm run init detection and the running app detection."
+},
+{
+"start": 1124,
+"text": "And I love that it broke it down like this. So the init script that you wrote \u2014 reads URLs from end local and end and falls back to these defaults. Um, cool. This is great. Um, the app reads, this is where I'm lost. So API help reads only runtime env from the next server process meaning um this one or this one. There is no fallback defaults. Okay. So I just didn't set any end."
+},
+{
+"start": 1156,
+"text": "Let's check. Let's go to end local and check. \u2014 Um so how do I I guess I'll use Bob for this. Um I guess I'll use the UI. \u2014 Everyone get ready to copy changes as keys. \u2014 Yeah. Yeah. Exactly. Please do. um sites lab killer context 2 and I don't have I just cloned it. \u2014 Yeah, there isn't. That's what I'm saying. We didn't configure it. \u2014 So what we to fix this add the same fallbacks to the app? \u2014 Do you ever find that when you give it like um uh emojis or anything or emoticons, does it respond to you in kind?"
+},
+{
+"start": 1196,
+"text": "In kind. \u2014 In kind. Uh, I have never really paid attention. \u2014 Oh, \u2014 yeah. I'm very like focused on the work. I I often don't think about that kind of stuff. Maybe I should. \u2014 I mean, I I thought it was interesting that you gave it a smiley face when you said that. \u2014 Yes. You know, I speak to it like I speak to anyone, a friend. \u2014 I mean, yeah, I also do the same thing. I I I talk to it like it's one of my co-workers, like somebody I'm working with. I'm paired programming or something. \u2014 So, now it's still Oh, dude, it's nice."
+},
+{
+"start": 1226,
+"text": "There it is. \u2014 Yeah. Awesome. \u2014 No one sees it. Yeah. \u2014 Let's I hate this. You're supposed to have fixed this in the last \u2014 I I didn't do it. \u2014 Christ. \u2014 I didn't do it. I just wanted to torture you. \u2014 My real goal was I knew that you hated it and so just left it there for you. \u2014 That's just I love how you Let's see how well it does with how vague that was. Like just fix this nonsense. It's have to figure out what you \u2014 I mean I put a screenshot in there. Also, look, look at the resolution of this image, bro. Why not SVG, man?"
+},
+{
+"start": 1258,
+"text": "Oh, uh, there is no, they don't have \u2014 like a full-on logo or anything. I literally copied it. \u2014 That's so bad. \u2014 Yeah, that is not the way that I would normally do it, right? Yeah. Oh, there you go. Okay. Oh, wow. Tous, watching you do that is hilarious. \u2014 It's just so painful. Like, it's it hurts me physically. Um, okay. So, uh, it's already \u2014 fixing the border radius. Oh, dude."
+},
+{
+"start": 1289,
+"text": "Nice. Over. \u2014 It got it. That's awesome. \u2014 Okay. Well, let's see. \u2014 I'm really impressed. \u2014 Oh, okay. It is. It is picking it up. That's cool. Yeah, it says border ring looks doubled and clipped before. Okay, it's still working on it, though. \u2014 Oversized ugly pill is crazy. Even Bob is like, that's nasty. Um, \u2014 that's great. \u2014 I love it. Oh, I'm so happy, man. I I'm genuinely enjoying this very much. This is what I call vibe coding, by the way, because I'm literally here vibing with Bob. \u2014 Yeah, you're vibing. You're vibing for sure."
+},
+{
+"start": 1319,
+"text": "Yeah, I know. I've been doing that the whole spec code thing, but this is I would say this is our vibe stream today. \u2014 Look at that. \u2014 Vibing with pages. \u2014 OH, that's nice. Actually, I'm okay with that. That is much nicer. \u2014 This is the whole point. \u2014 Yeah, that was good. No, no, this is actually something I think is totally okay to vibe code, by the way. Yeah. \u2014 Right. When fixing something minor like this or whatever, you're just making kind of like a quick adjustment. You're not We're not making a whole new feature right now or anything like that. I think that's perfect for that, honestly. \u2014 Exactly."
+},
+{
+"start": 1350,
+"text": "Because you just paste in a little screenshot. \u2014 Yeah, that's funny. \u2014 Can you please Let's go start open rag. You think it'll be able to detect in real time? \u2014 It should. \u2014 What's the fallback for open rag? 3000. Yeah. \u2014 Yeah. 3000. That's where it thinks it is. \u2014 Open. \u2014 That's where That's where open rag installs itself by default. So, it's in users sites. Uh, open brag. Open gra. And we'll make stop and make dev CPU. That's how you start it. \u2014 Oh, you're doing the dev version. \u2014 Yeah, why not? \u2014 Yeah."
+},
+{
+"start": 1380,
+"text": "You like the dev version, huh? \u2014 I'm a dev, brother. \u2014 I mean, I am too. But \u2014 look at this. Look. Watch. We delete that and we use SVG. Ah. \u2014 Oh, but I'm I want to see it. Like does it actually \u2014 Oh, \u2014 it it's kind of close. \u2014 Let's fix it properly. Oh, what is this? \u2014 That's not the Yeah. No, I grabbed the Astro logo because that that one is like a generic kind of thing. \u2014 Okay. Uh, Astra DB data stacks Astra get with the program."
+},
+{
+"start": 1415,
+"text": "We're IBM now Google. Um, \u2014 yeah, you can sign in with your IBM ID. \u2014 Nobody look at my password, I think. Oh, I have to check my email. \u2014 Mhm. Yeah, it's verification. \u2014 Email. \u2014 Yeah, it's got a verification step, man. \u2014 Want to enter a verification code? That's wild that I got to check my email, bro. Oh, I just got invited to speak at a conference. Nice. Sorry, I'm check I checked my email. That's the first thing I saw. I'm going to be speaking at AI Engineer Paris."
+},
+{
+"start": 1447,
+"text": "Let's go. \u2014 Oh, cool. \u2014 Um, I don't even know what it is. Okay, so here here's my login. Um, nobody, please nobody steal my identity. Gone. It's used. You can't steal it anymore. All right. Um, terms and policies. Sure. I know exactly what all that is. I expect Wow. Okay. Oh my god. Um, it's all red. Click on the buttons, tages."
+},
+{
+"start": 1481,
+"text": "There you go. \u2014 Wow, this is awesome, dude. Okay, I just want the logo. There we go. Is this an SVG? Please, for the love of God, be an SVG. Yes. All right. Use \u2014 Oh, that's a much better way to do that. Yep. \u2014 Boom. \u2014 Oh, what did it actually paste in there? \u2014 The SVG syntax. \u2014 Oh, I see what you did. Okay. What? It looked like it was a lot more than just the SVG. \u2014 What's happening? \u2014 I think you grabbed you grabbed a chunk of the DOM, not the link itself to the SVG."
+},
+{
+"start": 1515,
+"text": "Yeah, I know. I wanted that because it \u2014 Yeah, it will write this into an SVG file and then reference it. \u2014 Oh, okay. Why not just I'm actually curious about that. While it's doing that, why not just grab the link to the SVG itself? Why just give it the whole block? \u2014 Um, because it's syntax, you know what I mean? So like it's it's made for this model whatever I'm talking to. \u2014 Yeah. \u2014 Generates language SVG. \u2014 So \u2014 it's going to be able to essentially copy paste the contents of the SVG. It's more accurate because if it tries to access the SVG file, maybe there's going to be like some bot detection."
+},
+{
+"start": 1548,
+"text": "It's going to be like, oh, you can't access this resource. \u2014 Oh, I see what you're saying. Okay. \u2014 So many different thing. What happened here, man? Continue. \u2014 Um yeah, that's why. Um \u2014 so I hear you. I have 61%. Oh, this is context. Nice. I have Whoa. What happened? I have 98% tokens left now. 46. I don't know what any of this means. Um, you know what I mean? Like I don't get it. Is it context fullness? I have no idea."
+},
+{
+"start": 1580,
+"text": "Um, \u2014 yeah, that's a good question actually. Yeah, it's not quite the same output as you get in the IDE, the Bob IDE from that standpoint. \u2014 I love Bob Shell though, man. I would marry Bob Shell. I think it's like so much better than uh \u2014 Oh, open rag's running, dude. Sweet. \u2014 Okay, \u2014 I'm glad to see that worked, right? You know, that's \u2014 And it's gorgeous, man. I could just click on these all day, brute, \u2014 those are much nicer. I will I will definitely give you that. Those are much nicer. \u2014 You know what's not nice? This. Check this out. Do you see it, David? Do you see it?"
+},
+{
+"start": 1611,
+"text": "Wait. Watch. Look. Wait. What happened, dude? I want my \u2014 Wait for it. Hey, where's my my extension is not extending, dude. What? \u2014 Oh, do you see something that's out uh not aligned or something? \u2014 Yeah, I do. But like why is my That's so bad. Do I need to like reinstall it? Sorry. Um remove grid lines ruler Chrome. That That was like my favorite extension of all time, dude."
+},
+{
+"start": 1644,
+"text": "I'm very disappointed that it's missing. All right, let's do it. This is like my favorite thing for design, by the way. Just a free tip for users. Oh my gosh. I guess it's my former favorite thing for design. \u2014 That's so sad. Like, does it What about Let's go to sonic dmg.com. Is this your website, by the way? \u2014 Okay. \u2014 Uh, no. \u2014 Dude, it's I think I should switch browsers, man. I think Arc is kind of losing. \u2014 Have you not used it in Arc before? \u2014 I have."
+},
+{
+"start": 1676,
+"text": "Let's try. So, grid ruler. Ah, it works on \u2014 Oh, yeah. I see though. \u2014 So, I guess it just doesn't work on this website. [clears throat] \u2014 Yeah, I don't know. That's interesting. \u2014 You know why? I think it shows up under the address bar would be my guess. \u2014 But anyway, yeah. \u2014 Um, \u2014 this this bothers me. This, you see this yellow border here? The the margin of this Y \u2014 is shrinking it ever so slightly. \u2014 It is slight. \u2014 I see what you're saying. \u2014 Yeah. \u2014 Yeah. The create button is bigger. So, I'm actually not even going to vibe this."
+},
+{
+"start": 1708,
+"text": "I'm just going to maybe fix it um manually cuz all we got to do is this. Oh, that's even worse. \u2014 Yeah, that is worse. \u2014 Okay, I guess we'll just buy it here. Um \u2014 yeah, just have to make the crate button. I mean, yeah, \u2014 these aren't the same size. Please make them the same size. Okay. Uh this is good. So, it's working. Completed. runtime backend health works are I love this onboarding flow. I think npm run in it is great."
+},
+{
+"start": 1739,
+"text": "So, so far oh here's my grid ruler. It decided to show up. \u2014 Oh, there it is. Okay. \u2014 Um, so check it out. Look, watch. It's off by literally one pixel. \u2014 Oh yeah, that's a neat tool, dude. \u2014 I have to check that out. I like that a lot. That's cool. \u2014 Okay, so it's work. Let's make a new work a notebook title called the latest latest AI research. \u2014 AI research. \u2014 This is a nice touch by the way. Um with this little caveat."
+},
+{
+"start": 1771,
+"text": "Well done. Um we'll create it. Oo instant. Instant. This is David. We've created something wonderful here. Um go into it. \u2014 Loading. Okay. That's fine. Um, I love this setting up embedding. What's going on, dude? \u2014 Yeah. So, when you do when you're creating stuff in the AI workbench, right? Yes. It creates the notebook instantly, but then it's got to sync with going on because like right now underneath the hood in Astra, you're creating for that notebook to support it."
+},
+{
+"start": 1801,
+"text": "You're creating a collection, all sorts of tables and everything like that and that's happening behind the scenes. So, it takes just a moment to do. So, that's what you're seeing there. Um, and so once it's but you can go on, you should be able to do things at this point while that's going on. I Yeah, I believe that'll go. \u2014 You could also I'm actually curious if you refresh if it'll pop. It may have just not gotten the update yet. No, not yet. Okay. \u2014 So, we'll see. \u2014 Actually, do you have Oh, in your workbench. Well, okay. Wait a minute. Wait a minute. This might be a disconnect. In your workbench, do you actually have an um any database or anything set up yet?"
+},
+{
+"start": 1837,
+"text": "808. Right. \u2014 Because we remember we did not run the configure. \u2014 Do I need to do a new \u2014 We did not. Well, let's see. You have one called production, right? \u2014 So, we didn't run the configure. So, it doesn't know which database to talk to in the workbench yet. \u2014 What do you mean we didn't run the configure? I don't know what that means. \u2014 When you did mpm run init, right? \u2014 Yeah. \u2014 We didn't run the configure for it. We didn't set up what we're supposed to connect to. So, go run npm run and it real quick. \u2014 Wait, wait, wait. So, I didn't know I had to because I was offered I was offered the option to just start the app."
+},
+{
+"start": 1868,
+"text": "You're right. You're right. So, that's a miss in the onboarding flow. \u2014 Exactly. And that's what we're working on today. So, let's fix it. \u2014 Yes. Yes. Yes. That's a miss. But, you know, it actually comes down to like one of those chicken and egg things. Um because like at some point we have to then I guess maybe what we need to do is detect whether or not we have those variables stored locally. And if we don't, like certain ones we're just about to do, then it should maybe automatically spur you if you're going to use one to configure it. Like you should have to do it, \u2014 right? Because we're we're missing that step that's telling you you need to do this. \u2014 So, we're going to open multiplex."
+},
+{
+"start": 1900,
+"text": "You're using, dude, you're using iTerm. \u2014 Yeah. Yeah, I love it. \u2014 You ever use Warp? \u2014 Uh, I I really don't like Warp. \u2014 You don't like Warp? \u2014 Yeah, because it's You have to make an account to use a terminal. They lost me at the signup. I was like, why? \u2014 Um, so, uh, I'm doing I'm multipplexing Bob Shell here because I I want to do parallel work. But here's the deal. We need to fix the init. Um, so let's vibe this. When I run npm run in it, oh, I'm offered right to start to launch the app even if it's not yet configured."
+},
+{
+"start": 1941,
+"text": "This is haram. Instead, I should configure. What does configure it mean? I should say like um you know like point it at the right Astra AI workbench open rag et is this right? \u2014 I think \u2014 um let me think what before you hit that command though. \u2014 Yeah \u2014 I would like I think we should run npm run emit in it and have you actually run the configure step to see if it fixes that issue. \u2014 Why? \u2014 Because because like I to me that's just like a proof point, right?"
+},
+{
+"start": 1974,
+"text": "Um because I have a hunch, my hunch is that because we didn't configure it, we never pointed it to the right database on the workbench. But until we prove that I I I we could go either way, but I feel like we could prove it real quick. \u2014 I think it's proven. And my fear is if we fix the configuration by running in it and then configure, then can we unfix it so we can go down the path again? \u2014 It should just be removing. If you look at your envo, you should be missing some environment variables."
+},
+{
+"start": 2007,
+"text": "Oh, it's 100%. It's missing like all the environment variables, \u2014 right? Right. Yeah. Yeah. Because we didn't even create it yet, right? You don't even have it. So, it's missing environment variables. So, to to rerun it, to your point, we should just be able to remove the env. \u2014 Okay. I like that. So, npm run in it. \u2014 Yeah. So, so if you say configure AI workbench, I'm Oh. Oh, wait a minute. \u2014 11 Labs API key. When I say configure workbench, \u2014 hey uh Tis, \u2014 something happened to uh my Riverside. \u2014 You're fine. I see the \u2014 Oh, it's it's freaking out on my end."
+},
+{
+"start": 2040,
+"text": "Okay, see you in a few minutes. \u2014 Yeah, I don't know what it's going to do to that. For those of you watching, you're seeing I don't know what it's going to do if I leave. Um so \u2014 I love live streaming. \u2014 Yeah. Isn't it great sometimes? Um yeah. No, it's doing something. So, um, you keep doing your thing and, uh, I'm going to see if I can leave without disconnecting the whole thing and then, uh, I'll be right back. \u2014 Let's find out. \u2014 All right. All right. Hey, it didn't disconnect and now it's a solo tagious show."
+},
+{
+"start": 2071,
+"text": "How fun. Welcome. Um, I need to configure the thing, but it asks for an 11 Labs API key to begin, right? It's kind of it's not the experience I expect, but it's optional. So, I'll just hit enter. Discovering AI work. That is awesome. Enter. Woo. I like this. Um, default checking. I guess it just chose the default agent. Let's choose recursive char, man."
+},
+{
+"start": 2103,
+"text": "Okay, so it's configured. And let's check end local should exist. Whoa. I'm gonna not leak internal stuff. Um, okay. And local exists. Look at that. Wonderful. We have everything. We have it all. Okay. Great. So, now we should be able to restart our app running here. Is it dev? Yeah. Okay. And now we can go to killer context. Um, David just wrote me, by the way, that uh he's having a hard time."
+},
+{
+"start": 2142,
+"text": "System's broken. All right. The latest AI research. Enter. Awesome. Hey, we have everything's awesome. Um, it didn't reconcile the URL, bro. Bob, I asked you to. Okay, one thing at a time. One thing at a time. We don't need to multiplex for now. Okay. So, it worked, but npm run init allowed me to launch the app without a configuration before I'm allowed to launch it."
+},
+{
+"start": 2179,
+"text": "So, we'll kick that off. I'll go reset the state to delete my end local. Have it come up again. And this time, I'm going to kill the next app as well. And we're just going to let it cook. Um, while we wait for this to cook, um, let's have a moment of silence for our lost comrade, David Jones Gelardi, who, um, something happened to his computer. Um, something happened to my computer, too. Actually, you may notice my camera doesn't look like the other streams. It's cuz my main camera is broken. Don't ask me how it just is."
+},
+{
+"start": 2212,
+"text": "Um, so, inspect inflow. I can't wait to see what happen. Honestly, I'm quite impressed by Bob. Oh, hello. I'm quite impressed by Bob uh shell. It's really awesome. Prevent npm run in it from offering or launching the app. Hey, wonderful. Just wonderful. Absolutely wonderful. So cool. Patching launch gating."
+},
+{
+"start": 2244,
+"text": "Incredible. I think it's maybe time to multiplex. So, we'll open a new tab. Perhaps this one. Bob and YOLO mode. And the second Bob agent is going to fix our URL situation. So, what? What? Oh, I killed a server. See? Killer context 2. Okay. Come on. So, I'm I'm I'm working on like orthogonal things, right?"
+},
+{
+"start": 2275,
+"text": "They don't really conflict at all. Um, and so we have add sources, add folder, URL. I'm just going to take a screenshot and be like, come on. Um, a URL is a source. It should be in the dropdown. Doesn't need its own button. Unify this. Send. Um, and we just let them cook. Okay. So, first agent's done. Honestly, this is the the magic, right? Working with multiple agents concurrently. Who?"
+},
+{
+"start": 2306,
+"text": "It's power. Um, completed. NPM run in it no longer allows launching the app before. Oh, let's give it a try. Um, let's give it a try. Kill it. I don't have N, right? Uh, I don't have N local. Perfect. npm run in it. What? What's our experience? Launch app launch blocked. Ooh, check it. Configure open rag and AI workbench first."
+},
+{
+"start": 2339,
+"text": "Oh, what if I just configure AI workbench, brother? That's not good. Uh this is bad because we need only one of each to be configured. I also noticed a bug here figured also something is usually wrong here right like default agent Bobby this one we somehow skip this step it's like autochosen or something it's hey there \u2014 hey what's up dude \u2014 I've lost my keyboard and everything my thing just dumped so at least you're the one typing today \u2014 your keyboard \u2014 yeah I know like a bunch of my devices I don't know if I had a uh I had a component or something frizz out, but uh I'm at uh half capacity right now."
+},
+{
+"start": 2399,
+"text": "So, the same thing happened to me with my camera and my microphone. And I genuinely believe uh it's probably like a solar flare and then the sun has like caused a magnetic field disruption. \u2014 A cosmic ray just went and caused me a blue screen. \u2014 Yeah, pretty much. \u2014 Yeah, \u2014 it is my is my conspiracy theory. Um, man, I don't know how this this live stream hasn't like got any negative reviews so far. You know why? Because nobody watches it. Anyway, uh, here we are. Am I gonna Oh, wonderful."
+},
+{
+"start": 2429,
+"text": "Check this out. Add \u2014 What did you do? What did you do while I was gone? \u2014 I unified this. \u2014 Oh, I see what you did. Okay, cool. Cool. \u2014 And I fixed the configur Well, Bob fixed the configuration for me. \u2014 So, what ended up happening? So you ran that. Did you Did you do the init and then like kind of go through the config or did you just \u2014 Yes, I did. \u2014 So I killed end local here. Let's let's do it again just for fun. \u2014 Okay. \u2014 LS LSA. Let's see what we have. So we have end local. Yeah. So we'll just RM \u2014 end local. It's gone. \u2014 Okay. \u2014 Okay. Now we'll npm run in it. Check it out."
+},
+{
+"start": 2460,
+"text": "I'm going to go launch app. Ready? \u2014 Okay. \u2014 Give me a drum roll, David. \u2014 And watch. \u2014 Oh, launch block. Configure at least one back end first. See, that's what we need. So, now I'm going configure the AI workbench. \u2014 That's better. \u2014 Production. \u2014 Ah, so now it's finding See, that's what was missing. Yeah, \u2014 exactly. And now I launch app and it works. \u2014 Oh, there we go. \u2014 It's so much better. And now everything is \u2014 Oh, and see notice. Notice now it's you've got your model."
+},
+{
+"start": 2491,
+"text": "You've got your agents up there. Okay. \u2014 And I'll add a URL. \u2014 Oh, you did a mock. Oh, you did a mock. Okay. \u2014 Yeah, I'll add a URL. I would like to add multiple URLs. This is the next thing. Uh so I'm going to improve this. Uh and I'm going to which which Bob should I talk to? I guess this one. So couple things. One, um add sources right now opens the file browser. It should trigger the dropdown. Two."
+},
+{
+"start": 2522,
+"text": "I should be able to add multiple URLs separated by comma. Um, and and killer ctx should get all of them and add each one as a source. Um, cool. So, I'll let it do its thing. Meanwhile, I got to go get sources. So, let's go to archive and get the latest AI papers. Um, and synthesize the knowledge. 16th June. I'm gonna take everything from today."
+},
+{
+"start": 2553,
+"text": "Wow, that's a lot. I'm I'm gonna take a top 10 from today. Um, so \u2014 how big are these? \u2014 Who knows? But they exist as HTML. That's that's what I want. \u2014 Okay. Yeah. Okay. \u2014 Um, I assume you're doing AI interaction method for large reasoning models. That actually sounds really interesting. Unfortunately, I'm not smart enough to understand any of this. Um, actually I am, but but anyway, let's pretend I'm not. You know what I'm saying? And so that's awesome, dude. \u2014 You know, you know what this reminds me of? What I think you're just about to do? If you remember a while ago, I wrote one of the first things I I did actually with some of the agent stuff is um I wrote an app that is like a teaching app."
+},
+{
+"start": 2591,
+"text": "Remember the one the astronomy one that would you could see you know and one of the fun things it would do it had like a kid mode \u2014 and I would do I I love like I get into like theoretical physics and quantum mechanics and stuff and I think that stuff is very fun but I'm like I had and it explain it to me like I'm a 5-year-old mode. It was so much fun. \u2014 It was so much fun. So anyway, I I feel like you're going to do I feel like that's the path I felt like you were going on. I was going to try to read your mind there. \u2014 Eli 5. Okay, cool. We did it. Task complete. So now I should be able to add comma separated."
+},
+{
+"start": 2623,
+"text": "Wow. Files, folder, or URL. Dude, look at that. Stunning. There's a keyboard accessible though. \u2014 I don't worked on that. Yeah. \u2014 Oh, \u2014 okay. You know, I'm missing I'm honestly missing the drop down chevron. I guess you click on that that happens. So yeah, we'll Yeah. \u2014 So now let's get the top 10 the top 10 HTML ones. So I this is really inconvenient. I'm going to make this a sidebar. There we go. \u2014 There you go. Yeah. \u2014 And now we get one comma two comma three comma five."
+},
+{
+"start": 2665,
+"text": "Let's just do five. 10 is too much. So we'll copy this. I'm gonna kill this. I'm copy the string just for safekeeping and we'll add it. Oh, \u2014 I saw that. Oh. Oh. Oh, they blocked you from \u2014 I don't think so. I don't think so. \u2014 You don't think so? \u2014 It's plain text, brother. \u2014 You know what I mean? Like it's just HTML. Um, \u2014 but you're you're going to archive site. Are they block? Is that the error coming from them? Like when it tries to \u2014 don't Let's check the logs. post API notebooks 502."
+},
+{
+"start": 2697,
+"text": "502 means backend not ready. Could it be because I'm using AI workbench mock embeder? I don't know. \u2014 Possibly. I've not used the mock for this. Um I would use a real one. \u2014 The latest AI research is a real one, right? \u2014 That's a real database behind it. Then why does it have a mock and better? \u2014 I don't know. I Yeah. How long ago did you make that bad boy? \u2014 Just No, it made it when I made the notebook. H it's interesting that it's you oh you know why during the init when you were doing configure I think you like mashed right through um the configure for that there should have been a choice there to choose the Nvidia reranker or the ema the Nvida embedter sorry \u2014 there was no choice and this I mean this is this is what we're doing today uh let's take a look at it yeah configure the AI workbench Yeah."
+},
+{
+"start": 2753,
+"text": "Yes. Yeah. 11 Labs API. Nothing. \u2014 Which workspace production grab? No. Wait. Ah, \u2014 it was there. Just you picked the recursive character. \u2014 Yeah. \u2014 But it was there two seconds. Did you see it? It showed up as the mock better for some reason. Um, so if you go back to the AI workbench, \u2014 so this this actually gets into a really interesting question, by the way, because um, this is one of those things where you could argue if you're going to have a truly so yeah, if you're going to have like a truly seamless onboarding experience and you're going to set somebody up to use a thing, \u2014 should you like right now the AI workbench, in order for this to work, you have to in the AI workbench have created a database, right?"
+},
+{
+"start": 2800,
+"text": "And then a knowledge base and then it it this will go the mpm run and it will go and detect it and go, \"Oh, I will use those settings.\" \u2014 Yeah. \u2014 Or are we trying to say, \"No, you have nothing at all and I'm going to build everything for you.\" And that was actually part of where I went down one path and I said, \"No, I'm going to do detect only.\" Right? So, so right now it's relying on you whether it's a workbench or open rag or whatever to have that running and to have that basic configuration going and it will then detect what that configuration is."
+},
+{
+"start": 2832,
+"text": "So if that configuration's off like I said the fact that you're using a mock embed I don't know I wouldn't say that that would be the way to do it. I think we need to create in the workbench a different uh database like a real like the real data real database with a real embed in it. \u2014 Yeah. \u2014 How do we do that? \u2014 I Yeah, because I don't know what I don't even know if the honestly I'm not sure what the state of the mocket and the AI workbench is or anything. I know for a fact if I use real database real better and things like that hooked up in Astra that that all works."
+},
+{
+"start": 2866,
+"text": "Yeah, I saw that when the embed said mock better and I wasn't sure if that was going to work or not. \u2014 Well, that's unfortunate. Um, let it do \u2014 we let it do its thing. Meanwhile, we can build the same notebook with open rag. \u2014 Yeah, you've got open rag. Exactly. Yeah, do that \u2014 with open rag. \u2014 Yeah, let's try that. That's a good call. \u2014 I love that creation is instant. Um, I wonder if when you create something, you should go straight into it. You know what I mean? Um, instead of like just seeing it in the list after you've created it. But anyway, that's for another time."
+},
+{
+"start": 2896,
+"text": "So, we'll save this. We'll add it. Wow, it's like exactly the same error. \u2014 I don't It's interesting to me there would to be a 502 for both of those. You know, something I'm not seeing here, though, in the open rag one, I'm not seeing um that said online right there. I'm not seeing our models or our embedding dropdowns. \u2014 Yeah. Why, dude? \u2014 I don't know. Let's find out what's going on here. \u2014 Oh, we never configured open rag either. Same thing. Same thing. \u2014 Oh, that's true. Yeah, we did configure open rag."
+},
+{
+"start": 2927,
+"text": "That's right. That's right. So, this is kind of this is like kind of a missing step, right? I mean, you you did it for the workbench, but it seems like we also need to do that now when you go to run open rag. So, there you know what I mean? So, we you have rope and rag running, but the uh killer context does not know about it. \u2014 Yeah, let's fix that. Workbench is already running, \u2014 right? Then enforce configuration before launch app with npm in it. \u2014 Oh, my keyboard magically appeared. Okay, \u2014 that's good."
+},
+{
+"start": 2962,
+"text": "That's good. \u2014 That's uh interesting. \u2014 Developer experience for life. That's what I say. Uh basically ensure anything running is configured. We have n.local set up before allowing launch. Know what I'm saying? Nice. \u2014 You know, you know, Bob probably has a language file on you, right?"
+},
+{
+"start": 2993,
+"text": "Because I know that I know a lot of the agents because I do the same thing. I have phrases that I use \u2014 that I use to like trigger it to do certain things. And uh I haven't looked in particular in Bob, but I know like pretty much all the AI coding assistants store off and they remember the way you talk to them. \u2014 Yeah. Yeah. They're like this guy not very linguistically blessed. That's what they say. And that sucks, dude. Archive invalid or missing? \u2014 Well, I can tell. Yeah, I can tell."
+},
+{
+"start": 3024,
+"text": "Look at your model. Like it's not We're not there with the configuration yet. Take a look. Look at the model drop downs. \u2014 The model drop downs \u2014 up. Yeah, the rainbow guys. Go to the model one at the top right and click on it. \u2014 That's right. It's not configured. It's missing the configuration for open rag. \u2014 And this is this is AI workbench David. \u2014 Even Even that one. Yeah, both of them remember because we we have the mock. Well, that actually changed that actually had the right agent before. I think we should \u2014 Why did you launch?"
+},
+{
+"start": 3060,
+"text": "Why did you redeem the card? Um, \u2014 you chose launch, Tus. \u2014 Okay, let's RM end local again. Local. Uh, \u2014 why don't we try go for open rag? \u2014 Yeah, \u2014 configure open rag. Open AI API key. Why do I need open? \u2014 You don't you shouldn't have to need it. It's just the default that it likes. \u2014 Open rag API key. Now that you need Yeah. If you don't have that, it's not going to be able to talk to open rag. \u2014 Uh I have it somewhere \u2014 in your Yeah."
+},
+{
+"start": 3093,
+"text": "Yeah. Just go to open rag. Exactly. \u2014 Open rag. I have it here actually. Let's go to my where is it? My killer. No, it's in the terminal. Yeah. Yeah. Save. \u2014 11 labs API key. I don't have Okay. \u2014 Now we configure AI workbench \u2014 production recursive char. Cool. Now we launch. Ready to launch, captain. \u2014 I still think uh for AI workbench, we need to change something there, but we'll see. \u2014 You think too much."
+},
+{
+"start": 3126,
+"text": "Uh okay, so now we got it. Let's do it. I don't see my models, bro. \u2014 No, that's interesting. \u2014 I ain't see no model. Maybe my API key is wrong to be fair. \u2014 Yeah, honestly. Yeah, that could be a thing because this is mine. \u2014 This is going to make a new one. Oh, you know something? \u2014 Uhhuh. \u2014 I've got mine running. Okay, please hold. Okay, \u2014 I may have accidentally introduced a bug on my on the open rag uh notebooks."
+},
+{
+"start": 3163,
+"text": "Wow. \u2014 Yeah, I did. \u2014 Wow, David, \u2014 I did. Yep. \u2014 You know. \u2014 Yep. Yep. Yep. Yep. \u2014 I'm not angry. I'm just disappointed. I'm I'm joking. I'm jo I'm totally joking. He's dad. So, honestly, that one should actually be pretty easy to bring back. Um, would you like me to do it local and then I push something that you pulled down or you want to try to just do it on yours? \u2014 We're here to vibe, man. We'll do it together. Um, \u2014 first I got to make sure it's \u2014 Yeah, I did. I totally introduced a bug there. \u2014 Okay. How do I describe the fix to Bob?"
+},
+{
+"start": 3195,
+"text": "Um it's both the model and the embedding provider uh dropdowns uh for open rag are missing um are missing their their dropdowns. Hold on. I lost you. There you are. Yeah. \u2014 Cool. I sent it. \u2014 Okay. \u2014 Add sources URL. Yeah. \u2014 What if we just like can we add my website just to see if this actually works? And the issue is on archive. Oh, okay. The issue is just on archive. The model stuff is configured. You just can't see it here."
+},
+{
+"start": 3226,
+"text": "Oh. Oh, actually, but to that point, the fact that it tried it where in archive it was blocking it. So, was it really archive blocking it actually? Because we don't have \u2014 opens a file dialogue. What the \u2014 Oh, you know why? Because it's I wonder if it's expecting a uh actually that's interesting. \u2014 Yeah. Uh I guess it's time for Bob number three. So is this I'm curious tagious is this how you normally do you have like multiple Bob shell terminals going at any time? \u2014 Yeah I have I have like hundreds literally hundreds of parallel agents."
+},
+{
+"start": 3260,
+"text": "So what's interesting about that is this is where when I'm using the IDE I will do the same thing with different sessions but then I can easily manage those sessions in these sessions \u2014 like I'm easily managing the sessions like I don't find this challenging at all. Um so this one is fixing the head. In fact here check it out I can rename them fix the header the model dropdowns. \u2014 Cool. And then this one is uh mock embedter fixed, right?"
+},
+{
+"start": 3296,
+"text": "And then this one is uh retry logic for URLs. Done. See, I have three agents doing my thing. So now, is it fixed yet? No, it's not. Okay. Um let's go try another URL. Sonic DMG. Is this your website? Oh, \u2014 no. Davidardi.dev. davidgillardi.dev. \u2014 See if that's still out there somewhere. \u2014 Wow. He's an action figure. \u2014 I Yeah, \u2014 that's awesome. \u2014 Remember you remember that app? \u2014 I do."
+},
+{
+"start": 3326,
+"text": "I do remember indexing. \u2014 Oh, so it just doesn't like websites. \u2014 Well, no, I don't think that's it. I don't I I think there is something else core going on here because we haven't conf we haven't confirmed yet that one, we actually have your open rag API key and it's correct and that that's working. \u2014 Yeah, we do. I just I just generated one and fixed it. \u2014 Try try to add a file then. \u2014 Okay. Files IBM harness.pdf \u2014 cuz we know like \u2014 Yeah, something else is going on."
+},
+{
+"start": 3360,
+"text": "Tis \u2014 bro, I need to see errors. Let's That's the new command for Bob. Anything finished here? No. Okay. Uh Bob YOLO. Come on. Come on. Come on. Come on. Okay. \u2014 I love how it's red. \u2014 This isn't Yeah, this isn't enough. I need to see clear errors. Show them either in the console or in a toast. Boom. And I'll name this one too."
+},
+{
+"start": 3392,
+"text": "I'll be like error details. Awesome. Wow. Look at this. I got four agents running. So fixing open rag model dropdowns. The issue is that open rag settings are not being populated in context health gate for open rag notebooks. I've already added a use effect modified API health. Now I need to verify the notebook page is correctly using these settings for the embedding model display. Okay, nice."
+},
+{
+"start": 3424,
+"text": "It's working. I'm going to let it keep cooking. What about this? Oh, we choose different embedders, not the mock ones. Very nice. What about this? It's still understanding. And finally here. Okay, a bunch of agents are cooking. Um, I still can't retry URLs. So, Open Rag is has that issue. Let's go check the AI workbench mock embed. \u2014 You've got the right agent up there, Bobby. If you click on those, you should see a list of them."
+},
+{
+"start": 3456,
+"text": "Maven. \u2014 Bobby and Maven. That makes sense. I I believe part of the issue there is the fact that your database or your knowledge base inside of uh AI workbench is using the mock. \u2014 How do I change it? \u2014 You can't. You have to go back. You need to create a you need a go back to workspaces. All Yep. Create a new workspace. \u2014 Oh my god. Okay. \u2014 Astrod. See this is Yeah. Give it a name. Do all that, right? You you should you should have all that, right? Oh no."
+},
+{
+"start": 3488,
+"text": "Do you have a uh an Astro database you can use? \u2014 Nope. But I can go get one. \u2014 Yeah, because you create an account and stuff, right? Yeah, you can go get one easily enough. You can just create one real fast. So, create a database. \u2014 Oh my god. Okay. Create a serverless vector. Sure. Database name is uh AI stuff. \u2014 Okay. \u2014 Okay. Google Cloud. \u2014 Yeah. \u2014 EU. \u2014 Oh, you're right. Oh, those are locked on. Try to go to Google Cloud. Oh, there you go. Fine. Yeah, because you're in the All right. Give it a second. It's going to generate the stuff. \u2014 Generate application token."
+},
+{
+"start": 3520,
+"text": "Uh \u2014 yeah, \u2014 nice. Please, nobody steal it. \u2014 No, you don't need all that. Just the token. Yeah, \u2014 that's what I'm copying, dude. And so now we go to N local, which is probably here. Yeah. Oh, no. It's an AI workbench. \u2014 Yeah, it's an error AI workbench. \u2014 Error. \u2014 Error. Okay. And then wait for your uh you got to wait for the database to come up so you can get your uh endpoint. \u2014 Where do I see that? \u2014 It'll be there in a second. You gota the database is still coming up. Go all the way up to the top. See it's pending. \u2014 Yeah, \u2014 the API point."
+},
+{
+"start": 3552,
+"text": "See, it's waiting on the API endpoint there. That's what you need. \u2014 Cool. \u2014 So, it'll just take a minute to create that database. Yeah. \u2014 All right. What's this doing? \u2014 This is done. So, it doesn't choose mock embedding anymore. \u2014 Oh, is the in the default? Yeah, that's part of the issue. \u2014 Successfully restored open rag model and embedding provider dropdowns. Let's go check. Let's go see while we're waiting for that. Yep. I'm appendum one. Let's go check. Uh uh. Did it Did it like lie to me? \u2014 Did you just lie to me?"
+},
+{
+"start": 3585,
+"text": "You need it. There it go. There it is. There it is. There it is. That's better. \u2014 Right. \u2014 Okay. Now, let's see. \u2014 Now, we still Right. But I still don't think that it is properly configured. Yeah, of course. \u2014 If you look at your Yeah. So, if you look at your ENV local. \u2014 Uhhuh. One second. Uh, it fixed the retry logic."
+},
+{
+"start": 3615,
+"text": "That's good. Console logging. They're logged to the browser console. Whoa. Let's try that, dude. Retry. Ah, Jesus. I thought you fixed that. Retry. H. It said it fixed it. Clicking retry on a web page still brings up a file selector. Let's just add a new URL, right? We'll add one. https. What is it?"
+},
+{
+"start": 3646,
+"text": "Davidjelardi.com.dev. \u2014 Uh, yeah. Let's see. \u2014 Okay. So, now \u2014 nothing is logged to the console, bro. What What are you What are you on? Nothing's logged to the console. Nothing is. Oh, maybe I \u2014 Oh, you froze right there. Disus, are you still here? \u2014 The dev server was already running. What did I just kill? \u2014 Oh, was it running separately?"
+},
+{
+"start": 3679,
+"text": "Did No, we couldn't have. They're both on uh the same port. Yeah. \u2014 Yeah. Sometimes that happens, believe it or not. Okay. You want to check if it's configured correctly, right? \u2014 Yeah, I would I I think I I think you need to spit out or take a look at your EMV local. Let's see. \u2014 Okay. Let me just check if Astra came up. \u2014 Oh, nice. We have an end point. \u2014 There's your end point. So, grab your endpoint. Other one. Yeah, right there. Now, go put that in AI workbench."
+},
+{
+"start": 3712,
+"text": "AI AI AI. Done. \u2014 Okay. And the name. Yep. Uh, [sighs] let's see. Whoa, whoa, whoa. Provider P. What doesn't? Oh, what's it telling us here? What's it saying up top? It says paste in directly or use that. All right. Tken. That's the token. You shouldn't That shouldn't be there."
+},
+{
+"start": 3744,
+"text": "It should default keyspace is correct. \u2014 [sighs] \u2014 I think it wants these to be environment variables. \u2014 I'll take a look at mine. [snorts and laughter] \u2014 Yeah, like it literally just wants an environment variable or a file. Can I just do like raw? Like is this a thing? Oh, I guess. Oh my god."
+},
+{
+"start": 3774,
+"text": "I don't that's pretty hostile developer experience if you ask me. Um I don't really work on AI workbench. \u2014 Yeah, \u2014 that's that's nasty. Uh that it like forces an end file when I have the values here. Um settings where where edit is it here? Ah, nice. Is the validation even on edit? Can I save? Ah, bro. I don't \u2014 try just try um h I mean it had a default in there. I'm actually can Oh, look what it's doing."
+},
+{
+"start": 3806,
+"text": "Value must be provider path envir token. So, do env colon at your token at the very beginning. ENV. \u2014 I hear you. \u2014 That's okay. That's a reference to the name of the environment variable, not its value. \u2014 Oh, is it is it? Let me \u2014 Yes, it wants me. \u2014 Oh, it wants it does want an environment variable. Interesting. \u2014 That's just that's really bad. I guess we can put it in here. Um I don't even know."
+},
+{
+"start": 3838,
+"text": "You know what? I give up on AI workbench. Let's let's \u2014 focus on open. Yeah, \u2014 let's just really \u2014 Yeah, focus on open rag. \u2014 So open rag's fine. Um we are we are not uh so we're getting the models. That means it's connected, right? \u2014 It is connected. It's talking to it. Your API key must be working. But the fact that all of them like that are failing tells me there's something else going on because I'm, you know, funny enough, and I know this doesn't help you. Um, I'm not having that same issue."
+},
+{
+"start": 3870,
+"text": "It returns a 200 from open rag. \u2014 So, that seems okay. Yeah. If I say if I create a new one called tagious and open rag and then I go in here. Well, I don't have your latest changes, but I can add. \u2014 Dude, it totally has them. That's awesome. Oh, failed. Ingest status failed. So, it failed on the open rag side. \u2014 Oh, you know what? I think it is. \u2014 I don't know. Uh, let's check."
+},
+{
+"start": 3901,
+"text": "How do I check logs for open rag? \u2014 Give me a second. I'm Okay. Yeah. So, [sighs] yeah. So, I've got this. Okay. Well, here's what I'm gonna do. Have you Well, I'm assuming you haven't committed any of the stuff because we haven't finished what we're doing there, right? I'm actually pulling that djeli.dev right now. I'm pulling it into mine into a notebook in open rag right now. Um, now this is pre some of the updates we've made, but it's it's working perfectly fine, right?"
+},
+{
+"start": 3933,
+"text": "Um, and same thing with like file ingest and and things like that. I'm not having \u2014 that particular the issue that we're seeing. So it does I still keep coming back to I do feel like it is potentially in configuration. I recognize that we are getting the model names. So that tells me the open rag key must be there. Um, and we must have the URL, right? Like if you look at your end local, you've got to have that URL. \u2014 I think I figured it out. David, \u2014 what's going on? Oh, is Dling Was Duckling serve not running?"
+},
+{
+"start": 3965,
+"text": "Yeah. \u2014 Oh. Oh, well, yeah. Oh, okay. That would be it. \u2014 Yeah. Just because open rag decided to not start dockling surf. Um, so let's start it and then we'll \u2014 Yeah, that would totally because it wouldn't be able to ingest anything. \u2014 Is it in the Docker file? Oh my god. Um, big. \u2014 Do you ever use UVX or do you just do everything with Docker? \u2014 No. No, I don't."
+},
+{
+"start": 3997,
+"text": "I'm not a Python developer. \u2014 Um, but I'm going to let I'm going to let Bob start Dockling Serve. Um, \u2014 and then I think that's kind of the key \u2014 that that is for open rag. Yeah. If it's having injust issues on everything and Dockling serve was not up. Yes. \u2014 Error details. So the error is that dockling serve was not running on open rag. So things failed upstream. Surface this in a very friendly way to developers."
+},
+{
+"start": 4037,
+"text": "Yeah, that's the issue. And now we resolve it. Check it out. It's starting Doppling Surf. Nice. And so at some point in open rag this will go away. Um and then we'll \u2014 fix it. Right. \u2014 Okay. Good. We're cooking. We cooking. Let's see. Drum roll. Is it Is it gone?"
+},
+{
+"start": 4070,
+"text": "Oh, it's still there. I I would love to be able to like inspect the output, you know what I mean? \u2014 Oh, in bshell. \u2014 Yeah. Yeah. Yeah. \u2014 Yeah. \u2014 Because it can't just be like starting this for so long. \u2014 Yeah. Yeah. I hear you on that. Now, one thing you could do, well, you you never you said you never use UVX."
+},
+{
+"start": 4103,
+"text": "Okay. Because you can um uh UVX-2E uvx open rag-2E-2E will um we'll give you the option to just start Dockland serve. \u2014 Is it running now? \u2014 Let's check. \u2014 Okay. \u2014 Um \u2014 it does have a health. You should be able to actually uh \u2014 Oh, yeah. It's totally running. Okay. So, now let's go check killer context. Want to try that? Retry. \u2014 Oh, look at this. Failed to click for details. Okay. Retry, bro."
+},
+{
+"start": 4134,
+"text": "I shouldn't man. It's just that's indexing. \u2014 Oh, that's better. It gets that status from open rag. So, that's promising. \u2014 Clicking retry says ID is not defined. \u2014 Yeah, I don't know what that's about. \u2014 New new problem for Bob. Um, it says ID is not defined when I retry a URL. Okay, cool. Look, it indexed my \u2014 Yep."
+},
+{
+"start": 4165,
+"text": "Awesome. So, now we can add our five URLs. Uh, and we'll just delete these testers. So, the whole problem was dock link serve crazy. \u2014 Yeah, it wasn't running. Yeah. \u2014 So, now we'll add Go away, please. We'll add our URLs. Boom. Come on. Good morning, Mr. Tas. That's awesome. This is working. The only \u2014 How many of you watching have ever run into that particular issue that uh you're like, \"What is going on?\" It ends up being one little tiny thing and you're like, \"Oh, \u2014 oh.\" \u2014 So, look, check it out."
+},
+{
+"start": 4199,
+"text": "We've indexed all these web pages. \u2014 There we go. Okay. \u2014 And now, let's ask for LE5. That's all I said. How do you say? \u2014 E L I5. Explain like I'm five. \u2014 Is it know what that means? I GUESS WE'LL FIND OUT. \u2014 I FOUND relevant content, dude. Um, verification shaped delivery loop. One document mentions a verification shaped delivery loop used for operational infrastructure tasks. No specific. \u2014 Oh, yeah. I was wondering if it was going to know what EI5 was."
+},
+{
+"start": 4230,
+"text": "Okay. read all the sources and give me an amazing summary that explains it to me like I am a novice. Oh, I misspelled novice. That just shows you how I am. \u2014 Let's make a mind map. Let's do Q and let's do all these things. Outline. Boom. Summary. Boom. So, here we go. Based on the reviewed documents, here's a simplified summary suitable for novice."
+},
+{
+"start": 4261,
+"text": "Electromotive force and internal resistance. Imagine two lines on a graph where they intersect the vertical axis at some point showing that both have the same starting electrical energy. Cool. Um, summarizing terminal outputs. A new tool can condense long repetitive computer logs into more understandable summaries. This is actually useful for BobShell. It uses patterns to group similar Oh, we need this for BobShell. And finally, in health research, fake users are often used to test theories. Okay, nice. Um, so now I can actually dive in for the summarization of terminal inputs, outputs, sorry, outputs."
+},
+{
+"start": 4300,
+"text": "I need this for Bob Shell. Let's do it. I kind of like this a lot. The relevant content involves a tool for output noise compaction using regax patterns. Awesome, dude. And it gives me the sources. So, I can literally just click on this. \u2014 Yeah, \u2014 you'll see the source chunks or at least the ones that came back. Yeah, \u2014 I would like it to actually link to the archive. Uh, \u2014 be a thing. Now, by the way, you did you created a bunch of note types."
+},
+{
+"start": 4332,
+"text": "What do those look like? You did a mind map. You did \u2014 take a look. LET'S CHECK THEM. WOW, THAT IS a banger. Look at this performance metric. \u2014 Looks like we got to fit the make the um the individual nodes actually fit their text properly. \u2014 Oh, you mean like this one? Yeah. Yeah. \u2014 Yeah. \u2014 Um and then we've got a summary. Oh, this is awesome, dude. This is actually what I wanted. The summary compiles the key information, key details, how to report errors, GitHub issues."
+},
+{
+"start": 4364,
+"text": "Well, yeah, that's taken from the archive websites. Here we go. Nice. Awesome. Um, how were responses in the benchmark scored? Very cool. \u2014 Yeah. And there could be other things like doing um, uh, you know, kind of like study cards and infographics, all sorts of things you do from there. \u2014 Yeah. But for now, I'm kind of happy with this. I think we we we created a really awesome onboarding. Um the only thing I'm not happy about is AI workbench."
+},
+{
+"start": 4399,
+"text": "Um and those weird like environment variables. \u2014 Yeah. \u2014 Yeah. That's kind of a you know it is it what version is it though? It's like a.5 or something \u2014 you know it's like it's not a G8 released kind of thing. You know it's like you know open source and kind of making its way out there. So I I think I think in all fairness it hasn't quite matured yet. But you know that actually then to me raises a really a really interesting question and um for those of you who are who who are with us in that kind of deal if you want to say something in chat too I'm curious about and I want to pick your brain here this because \u2014 like when it creates when it comes to creating like okay let's take let's take Google's notebook right \u2014 their notebook LM \u2014 you don't need to worry about any of that why because it's their platform it's their system whatever database and stuff in the the tech stack that is backing it is the one tech stack that is backing it."
+},
+{
+"start": 4451,
+"text": "So that is just part of the deployed service and you don't need to worry about that. But in an open source project like this, right, where we're saying, hey, we want to be a little bit more flexible. You could have this notebook app that you could then use with like any number of backend services. Well, now you immediately run into a conundrum like we're running into right now because workbench, open rag, pine cone, chroma, whatever you use, right, for your vector store, for the rag, they're going to be different. they're going to have different configurations, right? There's no like universal. It's not like you have um you know like OpenAI conversations, you have like a single API you can use."
+},
+{
+"start": 4486,
+"text": "So now you run into this thing of well for every new platform you then expand to support. You then have to have all of this logic to handle specific cases to that platform. \u2014 Yeah. \u2014 Right. And and so like it's one of those things where this is exactly what I ran into when I was starting down this after last week where I was like, \"Wait a minute.\" And that's why I chose to take the direction I did and say, \"I'm gonna focus on detection as compared to, you know, even though that could obviously use some improvement from what you're doing compared to trying to set everything up and do all that out of the gate.\" Because then you run into this thing where for every provider that you put in there, you have a trunch of work that then you need to do really zeroed in and you've got to be a little bit expert on that, right?"
+},
+{
+"start": 4530,
+"text": "Um \u2014 Yeah. So I'm actually I'm curious on your take on that, right? You know, given it's an open source project, you know, and how, you know, how do we want folks um to use something like that and what is reasonable honestly as far as supporting platforms um you know, rag rag pipelines and that kind of deal? \u2014 Do do you mean for AI workbench or \u2014 No, I mean for for killer context. \u2014 I expect people to use killer context exactly the way I just did, right? to learn. It's a learning tool, right?"
+},
+{
+"start": 4562,
+"text": "And so I don't I don't expect it to be like a part of a rag pipeline or something. That's what open rag is. That's what a workb know what I Right. Right. Right. Go ahead. Finish your thoughts. Sorry. \u2014 Yeah. No, but it's \u2014 it's for the indie developer. It's for like \u2014 Yeah. \u2014 Yeah. \u2014 So, so what I'm what I'm driving at is it better than because like again if you're using like notebook LM, right? Yeah. You know, \u2014 you just go to the service and that platform is provided as part of it, right? But project, we're providing that support. two things that exist out there. Um, so how far do you really get \u2014 that's the sentence that I don't understand."
+},
+{
+"start": 4594,
+"text": "What do you mean we're providing that service to \u2014 Well, because like in order for notebook for for killer context to do its thing right now, \u2014 you need either open rag or you need the workbench. \u2014 Yes, \u2014 that's what I'm saying. So we have to provide at some point that connective tissue between whatever that platform is. And what I'm what I'm asking is like what is reasonable? Like if the goal is for an indie dev to be able to go and grab this thing to be able to can just use it locally at some point they need the they need the backend that supports all the stuff we're doing with the notebooks. \u2014 Yeah."
+},
+{
+"start": 4625,
+"text": "And I wonder if it's a tricky question because like I wonder if we should then bundle one of these things or maybe both with killer context but then we get into just bloat, right? Y \u2014 that's exactly it. \u2014 And and so right now I like our approach because it's modular um but but then it becomes less cohesive in a way. Um, but given that it's not for like non-developer learner, it's for developer learners, right? And so given that they're \u2014 developer learners, they should be capable enough of like building not building the connective tissue themselves, but like setting up this extra back end."
+},
+{
+"start": 4666,
+"text": "Yeah. Yeah. That's the hope and and so far I think it works. I think the fact that you have npm in it and you just you walk people through the configuration and the end is just a end local. I think this this sits nicely because it's it's pretty lean. Um in fact probably my criticism is the init which means an agent can't self-drive \u2014 actually no \u2014 I added all command line options \u2014 for that very reason. So, you should be able to have an agent self-drive."
+},
+{
+"start": 4699,
+"text": "That's awesome. Well, \u2014 I know that you're into I know that you really like command line and you like doing that and I actually thought about that. \u2014 If you take a matter of fact, do a do a just an npm run \u2014 with an agent. You mean? \u2014 No, just do mpm run in your terminal. \u2014 I mean, you're not sharing anymore, but \u2014 Oh, sorry. Yeah, let me share. \u2014 How could you? How could you \u2014 share the terminal? Um so \u2014 yeah try mpm run. Okay, notice there you see status, opener, rag, workbench, all launch, onboard, like all those are things like those and then you see the little comments there with the dash status d- launch, you know."
+},
+{
+"start": 4737,
+"text": "So those things um should I haven't tried it, but that was the whole reason why I put those there. \u2014 So an agent should be able to use those. Yeah, \u2014 that's amazing, dude. Um that's really good. Let's uh Oh, I'm still sharing. I I think I think we've learned a lot here. I think it's a great open source project that I mean I just got some value out of. \u2014 Um \u2014 I think we also are I think we've used the time well today. Let's talk about what's next uh for this. So what's next is open rag is going to not open rag killer context is going to live on GitHub."
+},
+{
+"start": 4772,
+"text": "I frankly \u2014 plan to use it and build on it um for my you know like I'm going to go to a conference and like collect thoughts and resources and put them all in there and learn myself. And I expect maybe other enthusiasts will do that. Um, but for the stream itself, um, we're gonna we're gonna wrap it here with killer context. Um, what should we build next, David? \u2014 I don't know. Do you have any cool ideas? You've been in any conferences lately? What do you think? \u2014 Just let your turn a question for a question."
+},
+{
+"start": 4805,
+"text": "Isn't that great? \u2014 Yeah. Um, so what I'm thinking of building is we context is so important. I mean, killer context establishes that. Um, and I feel like especially a company the size of IBM, a team like there's 400,000 people who work here. \u2014 Yeah. \u2014 I feel like context is important. Um, what I want to build is something similar to like your your granola, which is like a meeting note-taking app. Um, it's a meeting recorder."
+},
+{
+"start": 4836,
+"text": "Like some people show up to like Zoom calls and they have their AI notetaker there. Um \u2014 the problem with those is they only work on Zoom or like some computer thing. What about inerson meetings, you know? \u2014 Yeah. \u2014 Um and so what I want to build \u2014 is a really awesome app that just sits on your wearable like your Apple Watch um and you hit record and it securely records um your meetings and stores it on device. So, so no cloud middleman. Um, and then when your backend is available either on local host or a tail scale network or enro um or in your cloud somewhere um it will upload that recording to your back end um and also kind of go through the pipeline we did with killer context."
+},
+{
+"start": 4884,
+"text": "It would it would be it would chunk your conversation however long. it would create vector embeddings and it's this intelligent search system where you can just go back and discover insights from the meetings you've had. \u2014 Okay. \u2014 But also it's exposed as an MCP server that you can use in your agent. So whenever you're doing something and relevant context appears, it will just tell you by the way this is you talked about this like some time ago, right? So it's it's it's a whole like personal context system that is secure and runs on your back end."
+},
+{
+"start": 4916,
+"text": "Um, however you want to define it. What do you think? \u2014 I like I like the idea. You know, I could I could totally see being able to use my phone and just record something or whatever. You know, you just made me think of a connection. Um, you know, it's it's funny and I'm not trying to just continue on killer context from this standpoint. I feel like we should we should use Killer, you know, as you said, like we're going to keep our development going on, but from a live stream standpoint, um, you know, work on this new app we're talking about. But funny enough, as you were talking, I was like, \"Oh, you know what would be really nice recording conversation."
+},
+{
+"start": 4947,
+"text": "What do I want? I want summarizations, right? Or I might want like you kind of like a recap or an outline or something of that, right?\" Um, one thing I would definitely want to see would be after multiple conversations, I would want to feed all of those in and be able to look for things across those conversations. \u2014 Yeah. \u2014 Right. you know, maybe I'm having conversations with the same the same people, same meetings, or or maybe there's just information across. Maybe to your point, you're at conferences and you're interviewing people, right? You're talking to people, and I want to be able to see their common denominators, things like that."
+},
+{
+"start": 4980,
+"text": "Um, so I could totally see it would be really neat to be able to encapsulate multiple conversations in a single query, \u2014 right? Yeah. And be able to summarize them and stuff. Yeah, \u2014 exactly. My buddy Kent is working on a similar thing. Ken dod you know Kent uh he's working on an agent called Kodi that does a similar thing where you connect it to your like Google accounts and your um your GitHub all your things and the cool thing is the way you connect it is \u2014 you generate OOTH client secrets and \u2014 ids in your own apps so like it's not like he holds your client secret or anything like it's it's all on your um on your accounts right and so it's in the similar spirit I see a movement towards this where people are just building for themselves."
+},
+{
+"start": 5023,
+"text": "Um, self-owned and so I want to do that. Um, so we're going to take a bit of a break with these streams. Uh, cuz cuz well, we're going on vacation. Um, it's summer. \u2014 You are. I'm not. \u2014 I'm working. \u2014 I'm working. I'm traveling from I'm just giving you our time. No, I'm I'm not on vacation. I'm just I'm just traveling for events I have going on. \u2014 David is a hard worker. I I'm um and so and so what we'll do is we will uh resume the new project um all of August and we'll start and we're we're kind of talking about doing twice a week uh because I think this project is is also just like context really really exciting."
+},
+{
+"start": 5060,
+"text": "In fact what we might do David and I talked about this yesterday. We might um in real time record our stream on the wearable and then the following week like explore how we use the data. So um stay tuned for that. be sure to subscribe to the channel um and and and smash the bell. Uh David, will you take us home today? \u2014 Yeah. So, hey, for everybody who has followed us uh so far at this point, thank you for coming with us through this journey, right, as we've built out um our open source uh app Killer Context, our notebook LM clone."
+},
+{
+"start": 5093,
+"text": "Um we we encourage all of you to check it out, right? Or go be a contributor. I think that would actually be really wonderful. \u2014 We can build it together with \u2014 Yes. Yeah. So, we'll be continuing, you know, development and stuff like that um behind the scenes, just not on the live stream. And so far, this has actually been really wonderful. Tis has been very fun uh to kind of build stuff live with you. I hope you all join us in a couple weeks as we start on a new project. Awesome. I'm with that everybody."
+}
+]

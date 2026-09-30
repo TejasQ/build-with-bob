@@ -1,0 +1,60 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/prose.css";
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-card: var(--card);
+  --color-border: var(--border);
+  --color-nav: var(--nav);
+  --color-nav-border: var(--nav-border);
+  --color-nav-hover: var(--nav-hover);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-alt: var(--accent-alt);
+  --color-footer: var(--footer);
+  --color-bob-blue: #0f62fe;
+  --color-bob-purple: #a56eff;
+  --font-sans:
+    var(--font-plex-sans), "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+  --radius-bob: 0.625rem;
+}
+
+@utility bg-bob-page {
+  background: var(--background-gradient);
+}
+@utility bg-bob-card {
+  background: var(--card-gradient);
+}
+@utility bg-bob-feature {
+  background: var(--feature-gradient);
+}
+@utility bg-bob-gradient {
+  background: linear-gradient(107.46deg, #0f62fe 25.75%, #a56eff 86.92%);
+}
+@utility text-bob-gradient {
+  background: linear-gradient(107.46deg, #0f62fe 25.75%, #a56eff 86.92%);
+  background-clip: text;
+  color: transparent;
+}
+@utility border-bob-gradient {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(var(--background), var(--background)) padding-box,
+    linear-gradient(107.46deg, #0f62fe 25.75%, #a56eff 86.92%) border-box;
+}
+
+@layer base {
+  body {
+    @apply min-h-dvh font-sans text-foreground antialiased bg-bob-page;
+  }
+  ::selection {
+    background: var(--selected);
+  }
+  :focus-visible {
+    @apply rounded-sm outline-2 outline-offset-2 outline-accent-fg;
+  }
+}

@@ -1,0 +1,399 @@
+[
+  {
+    "videoId": "TvdoO55fG4g",
+    "slug": "killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob",
+    "project": "killrctx",
+    "youtubeTitle": "Build with Bob: NotebookLM Clone Part 1 (Intro)",
+    "date": "2026-06-20",
+    "duration": 2316,
+    "thumbnail": "https://i.ytimg.com/vi/TvdoO55fG4g/maxresdefault.jpg",
+    "youtubeDescription": "Building software in today's AI assisted world is quite exciting and IBM's Bob is a wonderful agentic coding partner. Combine that with a local, open source RAG platform like OpenRAG and you have yourself a solid stack to build some amazing applications. \n\nWatch Tejas Kumar, David Jones-Gilardi, and Bob team up to build new features for their open source NotebookLM clone using OpenRAG. \n\nFrom AI-powered spec coding and architectural decisions to live debugging and feature development, you'll get an inside look at what modern AI-assisted software engineering actually looks like.",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Introduction to Bob"
+      },
+      {
+        "start": 63,
+        "title": "NotebookLM and project goals"
+      },
+      {
+        "start": 233,
+        "title": "Exploring KillrCtx"
+      },
+      {
+        "start": 504,
+        "title": "Architecture and OpenRAG"
+      },
+      {
+        "start": 946,
+        "title": "System design and workflow"
+      },
+      {
+        "start": 1160,
+        "title": "Getting started with Bob"
+      },
+      {
+        "start": 1305,
+        "title": "Live debugging with Bob"
+      },
+      {
+        "start": 2067,
+        "title": "Wrap up and future plans"
+      }
+    ],
+    "number": 1,
+    "part": 1
+  },
+  {
+    "videoId": "fesh8hfeMjw",
+    "slug": "adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob",
+    "project": "killrctx",
+    "youtubeTitle": "Build with Bob: NotebookLM Clone Part 2 (Mind-Map)",
+    "date": "2026-06-25",
+    "duration": 4560,
+    "thumbnail": "https://i.ytimg.com/vi/fesh8hfeMjw/maxresdefault.jpg",
+    "youtubeDescription": "Building software in today's AI assisted world is quite exciting and IBM's Bob is a wonderful agentic coding partner. Combine that with a local, open source RAG platform like OpenRAG and you have yourself a solid stack to build some amazing applications. \n\nToday, Tejas Kumar, David Jones-Gilardi, and Bob team up to add a new mind-map feature to their open source NotebookLM clone. \n\nJoin us for part 2 as we attempt to fully add this new capability to the KillrCtx app.",
+    "chapters": [],
+    "number": 2,
+    "part": 2
+  },
+  {
+    "videoId": "xAfx7I8pHFY",
+    "slug": "notebooklm-clone-setup-wizard-and-ai-workbench-backend",
+    "project": "killrctx",
+    "youtubeTitle": "Build with Bob: NotebookLM Clone Part 3 (Mind-Map, again...)",
+    "date": "2026-07-09",
+    "duration": 5750,
+    "thumbnail": "https://i.ytimg.com/vi/xAfx7I8pHFY/maxresdefault.jpg",
+    "youtubeDescription": "Building software in today's AI assisted world is quite exciting and IBM's Bob is a wonderful agentic coding partner. Combine that with a local, open source RAG platform like OpenRAG and you have yourself a solid stack to build some amazing applications. \n\nToday, Tejas Kumar, David Jones-Gilardi, and Bob team up to add a new mind-map feature to their open source NotebookLM clone. \n\nJoin us for part 3 as we attempt to fully add this new capability to the KillrCtx app.",
+    "chapters": [],
+    "number": 3,
+    "part": 3
+  },
+  {
+    "videoId": "hOpIIVHJheE",
+    "slug": "debugging-rag-backends-openrag-vs-ai-workbench",
+    "project": "killrctx",
+    "youtubeTitle": "Build with Bob: NotebookLM Clone Part 4",
+    "date": "2026-07-17",
+    "duration": 5122,
+    "thumbnail": "https://i.ytimg.com/vi/hOpIIVHJheE/maxresdefault.jpg",
+    "youtubeDescription": "Building software in today's AI assisted world is quite exciting and IBM's Bob is a wonderful agentic coding partner. Combine that with a local, open source RAG platform like OpenRAG and you have yourself a solid stack to build some amazing applications. \n\nToday, Tejas Kumar, David Jones-Gilardi, and Bob team up to add a new mind-map feature to their open source NotebookLM clone. \n\nJoin us for part 4 as we attempt to fully add this new capability to the KillrCtx app.",
+    "chapters": [],
+    "number": 4,
+    "part": 4
+  },
+  {
+    "videoId": "PSAbjcEsn-Q",
+    "slug": "planning-walfly-wearable-app-mvp-with-ibm-bob",
+    "project": "walfly",
+    "youtubeTitle": "Building with Bob: Walfly app, what?",
+    "date": "2026-08-14",
+    "duration": 5449,
+    "thumbnail": "https://i.ytimg.com/vi/PSAbjcEsn-Q/maxresdefault.jpg",
+    "youtubeDescription": "Tejas and David team up yet again to build a new app with IBM Bob. \n\nWhat will they build? \nYou must come and watch to find out. \nHint: It has something to do with wearables.\n\n0:00 — Introducing the new project: Wallfly\n4:18 — Product idea and the wearable/phone angle\n9:26 — Whiteboarding the architecture\n17:01 — Turning the idea into a build prompt\n25:33 — Planning mode and defining the MVP\n39:29 — Reviewing the plan and catching gaps\n55:08 — Switching from planning to implementation\n1:12:30 — Git setup, project wiring, and progress updates\n1:27:17 — Final demo and first look at the app",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Introducing the new project: Walfly"
+      },
+      {
+        "start": 258,
+        "title": "Product idea and the wearable/phone angle"
+      },
+      {
+        "start": 566,
+        "title": "Whiteboarding the architecture"
+      },
+      {
+        "start": 1021,
+        "title": "Turning the idea into a build prompt"
+      },
+      {
+        "start": 1533,
+        "title": "Planning mode and defining the MVP"
+      },
+      {
+        "start": 2369,
+        "title": "Reviewing the plan and catching gaps"
+      },
+      {
+        "start": 3308,
+        "title": "Switching from planning to implementation"
+      },
+      {
+        "start": 4350,
+        "title": "Git setup, project wiring, and progress updates"
+      },
+      {
+        "start": 5237,
+        "title": "Final demo and first look at the app"
+      }
+    ],
+    "number": 5,
+    "part": 1
+  },
+  {
+    "videoId": "zLrhBlgXsiA",
+    "slug": "walfly-record-button-redesign-and-astra-db-setup",
+    "project": "walfly",
+    "youtubeTitle": "Building with Bob: Walfly app, what?",
+    "date": "2026-08-21",
+    "duration": 5634,
+    "thumbnail": "https://i.ytimg.com/vi/zLrhBlgXsiA/maxresdefault.jpg",
+    "youtubeDescription": "Tejas and David team up yet again to build a new app with IBM Bob. \n\nThe episode focuses on tightening the product experience, wiring up storage, and chasing down the audio pipeline issues that are blocking a full end to end demo.\n\n0:00 — Intro and what Wallfly is\n1:38 — Architecture overview\n2:44 — Reviewing the current app state\n4:52 — Redesigning the record button UX\n13:08 — Wiring up recording and backend assumptions\n15:05 — Creating the Astra database\n24:18 — Defining the recordings collection schema\n36:37 — Debugging upload and recording errors\n49:35 — First successful transcription attempts\n1:27:19 — Final debugging, homework, and wrap-up",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Intro and what Walfly is"
+      },
+      {
+        "start": 98,
+        "title": "Architecture overview"
+      },
+      {
+        "start": 164,
+        "title": "Reviewing the current app state"
+      },
+      {
+        "start": 292,
+        "title": "Redesigning the record button UX"
+      },
+      {
+        "start": 788,
+        "title": "Wiring up recording and backend assumptions"
+      },
+      {
+        "start": 905,
+        "title": "Creating the Astra database"
+      },
+      {
+        "start": 1458,
+        "title": "Defining the recordings collection schema"
+      },
+      {
+        "start": 2197,
+        "title": "Debugging upload and recording errors"
+      },
+      {
+        "start": 2975,
+        "title": "First successful transcription attempts"
+      },
+      {
+        "start": 5239,
+        "title": "Final debugging, homework, and wrap-up"
+      }
+    ],
+    "number": 6,
+    "part": 2
+  },
+  {
+    "videoId": "TrJNkt1G6TA",
+    "slug": "debugging-expo-audio-and-local-docling-transcription",
+    "project": "walfly",
+    "youtubeTitle": "Building with Bob: Walfly Wearables App",
+    "date": "2026-08-28",
+    "duration": 4263,
+    "thumbnail": "https://i.ytimg.com/vi/TrJNkt1G6TA/maxresdefault.jpg",
+    "youtubeDescription": "Tejas and David continue their journey to create wearable app \"Walfly\" using IBM's AI coding IDE Bob. \n\nLast week we wired up the UI and some of the backend services along with basic audio recording, but we ran into some friction in handling transcriptions. \n\nBy the end, we turned a debugging session into real progress on Wallfly, with transcripts, summaries, and next-step architecture decisions in hand.\n\n00:00 — Intro and project update\n01:11 — Wallfly overview and current progress\n02:25 — Expo AV and cross-platform audio challenges\n03:16 — What’s already working in the app\n06:20 — Native app fixes: permissions and upload format\n10:48 — Switching from Docling SaaS to local Docling\n20:15 — Analysis-driven debugging and pipeline testing\n38:15 — Successful transcript, summary, and action items\n52:43 — Docling output format and ASR/VTT discussion\n1:06:41 —Planning next steps and async processing",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Intro and project update"
+      },
+      {
+        "start": 71,
+        "title": "Walfly overview and current progress"
+      },
+      {
+        "start": 145,
+        "title": "Expo AV and cross-platform audio challenges"
+      },
+      {
+        "start": 196,
+        "title": "What’s already working in the app"
+      },
+      {
+        "start": 380,
+        "title": "Native app fixes: permissions and upload format"
+      },
+      {
+        "start": 648,
+        "title": "Switching from Docling SaaS to local Docling"
+      },
+      {
+        "start": 1215,
+        "title": "Analysis-driven debugging and pipeline testing"
+      },
+      {
+        "start": 2295,
+        "title": "Successful transcript, summary, and action items"
+      },
+      {
+        "start": 3163,
+        "title": "Docling output format and ASR/VTT discussion"
+      },
+      {
+        "start": 4001,
+        "title": "Planning next steps and async processing"
+      }
+    ],
+    "number": 7,
+    "part": 3
+  },
+  {
+    "videoId": "tH5-O5iKzM8",
+    "slug": "local-first-transcription-python-sidecar-and-coordinating-agents",
+    "project": "walfly",
+    "youtubeTitle": "Building with Bob: Walfly Wearables App",
+    "date": "2026-09-04",
+    "duration": 5792,
+    "thumbnail": "https://i.ytimg.com/vi/tH5-O5iKzM8/maxresdefault.jpg",
+    "youtubeDescription": "Tejas and David continue their journey to create wearable app \"Walfly\" using IBM's AI coding IDE Bob. \n\nLast week we had some serious progress on Walfly and finally pushed past the audio transcription challenges we experienced previously. Expo mobile app emulation is working and we generally have a functioning app. \n\nNow it's time to to refine and really work on the UX and usefulness of the app. UX design, Expo debugging, recording checkpoints, and the messy reality of shipping a real app with AI coding agents. Lets go!\n\n00:00 - Introducing Wallfly and the local-first goal\n02:03 - Why Docling SAS does not fit rich media\n03:58 - Using a Python sidecar for local transcription\n09:26 - What already works—and what is still missing\n12:21 - Why Wallfly needs a major UX and design upgrade\n16:16 - Coordinating coding agents with Beads and Agent Mail\n24:24 - Building Wallfly’s brand and visual identity\n41:51 - Where human precision still beats coding agents",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Introducing Walfly and the local-first goal"
+      },
+      {
+        "start": 123,
+        "title": "Why Docling SaaS does not fit rich media"
+      },
+      {
+        "start": 238,
+        "title": "Using a Python sidecar for local transcription"
+      },
+      {
+        "start": 566,
+        "title": "What already works—and what is still missing"
+      },
+      {
+        "start": 741,
+        "title": "Why Walfly needs a major UX and design upgrade"
+      },
+      {
+        "start": 976,
+        "title": "Coordinating coding agents with Beads and Agent Mail"
+      },
+      {
+        "start": 1464,
+        "title": "Building Walfly’s brand and visual identity"
+      },
+      {
+        "start": 2511,
+        "title": "Where human precision still beats coding agents"
+      }
+    ],
+    "number": 8,
+    "part": 4
+  },
+  {
+    "videoId": "bkPj3b8icH0",
+    "slug": "ai-code-review-and-expo-mobile-layout-fixes",
+    "project": "walfly",
+    "youtubeTitle": "Building with Bob: Walfly Wearables App",
+    "date": "2026-09-17",
+    "duration": 5068,
+    "thumbnail": "https://i.ytimg.com/vi/bkPj3b8icH0/maxresdefault.jpg",
+    "youtubeDescription": "Last episode, Tejas and David improved the UX design and tackled lots of Expo debugging.\n\nNow that the app is stable on both web and mobile, we'll move our focus to handling recording checkpoints for long recordings and introduce some new tools for managing our agents.\n\nBut first!\n\nIn this episode we improve the app’s mobile experience, compare AI coding reviews from Bob and Xavier, troubleshoot keyboard and layout issues, and plan audio chunking and cloud hosting for the next episode. Looks like we had some \"completeness\" work to do before moving on.\n\n03:03 — Apple’s meeting-notes feature and the case for open source\n08:02 — Designing real-time, chunked audio transcription\n09:27 — How Xavier learns and orchestrates work across a codebase\n16:13 — Comparing Xavier Review with Bob Review\n20:12 — Fixing walfly’s mobile layout and safe-area issues\n32:26 — Reviewing recent changes with Bob and Xavier\n41:49 — Debugging the keyboard and chat-input layout\n52:50 — Why mobile Expo development challenges AI agents\n01:16:39 — Planning audio chunking, hosting, and walfly’s roadmap",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Intro"
+      },
+      {
+        "start": 183,
+        "title": "Apple’s meeting-notes feature and the case for open source"
+      },
+      {
+        "start": 482,
+        "title": "Designing real-time, chunked audio transcription"
+      },
+      {
+        "start": 567,
+        "title": "How Xavier learns and orchestrates work across a codebase"
+      },
+      {
+        "start": 973,
+        "title": "Comparing Xavier Review with Bob Review"
+      },
+      {
+        "start": 1212,
+        "title": "Fixing walfly’s mobile layout and safe-area issues"
+      },
+      {
+        "start": 1946,
+        "title": "Reviewing recent changes with Bob and Xavier"
+      },
+      {
+        "start": 2509,
+        "title": "Debugging the keyboard and chat-input layout"
+      },
+      {
+        "start": 3170,
+        "title": "Why mobile Expo development challenges AI agents"
+      },
+      {
+        "start": 4599,
+        "title": "Planning audio chunking, hosting, and walfly’s roadmap"
+      }
+    ],
+    "number": 9,
+    "part": 5
+  },
+  {
+    "videoId": "eUZacfuVVDU",
+    "slug": "designing-audio-chunking-and-ephemeral-asr",
+    "project": "walfly",
+    "youtubeTitle": "Building with Bob: Walfly Wearables App",
+    "date": "2026-09-25",
+    "duration": 5535,
+    "thumbnail": "https://i.ytimg.com/vi/eUZacfuVVDU/maxresdefault.jpg",
+    "youtubeDescription": "Last episode, we explored AI-assisted code reviews with Bob and Xavier, fine-tuned the mobile UI, and laid the groundwork for managing our agents asynchronously.\n\nNow, we're diving headfirst into audio chunking and live recording checkpoints for walfly!\n\nIn this episode, we use Bob and Xavier to plan and build a separate, ephemeral ASR service for wallfly, then test audio chunking and uncover issues to tackle next. Along the way, they discuss coordinating AI agents with human teammates, and the privacy, consent, and security questions that come with recording conversations.\n\n00:00 Welcome to Build with Bob\n02:18 UX updates and coordinating humans with AI agents\n08:31 How tasks sync between local agents and GitHub\n15:51 Search UX improvements and what’s next for Wallfly\n18:49 Ephemeral ASR, privacy, and recording consent\n26:16 Designing reliable audio chunking\n40:04 Turning requirements into a PRD and implementation plan\n50:08 How much should developers still review code?\n1:05:54 Running the new ASR service locally\n1:19:02 Testing audio chunks—and finding bugs",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Welcome to Building with Bob"
+      },
+      {
+        "start": 138,
+        "title": "UX updates and coordinating humans with AI agents"
+      },
+      {
+        "start": 511,
+        "title": "How tasks sync between local agents and GitHub"
+      },
+      {
+        "start": 951,
+        "title": "Search UX improvements and what’s next for Walfly"
+      },
+      {
+        "start": 1129,
+        "title": "Ephemeral ASR, privacy, and recording consent"
+      },
+      {
+        "start": 1576,
+        "title": "Designing reliable audio chunking"
+      },
+      {
+        "start": 2404,
+        "title": "Turning requirements into a PRD and implementation plan"
+      },
+      {
+        "start": 3008,
+        "title": "How much should developers still review code?"
+      },
+      {
+        "start": 3954,
+        "title": "Running the new ASR service locally"
+      },
+      {
+        "start": 4742,
+        "title": "Testing audio chunks—and finding bugs"
+      }
+    ],
+    "number": 10,
+    "part": 6
+  }
+]

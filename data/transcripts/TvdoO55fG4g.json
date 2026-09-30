@@ -1,0 +1,282 @@
+[
+{
+"start": 0,
+"text": "Uh but we're going to be building stuff live with Bob. Now, Bob, what is that? Bob is IBM's coding agent. You may think of things like Codex, Cloud Code, Cursor. \u2014 Right. \u2014 Um Bob Bob is that. It's we make one, and we just want to build stuff. And so, um what do we build? Well, we'll talk about that after a quick round of introductions. Hi, everyone. I'm Tejas. Uh it's pronounced like contagious. I'm a developer advocate here on the Watson X data team at IBM, and I'm joined today by my coworker and teammate David. \u2014 Hello. Hey, Tejas."
+},
+{
+"start": 31,
+"text": "Hello, everybody. \u2014 I am well. I am well, to my knowledge, right? Well, we'll see how our stream goes today. \u2014 Fantastic. Yeah, so I'm I'm really excited to be building with you today. Um we're going to be building some really fun stuff. I'm just checking if we're live before I continue, cuz this is uh this is like the third time. \u2014 Have we Should we give the inside information about uh our fun struggle there? But it looks live to me. \u2014 Inside information, huh? Um yeah, let me just quickly check if we're live, cuz I'm I'm Oh, yeah, we're live. Hey, this is awesome. \u2014 \u2014 Welcome, David."
+},
+{
+"start": 62,
+"text": "So, what are we building, and how do we decide what to build? Well, part of being a developer is just building a bunch of stuff. And honestly, it doesn't matter what, cuz as you build your thing, you're going to learn. Um I have been particularly moved by a tool called Notebook LM. Uh Notebook LM is a fantastic tool from Google. Here, let me show you. Um and we'll we'll go check this. This is what it looks like. It's Their ti- Their title is \"I can't understand anything.\" Uh and Notebook LM is your research and thinking partner, grounded in information you trust, built with the latest Gemini."
+},
+{
+"start": 93,
+"text": "It's so cool. Uh and here, let me show you how it works. If I switch tabs, right, you will see \"Welcome to Notebook LM.\" Um and I can create what what is called a notebook. And in my notebook, I can add any sources I want. PDFs, PowerPoints, whatever. So, I'm going to going to go and add I'm going to add a paper, \"Attention is All You Need.\" This paper is like the the basis of ChatGPT and stuff. So, I'm going to add this. Um and now, it's going to index it really quick and understand what I just added. And in literally seconds it's so here attention is all you need to transform architecture."
+},
+{
+"start": 125,
+"text": "So cool. So it knows already and it's given me a study guide where I can check it out. I can generate a podcast with like voices. Right? Um, and I could even choose different styles. I could have it be a debate or a critique. Let's do a debate. Um, and let's do a \u2014 cool. Oh, I like that. \u2014 It's so cool and I can choose a different language. I let's choose a German debate. Yeah. Talk about focus on regulation cuz it's German. \u2014 \u2014 So we'll \u2014 It feels very German. \u2014 We'll generate this podcast and it's just going to go off and do that."
+},
+{
+"start": 156,
+"text": "And I can also chat with it. I could be like who uh, wrote this, right? And it's going to um, it's going to now give me an answer based on this and cite sources. And of course, you can add like any number you I could add like a hundred million I could add like MKBHD AI. Right? Um, and it's going to read it's going to go off and find websites to add as sources. \u2014 Agent Oh, it's cool. I like that. I like that auto adds them as sources too. That's really neat. \u2014 Yeah. And so like here check it out. Fast research completed and now we can import like each one. Let's import all of them."
+},
+{
+"start": 189,
+"text": "Now we just have a bunch of \u2014 Isn't that always the way, right? I feel like every time I use a tool I'm just yeah, just do it all. \u2014 Who wrote this now? Um, I wonder what's going to happen. That's interesting. And so let's see what identifying authors. MKBHD bankrupt so provided sources blah blah blah summarize it all as one thing. This is And now we're getting kind of in the weeds, but David, I want to use Bob and build this. \u2014 Yeah. \u2014 We um, so check it out."
+},
+{
+"start": 220,
+"text": "The one thing that ties these together is the evolution of AI from its foundational architecture to real world implementation. And so you have across source nine you have this it's so cool. It synthesized all of this into like one thing. That is so cool. So um, this is the what we want to build um and how we want to build it is with Bob. Now, I uh have already kind of started this and and David uh has joined the project. And so, we're we're calling it killer context because context is really everything here. Like, notebook LM let me just upload a bunch of context and it \u2014 Right. Synthesizes. \u2014 So, we call it killer context."
+},
+{
+"start": 251,
+"text": "It's a fully open source project that already exists. And what I'd love to do uh in the little time we have is I'd like to just show you around um David uh and audience. Um and then we'll build on top of it with Bob. But, I think it's important that we understand what it is today and how it exists today and \u2014 Okay. \u2014 the underlying architecture with other IBM technologies like Open Rag and things like this. So, um is that okay, David? \u2014 Sounds great to me. Let's do it. \u2014 Let's do it. So, this is killer context. Let me just share my my browser window. You'll see some infinity mirroring here. Um \u2014 We do like infinity mirroring."
+},
+{
+"start": 281,
+"text": "I love \u2014 Any Anybody from the you know, if you're a kid from the '80s that with camcorders, you know exactly what I'm Now, that's probably more like early '90s, but either way. \u2014 Yeah. \u2014 This is This is \u2014 This here is notebooks. Uh this is what it's called. By the way, killer context is fully open source. github.com/tejaskyu/killerctx. Um it's fully open source and it's basically a self-hosted, meaning you can host it yourself, notebook LM. Um there's a huge architecture thing here. We're We're about to actually just do this on stream. Um so, feel free to check out the code and like start do whatever you want."
+},
+{
+"start": 313,
+"text": "But, this is what it looks like when you get it running. Uh and you start by creating a notebook. I'll call my notebook my machine learning journey. I enter and I'll create it. Why are you laughing, David? That's \u2014 I mean, my you know, I just my machine learning journey. I feel I feel like that is another type of note like next to podcast. We should have a story mode, but anyway. \u2014 That would be awesome. \u2014 \u2014 It's totally doable, too, actually. \u2014 So, we come into our notebook and this is what we see. We see a very unnecessarily extra selector for \u2014 Come on, who doesn't want a rainbow model selector?"
+},
+{
+"start": 347,
+"text": "Come on. Anyway, so just like Notebook LM, I'm going to add a source and I'll add that same attention paper and it's going to index it just like this. Indexing. And we'll talk about how this works under the hood in a second. Um but it's indexing and as soon as it's added to my uh notebook, I can also add many other sources. By the way, right now we can just add sources from my machine. Uh I kind of want to build a flow to go do that thing Google did which is like search the web and get all of them. Uh we'll we'll add \u2014 I I don't see why that would be a problem actually because as we as we talk about I as we get to talking about like the underlying text stack here like open rag, there there are definitely options there."
+},
+{
+"start": 385,
+"text": "So um I think that might that could be something we could try to tackle for sure. \u2014 Nice. So we've uploaded it. So now we can do the same thing. Who wrote this? And it's going to think agentically and um interesting David, I don't see my message. Oh, okay, I see it now, but I didn't see it while it was thinking. Anyway, uh so here, it did the same thing. In fact, I think this is almost better than Notebook LM cuz it's more like concise. \u2014 Well, you know, I yeah, I was going to say you get the chunks there too. \u2014 That's so cool. I can even see what portions of the document um And and notice the document was a PDF, but now it looks like markdown."
+},
+{
+"start": 417,
+"text": "We'll talk about all of this in just a minute. And then finally, I have the other Notebook LM helpers like mind map, a summary, an outline. Let's do podcast. Uh I'll I'll leave the focus and let's also do these other things work. Q&A \u2014 Yeah, they all work. They're I would say that um like they are not finessed. They will create an outline or create Q&A. The mind map will kind of give you a structure, but the mind map actually needs to be built into a real mind map. But all of those function, they're all asynchronous. Uh you can open up those panels and make them wider. Um you know, so if you better readability, things like that."
+},
+{
+"start": 448,
+"text": "Yep. Yeah, you can do those all in parallel. \u2014 Nice. Uh all in parallel. Okay, well, don't you don't have to tell me twice. Podcast \u2014 \u2014 mind map. Let's \u2014 Now Taj is going to go click every single one of them. \u2014 I mean, of course. I can't believe it all works. It's actually kind of cool. Look at that. Bro, it's just going for it. What's the outline? Here's a structured outline. Well, thanks. That's pretty cool. \u2014 Yeah, I feel like you know, it's this is actually something too. Like what you're showing here, I would argue that these note types are pretty bare-bones right now. But I think as part of this project, these are things that we can be enhancing and making a lot better."
+},
+{
+"start": 480,
+"text": "Because like, you know, you could argue if I've got like an outline compared to the summary, like yeah, they they have different structures now, but I think there's more that we can do aesthetically and things to to really make them pop. But yeah, we'll we'll get there. \u2014 Nice. Uh \u2014 I really want to be able to hear your audio, Tejas, when you play that. \u2014 That's so sad that you can't. Anyway, um so we have a we have all of this. And so we're going to be building on this. But before we do, I think it's important to talk a little bit about the underlying what's happening here. For example, David, I'll go add another source."
+},
+{
+"start": 511,
+"text": "In fact, here, let's go um uh archive AI paper. Let's go find one. Um this one. Toward Calibrated Mixture of Experts under Distribution Shift. I've no idea what any of this means, but thankfully, we have a we have a wonderful tool that we just built. So I'll go add my new thing. Um what's happening now? Like you see this and how does this work under the hood, David? \u2014 Right. So, our version here, our open-source version of Notebook LM, right, is communicating with another open-source stack called OpenRAG."
+},
+{
+"start": 542,
+"text": "Um so OpenRAG is um an IBM open-source platform um that combines a set of you know, already established uh open-source tools, uh things like Docling, LangFlow, and OpenSearch. We'll talk more about those. Um and it it couples them together into pretty much a a seamless RAG and context pipeline. The whole point is that, you know, RAG pipelines are actually pretty complex if you're doing them for real. There's lots of underlying components. You need to ingest things. You need to be able to, you know, intelligently uh parse out all of the various components of say like a PDF, things that has like tables and images and text and all sorts of things."
+},
+{
+"start": 580,
+"text": "And then you need to get that into a format that LLMs can understand well as compared to just parsing a bunch of text out and sending it over, which can have lots of uh you know, lots of garbage in it and such. But then, once you have that, well now you got to take all that text, you have to embed that text, right? You have to convert it into a language um that uh vector stores and our our agents can understand. You need a vector store and you need an agent. There's all these pieces, right? So, OpenRAG really is a platform, an open-source platform, that does all of that for you in a single install, right?"
+},
+{
+"start": 612,
+"text": "Um so, obviously you've got OpenRAG installed, pages, uh and so at the moment when you ingested that document, you're actually going through this whole RAG pipeline that you're getting with OpenRAG. \u2014 Interesting. Um so, we use you mentioned there's a few components we use. Let's go back to the OpenRAG uh repo. \u2014 Yeah. \u2014 Um Docling, LangFlow, OpenSearch. \u2014 Yes. \u2014 OpenRAG just wraps all of these. \u2014 Yes. It it it wraps them, but it's a bit more than that. It is not just a wrapper, right?"
+},
+{
+"start": 644,
+"text": "Uh it's not, you know, it it is actually I'd say a pretty tight coupling. There's an SDK, um there's all sorts of functionality in there that makes this really work. Um for example, like the embedding providers. You don't at any point have to worry about hooking any of those up other than pointing to which model you want to use. Um and it even has the ability to support multiple embedding providers in the same index. You're like, well, why does it matter? Um because generally if you if you don't have all of that plumbing and such hooked up, that's actually kind of hard to do. Um so, all of that is part of what OpenRAG does, and all you have to do is worry about the model."
+},
+{
+"start": 679,
+"text": "So, it is really optimized for making it like super easy um to actually have a fully fledged RAG pipeline in there. \u2014 That is interesting. Okay, so you talked about this RAG pipeline a few times. Uh let's understand the role of these things because it it it marries Docling Langflow and Open Rag. So, I drew a diagram the first time we did this live stream. That that we have now. So, this is kind of how it works. We've got \u2014 that right now. He's so he's super fast. Yeah. \u2014 Yeah, yeah, yeah. So, we we have Open Rag. That's kind of the big wrapper. And inside it there's Langflow that wraps two flows."
+},
+{
+"start": 713,
+"text": "The ingestion flow, that's me uploading the the PDF. And the query flow, that's me asking who wrote this. \u2014 That's right. \u2014 In the ingestion flow. So, I I I I take my my PDF, my PNG, my WebM, my whatever, Teams call, my, you know, MP3. And when I send it, you know, {quote} {unquote} to Open Rag, what I am doing I am definitely sending it to Open Rag. But by sending it to whoa, by sending it to Open Rag, I'm sending it through Open Rag to Langflow and through Langflow to Docling, which which lives inside Langflow. \u2014 Yes."
+},
+{
+"start": 745,
+"text": "And then and then Docling takes whatever data I give it. It's a PowerPoint slides, whatever may be, and converts it into formats ready for LLMs, like Markdown or JSON or whatever. \u2014 That's right. \u2014 Um then it sends it to an embeddings model. Like usually, what is it? It's text-three embedding small. \u2014 Well, it depends, actually. So, you're not it is not hardcoded to like a particular embedding model. You have flexibility on that. Matter of fact, in the Open Rag config, you know, if you Yeah, if you click on that now, in this case, you've configured your Open Rag to talk to OpenAI, right?"
+},
+{
+"start": 779,
+"text": "Um \u2014 But if you had it like I use Llama a lot, or you can use Anthropic, or you could use Watson X or something. If you configure those, then that's what will show up. So, the models the embedding models that are available to you depend on the provider that you've connected to. So, it is definitely not a hardcoded thing. You can actually change that at runtime. You could upload one document using one embedding model provider or embedding model, and then change it, and then upload or ingest another set using another one, right? So, it it depends on your on your need there. \u2014 Okay. Um and then the embeddings model spits out a bunch of vectors and these vectors go live in OpenSearch."
+},
+{
+"start": 812,
+"text": "This is the whole like ingestion pipeline, right? \u2014 Yes. \u2014 Okay. And then when I say, let's go back to to my killer context and and so I I asked like who wrote this and it spit out this thing. Um that happens here. So, I send a query that get it again goes through OpenRAG into LangFlow. \u2014 Right. \u2014 Um and then it it goes to the embeddings model, becomes vectors. And then those vectors go to an agent or does the agent use the embeddings model as a tool? I guess I'm trying \u2014 Yeah, no, that's right, actually."
+},
+{
+"start": 843,
+"text": "That that that is a more accurate way to put it. The agent is using um both the OpenSearch it's essentially using everything as tools, right? So, when it needs an embedding provider, it's it's hooked up and it will go get and and use those, right? Um so, yeah, it is I think it's more accurate to set them up as tools. \u2014 Okay, that's better. Yeah, cool. This this makes a more sense. Um \u2014 Yeah, especially too because of the fact that you can actually have multiple embedding providers in a single index, like what we're seeing, you know, where you can you can choose those."
+},
+{
+"start": 874,
+"text": "Um you need to be able to switch those on the fly. So, the agent it it there's a lot of metadata and stuff that's stored um and so when it sees whatever embedding model you use, it'll automatically uh ensure to kick off the correct one. \u2014 Okay, so we've got really then an agent that just talks to an agent and an agent uses all these different things as tools. \u2014 Yeah, that's I I'd say that's that's pretty accurate from that standpoint. \u2014 Nice. So, it really OpenRAG is just a big RAG agent. \u2014 Yes. \u2014 Nice. Okay, cool. \u2014 A big I would say a big agentic RAG agent and I make that distinction because agentic RAG is wholly different from traditional RAG."
+},
+{
+"start": 912,
+"text": "Um this is not a case where you're just um getting a one-shot response from, you know, a a query, you know, that you asked against a vector store and getting a set of results. The agent is actually working through whatever it is, you know, whatever the query is, right? It's working through all the documents. It's pulling, you know, it's going to do underlying searches on its own. It's going to iterate through stuff to give you the best answer. Yeah, it's way different from traditional rag in that way. \u2014 Nice. Okay. So, this this is more how it looks. Cool. This makes a lot of sense. Great. So, this is all This is how our thing works under the hood."
+},
+{
+"start": 944,
+"text": "So, our app, let's let's go over here and make a new user. This is me. Say me. And I \u2014 square. \u2014 Stagious. And I am such a square, man. I live in Germany. What can I say? And I reach out to Killer Context. Um And so, this is kind of the flow. And then Killer Context goes one of two ways. Either I upload or I query. \u2014 Yeah. And then Yeah, and then in between on that on those lines is the Open Rag SDK. That's what we're using here. \u2014 Wait. Wait. Wait. We need to capture this."
+},
+{
+"start": 974,
+"text": "So, there's the Open Woah. Um Have I Have I made this permanent again? Okay. So, there's an Open Man, I'm really like struggling with this. There's an Open \u2014 square. \u2014 API. And then there's an Open Rag SDK in front of \u2014 There you go. That's right. \u2014 And so, the SDK talks to the API. It's this kind of single layer where we do this and then it goes to the API. And then this thing forks here. \u2014 There you go. Yeah. \u2014 Cool. This makes sense. This makes a lot of sense."
+},
+{
+"start": 1005,
+"text": "What How do I select V? Okay, V. And then we'll do We'll just bring everything closer. This is a cool diagram, dude. It's It's It's starting to look like a spaceship. It captures our architecture very well. And so, what what what I'm seeing from this is our app, Killer Context, is actually really lean because it's just a thin wrapper around Open Rag. \u2014 Yes. Yes. \u2014 Nice. \u2014 I got to go, though. \u2014 And the Open Rag SDK is TypeScript, all right? \u2014 TypeScript, Python. Yeah, there's MCP as well. But yeah, we're using TypeScript today."
+},
+{
+"start": 1037,
+"text": "And the killer context is just a big Next.js app. \u2014 Yep. \u2014 Um awesome. This is cool. Look at that. We have a full diagram. I love it. Okay, so that's how everything works. And so now that we understand it, we can use Bob Wait, where does Bob Let's add Bob to the diagram. Oh, yeah. \u2014 Yeah. \u2014 So Bob uh I guess this step This is the usage flow, but the development flow is Bob would just be the coding agent that writes the code. \u2014 Yes. \u2014 Okay. I don't think it fits in this diagram, but we'll So if we come back here, we can use Bob to fix a few issues we see here or add new features, for example."
+},
+{
+"start": 1073,
+"text": "Um \u2014 Yes. \u2014 I think it would be a nice starting point. I actually David, I you know what? I've been talking too much. Where Where do you think we should start? \u2014 Hmm. Well, you know, one of the things we had um we talked about the other day and I I'd left alone. Um I guess it depends on how big you want to go. We could try to take the mind map type and actually make it a mind map. Cuz right now it's just text it just it's just kind of like uh if you take a look at the output uh when you do one, you'll see it's kind of formatted, but it's not graphically a mind map at all."
+},
+{
+"start": 1104,
+"text": "So that could be a fun one to try to tackle. \u2014 I think so. I think that's I think we only have 20 minutes. Uh-huh. So I'm not I don't know if we can do that in 20 Do you think we can do that in 20 minutes? \u2014 I don't know. I mean, that that is probably we could try it, but that might be a little too much for the time, yeah. \u2014 Uh what about some minor aesthetic things? Like these these headers. You see this This is not very uh these things don't align. \u2014 Oh, yeah, it's not aligned, huh? \u2014 Hmm. \u2014 \u2014 It It seems like a nice dip our toes into Bob."
+},
+{
+"start": 1135,
+"text": "Okay. This is the part This is the part where Teja starts picking apart what I've done so far. \u2014 And then when we get I have a design background, man. And then when we get more familiar with Bob, perhaps we can tackle the mind map thing. \u2014 Sounds good. \u2014 Uh it sounds good to me. All right. Well, you've got Bob shell open on your computer. Do you want to do this on yours or should I? \u2014 Um I can do it. I'm happy to do it. We can \u2014 Let's do it. Let's start by also talking about where people can get started with Bob, I think. If you want to try it, Bob, and then we'll show you how it works. \u2014 Okay. Actually, Tejas, while I'm while I'm kicking that up, um do you know where where's the best place they could jump in to get started with Bob if they haven't already?"
+},
+{
+"start": 1172,
+"text": "Yeah. I'm assuming you said do I know where is the best place they can jump into Bob. I can show you. Uh you're going to go on uh Google uh uh for those who don't use Google anymore, who use agents, that's a search engine. Um you're going to you're going to type IBM Bob. \u2014 That's great. \u2014 This is IBM Bob. Now, uh you may look at this call to action and wonder uh what the difference is between these two, get free trial and download. Um I honestly would just call that asking too many questions. I'll just say just download it."
+},
+{
+"start": 1202,
+"text": "It's fine. Um and then and then you're going to choose your architecture um because we can't detect that, you know. Uh and then so you're going to download something there. Or, this is cool, Bob shell is the command line where is a cloud code. It's a command line Frankly, I don't even use the IDE uh the the VS Code fork. I I love the command line thing. So, this is my daily driver. It's just Bob shell. Just like I'll run this command and it's going to be uh popping off. But, that's how you get started. Uh David already has it running and David's going to show us um how we can fix the headings, maybe. \u2014 All right."
+},
+{
+"start": 1233,
+"text": "Well, let me go ahead and share my screen. All right. All right. So, hopefully, uh I'm just waiting for Do you see my screen? \u2014 Mhm. \u2014 You do? \u2014 Yeah. \u2014 Oh, okay. Well, that's good because I don't see my screen. Okay, wonderful. Okay, great. All right. So, I have a similar setup to kind of what Tejas had before where I have the notebook app over here. Now, I don't have any notebooks yet, so let me go ahead and create one. Um the story of Tejas."
+},
+{
+"start": 1266,
+"text": "Let's say the story of Tejas now I have a notebook. Now, what I'm going to do though is just to set some things up a little bit. Um none of these documents I'm going to learn upload have anything to do with Tejas, but they do have to do um with uh a bunch of um RPG like characters I created for another game. \u2014 Um for another game? \u2014 Yeah, for for for a game that I had created a while ago um a card battling game actually. Um so these are like, you know, if you look at these names and stuff like Raven or cursed and things you can get good idea. But this way now I've got some data to actually query against, right?"
+},
+{
+"start": 1299,
+"text": "Um and then on the right-hand side, this is actually open rag by the way. So, I think I think it behooves us right before we start this a little bit to just show some of the connective tissue here um because one you may have noticed when I had uploaded ingested these documents here uh in killer context, they popped up over here, but there's a little bit more going on than that. You'll notice one, there's this filter the story of Tejas. And this is actually something that's cool in open rag because if you think about it in a rag pipeline, you could have this huge corpus of data and documents and things that you've uploaded, but you need some way to kind of like constrain and filter them a little bit, right?"
+},
+{
+"start": 1338,
+"text": "Because if I'm working with a notebook and I have like 10 notebooks, I probably only want to look at the documents that are in the notebook that I'm working with, \u2014 Yeah. \u2014 So that's what these filters do. So when you create one of those notebooks, it automatically creates this filter um and there's some some you know, you can change like I'll just do something like this, right? You know, kind of like some aesthetic things. Um there are also some settings for for the uh uh for the filter itself, but you can see I can like those will translate across and everything. So pretty much any of the stuff that is available through the open rag SDK, that's what is happening here, right?"
+},
+{
+"start": 1374,
+"text": "Um and so you can see when I clicked on that filter compared to when I don't, it constrains the document list. \u2014 it filters on all the knowledge you have. So rag has this like huge knowledge base that can have anything and then you filter per notebook for the things that \u2014 That's right. And then over here, if I want to, like if I do nothing here and I were just, you know, um um you know, create a table with all hero stats or something, right?"
+},
+{
+"start": 1405,
+"text": "Even though I misspelled something, it'll it'll figure it out. I'm not worried. Um you can see there it passed all the documents through into the and there we go. Boom, right? So, I'm getting those and it gave me the gave me all the stats. I get the chunks it used, all that kind of stuff, right? But then, let's say that I just want to know about Berserker Korg, right? And now I can come over to say my map, for example. Let's say I don't do anything else because we're going to we're not going to work on this yet. I know we're going to fix this, but I can just generate this. But because I selected Berserker Korg, it's going to now constrain my context even more to just just that one, right?"
+},
+{
+"start": 1441,
+"text": "And you can see it's all Berserker Korg. Um and so all that is happening through the SDK and the filters and stuff, but the cool thing is it just happens automatically. So, when you create the notebook, you're getting this. It's just it's just happening inside of OpenRAG, right? Um and then you can also see like all the chat and everything. So, like when I asked it to create this this mind map, that's actually what's happening here. Um and little simple things, like if I were to like delete this or something, it'll clean it up, you know. So, it's OpenRAG becomes the RAG back end. It is the back end. It makes it super simple to have that full RAG pipeline, but now I can just build an app on top of it and I don't have to worry about all those details, right?"
+},
+{
+"start": 1477,
+"text": "Um All right, so little deviation because we're really supposed to be working on this part up here. So, let's see. I think what I'm going to do, Intages, I'm I'm going to be very curious about uh how you how you your take on this, but I'm going to cheat. I'm not even going to try to explain it that much. I'm going to say, \"Hey, \u2014 Oh, I would do a full page one though, just so Bob can orient like the header. \u2014 well, all right, all right, all right, all right, all right, all right, let's do that. Let's do that. I'll give it a full page. I'll give it more. I wasn't going to give it more. Okay. And then I'm going to pop over here."
+},
+{
+"start": 1507,
+"text": "I have Bob running. Um \u2014 I'm curious why are you doing this in the IDE instead of in the command line? Cuz you had Bob shell just open at the bottom of your screen, the other screen. \u2014 yeah, I like to use Bob shell. So, I do the same thing. Uh the one exception being like Cloud Code because there is no real IDE experience. Um but I tend to use Bob shell when I'm saying deploying an app or if I'm doing things that are in the terminal and lower level. I do a lot of system stuff that way. Um but for is my code bases, you you could argue, you know, six of one and one the other kind of thing, but like as my code bases get a little bigger, especially when it comes to like being able to view multiple disks at the same time, it depends on what I'm doing."
+},
+{
+"start": 1548,
+"text": "I like the IDE. So, it's just personal preference. There's you could do anything in both, right? You have the same capabilities generally. Um but I just prefer I just prefer the IDE though. Yeah. Um all right, so what I'm going to do is I just took that picture and I'm going to give it a screenshot and then I'm going to say Hey, Bob. You don't have to really say that, but hey, Bob. Um I noticed the the headers, let's see, between sources and studio, yeah. Um Okay."
+},
+{
+"start": 1582,
+"text": "Between sources, conversations, and studio don't align. And I'm purposely being just I'm not going to give it much information, right? I'm going to I'm curious to see how well it does this. Um How can we fix that? \u2014 And then you're probably going to paste your screenshot to you. \u2014 I already did. It's right there. \u2014 What? Oh, all right. \u2014 Yeah, it's right there."
+},
+{
+"start": 1613,
+"text": "Yeah, I already popped it in there. \u2014 Okay. Ah. \u2014 And now, drum roll, please. \u2014 Yeah. Let's see. Let me activate \u2014 Oh, and something I should actually point out. There's something I should point out, by the way. Um it it probably won't use um my spec coding skill for this task. It's small enough. But you'll notice that it's saying, \"Hey, I used a skill. I'm doing things.\" Um so one thing that I I am a big proponent of using spec coding uh as compared to say vibe coding when I'm doing things."
+},
+{
+"start": 1649,
+"text": "Um and spec coding is really just a process that you go through. Um I know for the time that we have left today in what we're doing here, I'm probably not going to use it. We'll use it in the future. But Bob, I've I've told Bob, \"Hey, anytime I'm talking about creating new feature or anything, I want to use that new process.\" Um as a matter of fact, in all of the features that I've added up to date, you'll see these specs over here. Matter of fact, let me blow this up a little bit. Is that more readable? If Okay, yes. Take a look. There we go. You'll see over here, you'll see these specs, right?"
+},
+{
+"start": 1681,
+"text": "Um this is actually all through this spec coding uh mode and all of that. And it'll set up requirements, design, a whole to-do list, and then I have a conversation with the agent first before I tackle new features. It'll create a new feature branch. It'll do the whole thing. Not doing that quite just yet. But because Bob has that mode and has skills, that's what you're seeing. When it when it first using the skill, it's I have those skills set at the project, right? \u2014 So maybe we can use this for the mind map thing. \u2014 Yes, exactly. Because honestly, the one reason why I'm a big proponent of using that as compared to like just pure vibe coding is it's amazing how fast you can actually come up with a fully complete like feature compared to going about it the vibe coding route."
+},
+{
+"start": 1728,
+"text": "but anyway, I don't want to rabbit hole on that too far um because \u2014 it's easier permission to do something. \u2014 Well, I haven't I haven't given it the uh permission yet cuz I want to read first, right? I don't know about you, but \u2014 \u2014 I actually want to see what it's going to do. Um yes, you can set permissions by the way. Um I actually just told it go ahead and edit. Um \u2014 Um hey David, Raj is asking if we can increase the font size a bit. \u2014 \u2014 Oh, okay. I just did a second ago. I wonder if that was before that question. Let's see. Let me know Let me know if that one's better, okay?"
+},
+{
+"start": 1760,
+"text": "I think if we we can go a bit bigger. Can you do the one more? Command plus? \u2014 I do one more. \u2014 Yeah, that's great. Um and then um I think this is good. Yeah, Raj, let us know in the comments if uh \u2014 Yeah, I'm going to open that up a little bit more. Okay, let's see. Um now \u2014 this is again man, you and I are so different cuz I don't even use the IDE first of all, and second of all, when I use the command line, it's always yolo mode. I don't even like I just let it do its thing. \u2014 Oh, dude, no, the spec coding thing maybe we got to talk about that. I I'm telling you. I'm telling you it is the way. It is This is the way, Tejas."
+},
+{
+"start": 1790,
+"text": "Do you know the way? Okay, so it looks like it's done. \u2014 All right, so let's see what it did because if I come over here, I don't see. Now, here's the thing. \u2014 Did you reload? \u2014 Well, I shouldn't I don't know if I need to. No, oh, I actually made it worse. \u2014 \u2014 So, this is where I'm going to tell it, hey dude, woah woah woah woah woah. Now Now, I purposely didn't give it much instruction, right? So, let's see. Let's Let that picture command there it goes. \u2014 I think so are you are you planning on like beefing up the instruction?"
+},
+{
+"start": 1822,
+"text": "Because if you were, I already know what's causing this and I can just tell you. It's the the select the select component occupies more vertical space. The select the drop down uh your Exactly that. That's the thing that's pushing everything down. And the other the other headers don't have it, right? So, that's why they have the same height. And so \u2014 What you think? Do you Do you think that we should have sources in studio conform to the size of \u2014 Yes. \u2014 the header Okay. Okay. \u2014 Exactly. And so, what you want to tell Bob is um that's the reason, the select component, um and we should give all three headers a deterministic height."
+},
+{
+"start": 1857,
+"text": "I think that's kind of the move. And if you want to be extra prescriptive, you can also just measure like how high the first one is and then tell it that. But I don't know. I I think we can see what it figures out without that. \u2014 Stud top. And uh sources, yeah, sources should conform to the height \u2014 So conformist. \u2014 of the conversation header. \u2014 Hey, Roger, was that screen size better? \u2014 Yeah. Yeah, let us know if that's better. Okay, Tejas, would you Is there anything you want to add to this?"
+},
+{
+"start": 1892,
+"text": "Uh conversations panel, is that what it's called? Uh is larger. Studio and sources should conform to the height of the convers- That's fine. \u2014 You know what? I mean, I gave it the header. I mean, I gave it the image as well, so it should be able to see that. \u2014 but it doesn't know um sources is part of this image because you don't have anything that says sources there. \u2014 No, no, I'll fix that. \u2014 And \u2014 I mean, honestly, it's usually pretty darn smart about this stuff, but yeah, I I see your point. I see your point. \u2014 And uh there was one more thing I Wow, you take like screenshots? That's so cool, dude."
+},
+{
+"start": 1924,
+"text": "I just copied clipboard. Um and then the other thing is uh Yeah, I know that's fine. I think it's fine. Let's see. Let's do it. Let's see. Let's ship. Are we shipping it? \u2014 Oh, that's another piece, too, is that it does uh it has really nice interaction or integration with like GitHub and doing PRs and stuff, but we're not going to worry about that right now. Let's see. \u2014 No, it's not It's It It It did the wrong thing. Did it flip it? It just decreased the vertical padding. \u2014 Well, you know, funny enough, it had added the vertical padding to begin with."
+},
+{
+"start": 1958,
+"text": "It made it worse. \u2014 Let's see. Now I got to refresh. \u2014 Made it even worse. \u2014 Oh, right. \u2014 So now now is when we have to be even more perceptive and be like give them all the same height. \u2014 Yes. \u2014 That's what that's I I mean this would be the problem. And now I'd be interested to know how many pixels would it decide, right? Um and that that would be interesting. Um because I'm one step away from measuring it myself and telling it \u2014 I know, you know, I am being very lazy from that standpoint because one thing I haven't done, which is anybody who's developed before we started doing things with AI would absolutely be in here, right?"
+},
+{
+"start": 1999,
+"text": "And and I would absolutely be doing this and and looking at them and and finding it. I could probably just do \u2014 since you did that, David, we might as well Oh, it shows 37 pixels. Interesting. That's interesting. I wonder how it got that. \u2014 Okay. There it is. \u2014 Uh Is it Are they in the same line? \u2014 Yeah. \u2014 Dude \u2014 there that time. Yeah. \u2014 That's awesome. Well done. \u2014 Yeah, there it is. There it is. \u2014 So beautiful. Look at that. Wow. \u2014 They're they're done. Yeah, I'm just So you know, obviously I wasn't And that's And that's actually kind of a key point, right?"
+},
+{
+"start": 2032,
+"text": "Cuz my first instruction was kind of vague, right? I didn't give it And this is this is something I've definitely learned with agents. And this is actually where the spec coding thing really comes into play, compared to vibe coding cuz I would argue we just vibe coded that, right? And I I purposely started off a little vague, but when we gave it exact instructions, it did much better. Let's go ahead, by the way, and this looks good. Um so I'll say commit the tree. \u2014 And push to main. \u2014 Yeah. It will It will usually do it. It'll usually do it. \u2014 Yeah. Let's see."
+},
+{
+"start": 2063,
+"text": "Nice. That's awesome. \u2014 Okay. All right. So I guess the real question is uh do we want to start on um I'll just push it real quick. Do we want to start on the mind map task in the time we have left, but start with the spec coding things so you can see it like do it or do you want to do you want to reserve that where we can actually try to finish the mind map task? \u2014 Yeah, I think we should reserve it for next time and we'll talk to David off camera about when next time could be, but I I I think it deserves its own episode, you know, because I I think there's so much potential to like rabbit hole deeply."
+},
+{
+"start": 2100,
+"text": "Yes. \u2014 And I I would genuinely I want to spend like an hour and a half just rabbit hole in on this mind map thing with Bob along because I think part of the thing we all love about vibe coding or working with AI is is just the infinite creativity unlocks, you know, and being able to pull on on rabbit holes and so I I'd love to reserve that for next time. \u2014 Yeah, you know, that's fine. And one of the thing I want to mention is that as I started working on this project what last week, I think, right? And there was already Teja said already created like the basic structure to create notebooks, all the underlying you know, all this by the way, I I really love the architecture that was used."
+},
+{
+"start": 2139,
+"text": "It makes it very snappy. It's all like local storage, you have an SQL like database that's local and stuff and everything that you're doing is being being stored there, but then it syncs automatically with what's going on in open rag. And then in the time that I've been you know, that I've added things on, I've added uh you know, a bunch of the different types, a lot of the formatting, you know, the the ingest path was pretty much already there, but then say like adding things like um you know, the all of the controls over if I want to remove things, you know, like just the crud operations and stuff."
+},
+{
+"start": 2174,
+"text": "Again, if I were to go over here and I delete a bunch of things, it'll clean it up on middle, remove them here, you'll see it cleaning up all on both sides and all that. And all of that I've done with Bob. Right? So this whole project has been done with Bob. Um and so like one of the things that I know you probably think is a little extravagant but I personally love \u2014 \u2014 was was this the the whole rainbow thing? \u2014 Yes. \u2014 But then the drop down. So this was super cool to me because I originally I was like you know something I want to know what model is being used because in open rag I can actually change that model."
+},
+{
+"start": 2208,
+"text": "Right? I can come in here and I can change the model based off the providers I have and I can do that at run time but in an app like this I don't want to have to go to open rag to do that and the open rag SDK exposes all that stuff, right? So I put it right here. This was really satisfying because I first was like yep go ahead and use the SDK and all I told Bob by the way was I know the SDK does this. It has a skill. I This is something we can talk about another episode. Bob has an open rag SDK skill that I gave it that it knows about the SDK."
+},
+{
+"start": 2242,
+"text": "It knows where the SDK is, right? And I told it I said hey I want you to use the SDK. I know it can do this. Go get all my models. Let's make a picker, right? And then I want to use a rainbow gradient. It it almost one shot this. \u2014 Wow. \u2014 And I was super sad and it works. Right? You know if I go to GPT-J OSS 120B cloud and now if I come back over here, right? Right? And I got to refresh so I'm not a liar. There it is. Right? So it and it did it really seamlessly."
+},
+{
+"start": 2273,
+"text": "So it's been pleasant honestly is is the way that I like to put it. So anyway so yes all this has been done with Bob. I think I think in our next I think our next episode we can totally tackle the mind map and use the spec coding process for that. \u2014 Yes. And once again I think we can we can wrap it here. Just a reminder to everybody we're just building with Bob because we we love Bob. We think Bob is a cool coding agent and it's not because we're paid to love Bob. I think it's got potential and we want to explore that together here. So, this was episode one."
+},
+{
+"start": 2305,
+"text": "We look forward to your comments and your your engagement. And and we're going to do part two next week where we build a mind map. Thanks. So, thanks for joining everybody. We'll see you in the next one. See y'all. Peace."
+}
+]

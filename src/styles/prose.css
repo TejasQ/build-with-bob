@@ -1,0 +1,49 @@
+/* Long-form article typography, tuned to IBM Bob's Plex-light reading style. */
+.prose {
+  @apply max-w-none text-[1.0625rem] leading-relaxed font-light text-foreground/90;
+}
+.prose > * + * {
+  @apply mt-5;
+}
+.prose h2 {
+  @apply mt-12 scroll-mt-24 text-2xl font-semibold tracking-tight text-foreground;
+}
+.prose h3 {
+  @apply mt-8 scroll-mt-24 text-lg font-semibold text-foreground;
+}
+.prose a {
+  @apply text-accent-fg underline decoration-1 underline-offset-4 hover:decoration-2;
+}
+.prose a[data-seek] {
+  @apply rounded-md bg-muted px-1.5 py-0.5 font-mono text-[0.85em] no-underline;
+}
+.prose strong {
+  @apply font-semibold text-foreground;
+}
+.prose ul {
+  @apply list-disc space-y-2 pl-6;
+}
+.prose ol {
+  @apply list-decimal space-y-2 pl-6;
+}
+.prose li::marker {
+  @apply text-accent-alt;
+}
+.prose blockquote {
+  @apply rounded-r-bob border-l-2 border-accent-alt bg-muted/60 px-5 py-4 italic;
+}
+.prose code {
+  @apply rounded bg-muted px-1.5 py-0.5 font-mono text-[0.875em];
+}
+.prose pre {
+  @apply overflow-x-auto rounded-xl bg-muted p-4;
+}
+.prose table {
+  @apply block w-full overflow-x-auto text-sm;
+}
+.prose th {
+  @apply border-b border-border px-3 py-2 text-left font-semibold;
+}
+.prose td {
+  @apply border-b border-border px-3 py-2 align-top;
+}

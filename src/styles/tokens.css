@@ -1,0 +1,47 @@
+/* Design tokens mirrored from IBM Bob (bob.ibm.com): bob-gray scale, blue→purple
+   gradient, IBM Plex type, 0.625rem radius. Light values first, dark overrides below. */
+:root {
+  --background: #ffffff;
+  --background-gradient: linear-gradient(180deg, #fff 0%, #eef2f9 100%);
+  --foreground: #171717;
+  --muted: #eef2f9;
+  --muted-foreground: #697077;
+  --card: #ffffff;
+  --card-gradient: linear-gradient(0deg, #ffffff 0%, #ffffff 100%);
+  --border: #dce2ef;
+  --nav: oklch(98.23% 0.008252 271.33);
+  --nav-border: #7e838b33;
+  --nav-hover: #dce2ef;
+  --accent-fg: #0f62fe;
+  --accent-alt: #8a3ffc;
+  --selected: #a8caff;
+  --feature-gradient: linear-gradient(135deg, #c5d5f5 0%, #d4e1f9 100%);
+  --footer: #ffffff;
+  --mark: #d1e3ff;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f1116;
+    --background-gradient: linear-gradient(180deg, #0f1116 0%, #171d2c 100%);
+    --foreground: #ffffff;
+    --muted: #202432;
+    --muted-foreground: #a1a8af;
+    --card: #1b2233;
+    --card-gradient: linear-gradient(0deg, #1f2942b3 0%, #1f2942b3 100%), #0f1116;
+    --border: #2a3047;
+    --nav: #0e1015;
+    --nav-border: #25282d;
+    --nav-hover: #202432;
+    --accent-fg: #7aabff;
+    --accent-alt: #be95ff;
+    --selected: #303645;
+    --feature-gradient:
+      radial-gradient(50% 50% at 50% 50%, #0f111600 46.55%, #0f111680 100%),
+      linear-gradient(0deg, #1f2942, #1f2942);
+    --footer: #0e1015;
+    --mark: #31405e;
+    color-scheme: dark;
+  }
+}

@@ -1,0 +1,586 @@
+[
+{
+"start": 0,
+"text": "building with Bob our live stream where guess what we do we build with Bob. Bob is our coding agent here at IBM and we just want to experience it and and get some ideas of how it works, how it can be improved um and and that will translate to feedback into internal teams but also translate to awesome products that we build uh in the external world and that's that's what we're doing. So today we're going to be working on Wallfly. It's a little application to uh turn your regular conversations into meeting notes. As usual, I'm joined by my teammate David. What's up, David?"
+},
+{
+"start": 30,
+"text": "Hello, Tis. How you doing? \u2014 I'm doing well. It's good to see you. I'm here. \u2014 You look like you're somewhere. \u2014 Yeah, I'm in Warsaw. Uh, which is the capital of Poland, and I'm here for a conference called Agent Conf. I'm actually going to be showing people um how to do um some really cool things here with Bob. And so, I'm really excited about that. \u2014 Oh, that's awesome. Awesome. Yeah. Well, that's I'm excited to hear about the outcome of that once uh once you do it. \u2014 Thanks. Yeah, it's gonna be fun. Um today we're gonna do Wallfly."
+},
+{
+"start": 62,
+"text": "I'm really excited, David, because like it was working last time, wasn't it? It was totally \u2014 everything was fine. \u2014 Um and so we just wanted to make some enhancements to like the chunking and stuff. \u2014 That's right. Yeah. And you know, since since last week, I have made a couple updates. Um nothing crazy. If you remember last time, um, we had, uh, we we kind of specoded going through with Bob to update all the styling, make it, um, use more, uh, well, one, we upgraded, right? [clears throat] We we upgraded our version of like expo and everything."
+},
+{
+"start": 95,
+"text": "Um, \u2014 yes. \u2014 And, uh, and then we went through that fun, right? But then once we [clears throat] got past all that and then we put the styling in place, if you remember in the moments section, um, the styling was old, right? So I went through and I just kind of cleaned that up and made sure the styling applied across the board. So now the app looks cohesive. It looks like a single app, not like a uh a hydra or anything like that. Um and also now both um recording and everything works both on the web and mobile, right? So it is working very nicely at least on my end."
+},
+{
+"start": 125,
+"text": "I don't know if it's totally working on your end. Um but yes, that is uh that is working across the board. So I feel like yeah, I feel like we're ready to jump into something we uncovered last week, right? is we were doing that long recording during the whole episode and then we realized, oh wait a minute, \u2014 we've got like this 30 minute recording at one point and it's going to take forever for it to transcribe that and sit there and so to be more resilient and everything. We probably want to chunk that up as we're going, \u2014 right? And uh and and work that into it. So, um I um I have an admission. I started doing that work last week and then I stopped because I was like, \"Wait a minute.\" I'm like, \"This is too interesting to why am I doing this?"
+},
+{
+"start": 165,
+"text": "Should be on the show, right? We should be doing this on the show.\" Um and all that kind of deal. So, I stopped what I was doing. I haven't even touched one p piece of code. It's all just kind of the the beginning part. So, it's perfect for us. Um but anyway, yeah. So, that's I think that's where we're at right now. \u2014 That's really exciting. I um I happened to catch the Apple keynote last week. Um \u2014 Oh. \u2014 Where where I I saw that Apple was building exactly uh what we're building, which is really awesome. It bodess it bodess well for us, David. \u2014 Because they're they're inspired by our stuff."
+},
+{
+"start": 198,
+"text": "Yeah. Right. Because they sure knew about it, right? \u2014 I mean, they watch they're probably the biggest fans of this live stream, Dave. \u2014 Oh my god. \u2014 Incredible. \u2014 Hey, John Turnis, you're welcome. Yeah. Yeah. Yeah. \u2014 No, but they um they announced this new feature with the Apple Watch where it's built in. \u2014 Um it can like if you're in a meeting or something, it's like passively listening and with Apple intelligence, it gives you like meeting notes and summaries and highlights and things from okay \u2014 from your meeting. So that um that just happened and so they built what we wanted wallfly to be in the end."
+},
+{
+"start": 233,
+"text": "But you might be thinking, oh, does that mean we stop building Wallfly? And I think not. I think we keep building wallplay. \u2014 Um because Apple is Apple and it's it's a closed source product. \u2014 Yeah. \u2014 But I think you know our audience I don't think they ever really wanted even like uh like a fully working thing. I think developers just want to know how is it built, right? And so I think we keep building it and it can serve as an example of a how-to but also like an open-source like this is how the sausage is made type of project where anyone can run it locally."
+},
+{
+"start": 266,
+"text": "The best part is you don't have to trust like some company with your, you know, meetings. You you just have it on your device, \u2014 right? Yeah. And I think you, you know, I've worked on some other similar apps, obviously not from a wallfly standpoint with like wearables and things like that, but more if you're talking like Zoom calls and such. Um and definitely I I think it's really important to have uh you know your own conversations your own personal conversations and such like that private right and where you don't have to worry about to me it's like the same the same value prop you get some from something like Olama for example right that's why people will use local models and or or services like that that kind of like guarantee on the privacy end so yeah as Ta was saying if that is something that concerns you um then \u2014 talk about me in the third person \u2014 yes yes we'll talk about tages in the third person because we can't see him anymore."
+},
+{
+"start": 317,
+"text": "So, we can just imagine what Tis looks like now. But anyway, no. \u2014 Are you having camera trouble over there, Tis? \u2014 Having camera trouble, David. \u2014 Okay, no worries. No worries. Yeah. So, anyway, so yeah, I I I totally agree with you. Oh, hello. Hello. We got \u2014 Hi, Tes. Closeup. \u2014 I don't know how this happened. It's got a hor \u2014 I feel I feel like uh I feel like we just turned into a show from like the 90s. \u2014 Is it still frozen or is it is it \u2014 It's pretty darn choppy actually."
+},
+{
+"start": 351,
+"text": "Yeah. \u2014 Okay. Um but I don't know what to do about this. \u2014 The thing is now that we've started the stream, we can't even change um the camera. \u2014 Oh, you can't change the camera back. Oh, no. \u2014 Because the stream is running and it doesn't let you do that. So, this is I guess this is the best we can do. \u2014 All right. Well, you know, should I zoom in, too? Should we just like have like a zoomed in thing for both of us? \u2014 This is so I'm gonna try and fix it off camera while you talk, David. Is \u2014 Okay. Okay. Anyway, so um yeah, so while Tis is doing that, yeah, you know, just to kind of riff off a little bit what you were saying, Tis um you know, are you from the Apple announcement?"
+},
+{
+"start": 390,
+"text": "I didn't see it myself, right? So, so that's really interesting news actually. Um, did they give any any details at all about um, you know, the product itself? Like is it is it just going to be like a little option you turn on Apple Watch and and there you go. And like where the data stored, anything. \u2014 Exactly. Yeah, that's exactly how they're it's it's you know, it's the Apple way, right? It's all like seamless and well integrated and so everything's everything's just \u2014 in the walled garden and it just works. And the cool So they say it it doesn't record forever um, but within the last few minutes."
+},
+{
+"start": 422,
+"text": "So there's a time buffer. So, the example they used was you went to like a restaurant and the waiter like lists off some items really fast and you're like, \"Oh my gosh, what did they say?\" And then you can just have Siri tell you like, \"Yeah, this is what they said the waiter said after watch.\" \u2014 Yeah. Yeah. \u2014 Okay. Okay. Interesting. So, it's a it's a bit different of a use case than what we're talking about, honestly. Um, \u2014 that was one thing, but the other thing was also if you have a meeting, then it gives you meeting notes and summaries and highlights as well. So, it's it's both."
+},
+{
+"start": 453,
+"text": "Yeah. Yeah. \u2014 Oh, that's, you know, it's actually kind of interesting and this ties in to the work we're just about to start here with um making our audio recordings a bit more resilient and such like that, especially over long form recordings. And I actually think it ties directly into it because as as we were talking about a little bit last week and as I was actually starting down the process of um getting this matter of fact, I'm going to share my screen. \u2014 That one. Okay, great. And here I'm gonna We don't need to see the terminals for the moment."
+},
+{
+"start": 484,
+"text": "So I'm just going to open this up a little bit. Maybe make that a little bigger. Okay. Yeah. So as we were um talking about this last week, like I mentioned, I had started down this process um of actually doing the incremental audio recording. And one of the requirements that I had there was that not just that it's cutting up the recordings into increments as you go, but that it's actually processing those in real time. So you can get real-time updates in the app as you're doing it. Right. This actually sounds a lot like what Apple is proposing, right? Is that, you know, they're gonna, you know, per the example you just gave, you know, you're a restaurant, the waiter waitress just your server said something and now you can just look up and you can see what that was, right?"
+},
+{
+"start": 523,
+"text": "Um, so I feel like incremental \u2014 updates with the automatic processing is very similar, right? because then you'd be able to get real time real near real-time updates as those chunks are coming in which I think then for us really ties in and dictates how long those chunks should be and that was actually one of the things I was working through like are they 30 seconds 60 seconds what makes sense there um you know so I think that's something that we can like work out um and do that but there's one other thing before we jump into that you know Tish you hit me up last week and you're like hey David I think we should check out this thing called Xavier, right?"
+},
+{
+"start": 562,
+"text": "Yeah, Xavier. \u2014 I went and checked out this thing called Xavier and I actually have it running locally and I'm actually using it here. But I want to know I want to know from you, what was it? Why did you How did you come across it? And what was it about Xavier that you're like, \"We should do this. We should check this out.\" \u2014 That's a really good question. Um, oh my god. Uh, sorry, my camera is now green. Um, I just I'm trying to get this thing working. And \u2014 Tus is so full of energy. He's just emitting gray or green photons. And so in fact, it is Oh, there he is."
+},
+{
+"start": 595,
+"text": "Oh, okay. \u2014 I hope. \u2014 There we go. Oh, \u2014 am I still choppy? Is it \u2014 No, that's actually much better. That is much better. Well, we'll see what happens. I mean, hey everyone, just, you know, let's let's give Tes some grace. He is in a hotel room. So, \u2014 yeah. And this hotel doesn't like my video feed. Anyway, um yeah. So, yeah. So, so Xavier is this incredible tool. Uh for those who um for those who don't know, sorry, I just heard something fall."
+},
+{
+"start": 626,
+"text": "For those who don't know um what it is, if you go to Xavier.team is the top level domain. \u2014 Um it's it's an agent orchestrator. And so it's \u2014 it's it's not a harness, but it's something where you know you it's okay. So one of my favorite skills about this. So first of all, it's just a collection of skills that you can use in cloud code or codeex or whatever it is. \u2014 And what what I love about it is that it can learn your codebase. So as soon as you install the skill, right, and David, you've probably used this."
+},
+{
+"start": 657,
+"text": "As soon as you install the skill, you just say Xavier learn. And then it just like learns all the things about your codebase and it it's deeply familiar. \u2014 From there you can just give it tasks or you can ask it it uh it wraps the grill me skill by Matt Po. Yes. And and it allows you to ask questions or rather it asks you questions and it really like helps \u2014 uh the agent understand your project and then you can give it PRDS um and it will go ahead and build things for you. So it's just this like Swiss Army knife for building things rapidly and that's what I was so captivated by."
+},
+{
+"start": 689,
+"text": "And so I heard about it um because as you know I spend a lot of time with really cool developers u many of whom are friends many of whom are teammates and former teammates. \u2014 Okay. \u2014 And so I was with my I was with my friend Attilla who was also a FORMER TEAMMATE TWO COMPANIES. \u2014 OH OKAY. \u2014 YEAH. And and he uh this is his project that he's been working on. \u2014 That name sounds awfully clear because it's in the GitHub repo. That's why I was just like oh okay. I get it now. \u2014 Yeah. And so he, you know, he was using this thing and I said, \"Wow, that's awesome.\" Uh, and he and so it looked exactly like the kind of thing that we could use to build Wallfly for the reason that it deeply understands your codebase."
+},
+{
+"start": 729,
+"text": "And so I thought, \"Okay, we have to try this.\" \u2014 Yeah. And to that point, so what I did, I don't know if you have um installed Oak yourself, but when I went and spent a little time last week just getting it quickly set up, it was actually really s I was actually pretty impressed with that part. You can see some of the output here um that you when you run the learn command and it's going through it goes through your codebase. It looks at everything it detected it was a monor repo. I thought that was neat. Um it'll set up a team you know based off the the project. I mean you can you can you can have any number of projects in it, right?"
+},
+{
+"start": 761,
+"text": "And so you can have all sorts of projects that you're running with it so it knows to differentiate between them. But one thing I really like is um the way that it handles orchestration. It uses what they call um the the shark approach, right? Um where they have, as you can see, these remoras um they're they're essentially like sub agents that go off and do things. But what's interesting is then when you're doing like a review or if you're doing learn or whatever, it's got personas and each of the personas, you know, has a different focus, right? And then it'll kick off these these underlying remoras essentially that, you know, that tie into um different goals that it has, right?"
+},
+{
+"start": 799,
+"text": "One might be looking at the architecture, one might be looking at dependencies, things like that. Um, and it comes back and it I did this for Wallfly, right? Um, and then you can see it actually we did sets of these, right? And then it came back and it was super cool because as your point, it starts to say, \"Ah, hey, here are the packages I found. Um, here's what's interesting about those, right?\" And then I took the last thing we did and it and then it stores that in its vault. So then as you move forward, it's got the architecture in the vault and everything like that. And then as you're doing reviews and everything, it can compare against those."
+},
+{
+"start": 830,
+"text": "I thought it was really neat, too. Um, so, so I do have it fully implemented here, uh, as part of Wallfly. And you can see I had all sorts of conversation with it and everything. This was actually the outcome of a review. I'll I'll admit this is one of those areas um, and I'm going to pontificate here for a second. You know, there's all sorts of tools um, that are, you know, you know, when it came to like token maxing, you know, caveman was one of them, right? you know, um, but now now a lot of the models, if you notice, a lot at least a lot of the, uh, code assistants have a caveman like functionality in them, right?"
+},
+{
+"start": 866,
+"text": "And I feel like I I feel like some of these things kind of like show up and then they become part of the experience of the coding assistants. I hope \u2014 that a lot of this agent orchestration stuff does as well. My goal, you know, is I I I try to like, you know, um, uh, influence the local Bob team and stuff like that. You know, my my goal, right, is that I would I would love to see this all all this kind of orchestration stuff come into the agents, all like all the coding assistants because um across the board and all the projects that I'm working on, including personal ones and everything. I think the biggest thing with all these agents and like the work we're doing, right, the fact that you and I are collaborating, right, you could look at us as being human agents, if you will."
+},
+{
+"start": 904,
+"text": "Um we've already generally worked that out with things like GitHub and that kind of deal, you know? Um, but there's no doubt that like being able to maintain say like, you know, file locks, hey, I'm going to work on this. I'm on these areas. Don't touch this at the same time. We don't want to clobber each other is even more important with agents, right? Because they work so much faster. Um, anyway, so my hope is that this stuff works its way back into these coding systems and just becomes table stakes, \u2014 right? Um, \u2014 yeah. So, yeah. Uh, \u2014 yeah. \u2014 See, just for I'm sorry, were you gonna say something there?"
+},
+{
+"start": 936,
+"text": "I was going to say um I agree with your entire pontification but also I was going to say \u2014 no I was going to say I guess what Xavier brings is really intelligent orchestration which which I feel like Bob already and most coding agents already have in their harness \u2014 and so what I was going to say was \u2014 a question really okay \u2014 um in your use here of Xavier and I'll res I won't tell you my experience but \u2014 um \u2014 in your choosing of Xavier here. Do you feel like it has made Bob better?"
+},
+{
+"start": 970,
+"text": "H, that's a good question. Yeah, I mean, you know, honestly, I'll be very frank. It's to be seen. \u2014 I like what the learn task did. \u2014 I like how the review went, but Bob also has a review mechanism that is really solid, \u2014 right? So, of course, there's going to be a little crossover. I think where we're going to really see where I can answer that question is the work we're just about to do because the whole point of something like Xavier, right, and having its vault is, as I understand it, right, is to store off, you know, key information about the architecture of the app, dependencies that are there, things like that, and then be able to reference those as agents are working on things so you don't regress and you don't pork things up as you as you go, right?"
+},
+{
+"start": 1014,
+"text": "And and stuff. So I'm curious to see how well that applies and works as we go forward. One thing I will say that I really do like and again this is I think it's a six half dozen one the other because again Bob's review functionality is actually really good on its own is that you know if you're doing work if you're in the middle of work you can just say Xavierreview and it'll go through and one thing I really like about what it does it it splits it out in like high middle medium and and low you know criticality for severity kind of brings up a plan and says okay this is what we could do. Um, I could also go to Bob's review and do something very similar, right, in the IDE, right?"
+},
+{
+"start": 1047,
+"text": "So, it is one of those things where, you know, there's a little crossover, but there is definitely some difference. Um, so that that's part of why I was saying I would love to see all this kind of stuff just get worked into how these IDEs work, right? And, you know, because like I love these open source projects, by the way. I obviously both of us are big into open source and all that. Um, but you could argue I don't want to have to maintain five different, you know, dependent, you know, like packages, uh, to do various orchestration things. I'd love the agents to just, you know, the idees to do that themselves. \u2014 Exactly."
+},
+{
+"start": 1079,
+"text": "And I think so what what I'm hearing is it would be very cool if we didn't need Xavier. \u2014 Yeah. Yeah. No knock to your friend, by the way. I think because I think things like Xavier kind of push the needle, right? And they're like, \u2014 exact \u2014 like this is needed. Clearly there's a gap here because there's there's a a set of these that are out in the industry right now, you know? \u2014 Exactly. And I think there always will be because there's discussion about um this term, right, meta harness where \u2014 it's so volatile right now because like I I tell you what, I was using um clawed code for for a long time, but because of Astra, I switched to Codeex, right?"
+},
+{
+"start": 1119,
+"text": "And now that I switched to Codex, I there's a whole bunch of context that's just not available to this new agent. Um, and so a meta harness will will preserve that across agents, right? And and I think that's I think Xavier here fulfills that also in the terms of like keeping the PRDs and the reviews and all the things that it learns. You can just take that between agents. And so, um, I I wonder if that'll just always be a thing so long as there is no like monopolized agent that everybody uses. Similar to how like, you know, like n like so many people almost everybody uses Chrome, but some use Opera."
+},
+{
+"start": 1151,
+"text": "Yeah. \u2014 You know, wonder if that's kind of the future we're setting ourselves up for. \u2014 Yeah, possibly. By the way, we have a visitor uh in the YouTube, Attila. Hi, Attilla. \u2014 We have an alien. \u2014 I love it. \u2014 Yeah, \u2014 it's great. Okay. So, so why don't we What do you think, Tis? Um, why don't we get into the incremental audio stuff? What do you think? \u2014 Yeah. Let's Can we use it first to see how it feels in the simulator? \u2014 Oh, yeah. Do you mean Do you mean uh Yeah."
+},
+{
+"start": 1182,
+"text": "Yeah. Yeah. You mean like here? \u2014 Yeah. Well, \u2014 here. \u2014 Here. \u2014 Yeah, exactly. Yes. Wow. Look at that. That's gorgeous. That's so cool. \u2014 Oh, yeah. That's right. I'm sorry. I forgot. Yeah, we updated all the styling, right? Because if you remember if when we went down to a message, it was the old thing, but now it's all updated, right? So, it fits. Um, and it should be across the site that it's like that. So, all the styling and everything is nice and uniform. And yeah, it does look a lot better. It looks a lot better. Um, what? So, you want to record when I just start recording now? \u2014 Not yet."
+},
+{
+"start": 1213,
+"text": "Not yet because it's kind of broken. Um, and we need to already use Bob to fix it a little bit, I think. \u2014 Okay. What part's broken? What do you want to do? \u2014 Can you go to the library? the library. You mean the moments like this? \u2014 Yeah, the moments. Um, look at the clock. \u2014 I don't Oh, you mean Oh, you mean some of the layout and everything? \u2014 Yeah. Yeah. So, there's a there's actually a a safe area inset. That's what it's called in React Native. Okay. That Bob just chose, \u2014 which is which is you want to fix that up."
+},
+{
+"start": 1247,
+"text": "All right. \u2014 I think it's important. Yeah, because we it's important that we finish the task from last week, right? \u2014 You're right. Okay. \u2014 So, all we have to do is tell Bob to fix the safe area insets across the app. \u2014 We need \u2014 Hey, Bob. \u2014 Hey, Bob. All right. What' you call it again? We need to fix the what? \u2014 Safe area insets across the app layout. And and I think we should tell it to search the web for the best way to do this with Expo SDK."
+},
+{
+"start": 1279,
+"text": "Ah \u2014 because otherwise it'll do something from an older SDK version like \u2014 Oh yeah. Um with expo SDK um \u2014 I don't know I don't remember the version we're on if we just \u2014 Yeah. \u2014 Awesome view. \u2014 What was it? Uh because we updated Expo. Remember we went through that we we caused oursel pain last by updating Expo and finally got through it all. But man, that was a that was something. \u2014 I think if you just do like um \u2014 wait, I can just add \u2014 Yeah."
+},
+{
+"start": 1312,
+"text": "Or you can just look at package.json and you'll see \u2014 Oh, you want to actually, you know, look at files and code and stuff. Geez, I \u2014 mean, that's what that's what you started doing. \u2014 Come on, Jesus. No, I'm kidding. \u2014 It's in the app uh directory. \u2014 57. You're right. We have multiple, don't we? \u2014 Higher up. Higher. Yeah. So there's \u2014 that. Yes, \u2014 it's 57. \u2014 57. \u2014 Yeah. All right. \u2014 57. \u2014 Okay. Ensure we are \u2014 using Expo version 57."
+},
+{
+"start": 1348,
+"text": "Okay. \u2014 I like how it is like part of our stream now. He's telling us um if if he could get better context management then he wouldn't have built Xavier \u2014 which for Xavier. Um, that's awesome. I guess \u2014 thank you for building, you know, a product like Xavier, you know, because like as as Tis and I were talking, um, I I I think one of the biggest gaps that I feel all the time, you know, pretty much all of the AI coding assistants have sub agents and you can do multiple asynchronous agents, but they have a hard time communicating across each other, right?"
+},
+{
+"start": 1383,
+"text": "Right? And that's where you have things like MCP agent mail and you know like uh you know beads and and Xavier and things. Now those aren't all the same thing, right? They all do various pieces of that, but it's all parts of that orchestration. And again, as I was mentioning earlier, how fast the agents work. Uh I've seen I've seen agents completely clobber files that they're both working on. \u2014 Yeah. \u2014 Right. And to your point, like \u2014 Yeah. We would need to build stuff like that, right? if if that was being handled well. Okay, let's see."
+},
+{
+"start": 1417,
+"text": "So, good. Going to do that and then uh we'll have a nice like working while it does this. Do you want to actually No, never mind. I was going to ask, do you want to hit record? But then if it rerenders, then it'll stop. \u2014 So, \u2014 no, no, it's okay. Fine. Yeah, let's do \u2014 I got to hurt anything. \u2014 And so, \u2014 wow, look at that. It's so cool. So, our big um our big challenge is to is do is to do chunked recordings, right? Yes. And then like merge them at the end today. Awesome. \u2014 That's right. Yeah. Actually, what I'm going to do is I'm going to stop it here. And here's why. Part of the reason if you remember when we didn't because we don't have chunk recording yet."
+},
+{
+"start": 1450,
+"text": "We recorded this big long thing and then my poor laptop like just completely like thermally shut down uh because it was such you know we were trying to record this and process all that audio all at the same time, right? Um, so the chunk recording would actually help that greatly from a performance standpoint. So I'm going to stop it there actually. So \u2014 I really loved how it became green. Did you see that animation when it finished recording? That was awesome. \u2014 Yeah, it was very subtle. And we didn't tell it that, right? We didn't tell it to do that especially. Yeah. \u2014 So can we check the library now? I think it's done."
+},
+{
+"start": 1481,
+"text": "Oh, you mean the the recording part? \u2014 Yeah, I just keep calling it the library. Yeah, the \u2014 moments changes. Come on. \u2014 Moments. Moments. Sorry, my bad. \u2014 Moments. Now, one thing we also need to update like where is it? It needs to auto refresh when we navigate away and back in when it gets you see because it's there. \u2014 Yeah, \u2014 I'm sorry. The speaker reassures that the process will not cause any harm. \u2014 That's Did I say that?"
+},
+{
+"start": 1512,
+"text": "That is great. \u2014 But it didn't fix the layout, huh, Bob? I mean, is \u2014 Oh, we haven't gotten there yet. Yeah, we haven't we haven't finished the task. Yeah, it's still working on it. \u2014 Okay, here we go. \u2014 Clean. It just said done. \u2014 Okay, let's see. Okay. Okay. We should have probably given it an image, too. \u2014 Yeah. Good thinking. \u2014 Okay. Well, we'll see. We'll see. Okay. Okay. Because you're right. We did not expl we did not explicitly address this before."
+},
+{
+"start": 1543,
+"text": "So, um I think then I should be able to do a refresh in here. Yeah. \u2014 Yeah. Get get the new button \u2014 makes any change. And I don't know if we're going to see anything in the web app side because it doesn't have Well, \u2014 but this has always been like this. This is needs to be fixed anyway, RIGHT? \u2014 WOW. Look at that, David. \u2014 Yeah, on that it addressed it. Yeah, that Oh, that's much better. \u2014 Gorgeous. Oh, \u2014 much better. Um, that's in the way. I think we need to make that title better. But yeah, that is much better."
+},
+{
+"start": 1576,
+"text": "Let's give it a prompt. Let's say two things. One, let's truncate the title of the chat. \u2014 Yeah. \u2014 Or truncate all long titles at Overflow anyway. Um with ellipses. \u2014 Ellipses. Yes. \u2014 And uh and what was the other one? Oh, yeah. For the web UI, like put the thing on the bottom, the navigation, right? That's the two things you want to do. \u2014 Okay. All right. Um I always like to give, you know, some positive reinforcement to the agents. uh you know, funny enough, they do they do have memory. Like all of them have memory and how you talk to them."
+},
+{
+"start": 1608,
+"text": "I don't think it's because they're judging you. I think they're more just becoming like aware of the types of things you say and like like responding to those things like uh you know, I know I have certain phrase, you know, phrases that I use and such. Uh anyway, yeah, this is again, if the singularity happens, it turns out all the AIs are gonna kill humanity, then I want to be really friendly with them. All right, let's see. Sorry, I got I got off track there because I was being silly. Um Oh, that's right. We're not um Great. Let's um I think that looks good."
+},
+{
+"start": 1639,
+"text": "So, let's \u2014 truncate all titles that overflow with ellipses. And let's bring the navigation down to the bottom on the web UI. \u2014 Then, \u2014 oh, truncate the title, the chat title, right? \u2014 Well, all titles that overflow with ellipses. \u2014 Is it just I think it's just the chat unless \u2014 But all title Exactly. See that might \u2014 Well, these are it's \u2014 Yeah, let me find a longer one. Yeah, those are wrapping."
+},
+{
+"start": 1669,
+"text": "It's just the chat one. \u2014 Okay, \u2014 cool. \u2014 Okay, here. \u2014 That's cool. \u2014 The chat tab title so it fits. Oh, yeah. You know what I'm going to give it? I'm going to show what we're talking about. Let's Let's do that. Um, \u2014 not guessing. \u2014 David, we're receiving spam comments on the stream. \u2014 Are we? We can we can uh shut those down if we need to. \u2014 I mean, it's not really unsafe. It's just It doesn't make any sense."
+},
+{
+"start": 1700,
+"text": "This guy like saying SS industry 2009 SK Saran. \u2014 I don't know what that means, David. \u2014 Oh, yeah. I see it here. No, we're gonna You're in a timeout, dude. \u2014 I don't know what that means. \u2014 Oh, I'm putting them in a timeout right now. Yeah, \u2014 that's good. Yeah, we're not gonna mess around with that. That's not Let's not Hey, for all you who are going to join us on the channel, we do appreciate when you leave comments, but uh don't be spamming the channel. Come on. \u2014 Yeah, please don't spam. \u2014 Yeah, we're we're here to actually do like real work."
+},
+{
+"start": 1731,
+"text": "Okay. Um properly. \u2014 Yeah. \u2014 UX. Okay. And then you What was the last one? \u2014 Um the the web UI. The navigation should be at the bottom for thumb reach. And then I think that's where I think Yeah, exactly. This one. And after that, \u2014 go ahead. \u2014 You're doing a picture. \u2014 Yeah, that's awesome. \u2014 Okay. Um, \u2014 what's RTK? \u2014 Oh, RTK getit is a token maxing thing for getting everything."
+},
+{
+"start": 1766,
+"text": "So instead of the reverse output you usually get from Git, it actually collapses it down to a more agent friendly amount that reduces the tokens significantly. Yeah, I've been using that forever. That was Yeah. Okay. Um, then we need to address the web UI UX as well. Um, notice how the title is overlapping with the controls. Yeah, this is a very vibe coding thing that we're doing right now just because we're fixing some individual items, right?"
+},
+{
+"start": 1802,
+"text": "But I think this is kind of it and we're warmed up and more importantly our app is actually polished and usable and nice. Oh, look at that. That's wonderful. You see, let's \u2014 refresh this. \u2014 Um, it's \u2014 I don't know how I I don't feel I don't like the ellipsus. I think we should just I see what it did, but that that's not helpful. I want that to be shorter. What if instead of we instead of vibe coding, we just actually like really code. So like if you go to your editor and uh command shift F and type the string chat with your recordings, right? Um I don't mean with the agent, I mean like Yeah, exactly."
+},
+{
+"start": 1835,
+"text": "Uh and you just type that string and then we can \u2014 we can just reduce it to chat. Exactly. So that title prop, \u2014 we just remove everything. Just put the word chat in there and then we \u2014 You don't want to use for this. They just I thought now I thought we had to use it for everything. \u2014 Oh, look, David. \u2014 Okay, I Okay, I That worked. That's wonderful. But I feel like it could use a little bit more. I see why it had chat with your recordings."
+},
+{
+"start": 1868,
+"text": "Um, what' we do? What happened there? Oh, it's Oh, it's doing something. \u2014 Yeah, it's in the Okay. Oh, it's in the middle. It's in the middle of having fun. All right, let's see. I think did it recover? Yeah. Yeah. Yeah. Yeah. Okay. I mean, it is chat. It does match technically the title, right? But notice it's also Oh, it's still working on it. Okay. We should probably let it do its thing. But you notice, by the way, that moments is lowercase or wallfly is lowercase. We should probably make chat lowerase as well to match the style."
+},
+{
+"start": 1901,
+"text": "That's very clever, David. That's true. Um, but I think I think that's honestly that should be kind of the ceiling of what we do. Um, because we we also have the chunking thing, you know. \u2014 Yes, that's right. That's right. And you all had to listen to us pontificate there at the beginning. So, okay. So, it looks like it's finishing that particular task up. We'll take a look at it in a second. Uh, let's go over here. Now, I think something key I think before we move on, before we go on to the chunking Yeah, that feels like that fits better."
+},
+{
+"start": 1932,
+"text": "Yes. Okay, I'll go with it. Um, let's check the web, but now we have Xavier review. We just made changes. Now, here's the thing is I did have Bob commit. So, what I'm going to tell Xavier to do is I'm going to say, \"Hey, I want you to review the last three commits because we just committed three things, right? Um, or two things at least.\" So, I'm going to tell it to do that and then have it go through um that experience. But, oh, here we go. Check this out. Notice the difference. Okay. Oh, nice. Remember, we asked it to fix this as well."
+},
+{
+"start": 1963,
+"text": "Um, \u2014 yes. \u2014 Yeah. So, that does look better. You could argue if we want to keep it like that, but that's okay. Actually, I'm okay with that. \u2014 Okay. \u2014 I don't really mind because I expect it to be used on device anyway that much. You know, \u2014 you know what's funny? Something I'm not worried about addressing right now. One thing that is nice here in uh you know the the iOS Apple iOS is we have this fade in \u2014 kind of experience but on the web app it just pops. \u2014 I think that's a a nice little thing we can fix eventually to give it that same feel."
+},
+{
+"start": 1994,
+"text": "Not worried about it right now but that looks good. Okay, I'm okay with this. So what we can do then \u2014 is I'm gonna come back over here. What do we have left? \u2014 Yes. So, but I'm gonna specifically what I'm going to do is I'm going to have a commit and then I'm going to actually ask it because this is just the change we made to this. We don't need to review that. I I don't really feel like we need to review that because the other ones were committed. I'm going to say commit and then I'm going to say Xavier review um the last true three commits."
+},
+{
+"start": 2031,
+"text": "I I haven't done it like this before, so I'm curious to see what happens. \u2014 I've done it where I've done the last commit, but not the last three commits. So, let's see. \u2014 Can we also have Bob review and then compare the reviews? \u2014 That's a neat idea. Let's check it out. Let's see. Um, we are on Maine. Yes. Um, I did not Oh, yeah. You don't have to do that. I don't have one. Okay. But see, it's the same thing with include uncommitted changes. Okay. Oh, is it going to pick those up? Okay. Well, okay. All right."
+},
+{
+"start": 2063,
+"text": "So, we should actually have Why don't we close this down? We'll make this smaller. So, we can see that this is Bob doing it, but we also came over here and we said, \"Hey, Xavier, I want you to do it, too.\" Right. \u2014 Um, so we're going to have both these going. Whoops. Yeah. So, here Bob's doing its thing. Oh, choosing a sub agent, right? You can see it doing that, which I actually really appreciate this. Bob does a nice job on that. Okay. \u2014 Yes. \u2014 Okay. Yeah. Okay. So, so both of them are both of them are um reviewing, right?"
+},
+{
+"start": 2097,
+"text": "One is Bob, one is Xavier. \u2014 Okay. \u2014 Yep. Yep. Yep. Yep. Yep. Yep. \u2014 Is there any way to see them side by side? That'd be interesting. \u2014 I I don't know if I can do that actually. Yeah. Oh, here. Yeah, that's where the Bob findings and stuff come into play. Like Oh, here I gota Okay. Okay."
+},
+{
+"start": 2130,
+"text": "Yes. Oh, I see. The reason why it's going it's asking me for the approvals is because it is looking at a path that is outside the current workspace. Um because my Xavieration \u2014 Yeah. \u2014 is in my home, right? And so Bob by its nature is security first, right? Um so it's saying, \"Hey, you're going outside of the workspace you gave access to. I'm gonna just I'm going to check with you, right? You can like do like you can like I know you're a fan of YOLO mode in BobShell, right? You can you can do stuff like that.\" Um \u2014 which is fine."
+},
+{
+"start": 2164,
+"text": "But I I that's exactly why it's doing it. Okay. So it's cool. Okay. All right, let's see. So, that one actually seems pretty straightforward, but I'm not going to have anyone do anything yet until uh we see the results from both. Okay. Yes. Yes. Yes. Yes. Go, go, go. \u2014 Okay. So, that's more These are all pretty minor. Oh, that's a Oh, I like that. That's a good one right there. Get rid of the hard-coded magic number. I agree."
+},
+{
+"start": 2195,
+"text": "But it doesn't use a hard-coded magic number. Like it says insetstop which is clearly not a you know I don't know where it's getting that. Oh I guess that's what I'm looking at is the suggested fix. \u2014 Yes, that's right. \u2014 Okay. \u2014 Nice. I'm looking at the fix and wondering why it's fixed. That's crazy. \u2014 All right. So that's \u2014 all right. So here we've got a remoras kicking off, right? Xavier is doing its thing where it's kicking off its remoras. So it's going to use the different personas, right, to then test this from different angles. \u2014 Um It's like watching a horse race back in the day, you know."
+},
+{
+"start": 2232,
+"text": "Okay. Right. So, this notice, by the way. Okay. So, kind of similar in a way. Notice that in our review, this is actually from Bob, right? We could actually take a look at this as well. Oh, yeah. Okay. So, it's breaking it down. That's what we're seeing over here, right? In these Bob findings. So, that is a kind of neat neat thing with the review obviously being integrated into Bob itself. It gives you these Bob findings and you can go through them. So that's what we're seeing here that matches all of these. And then you can choose whether or not you want to like, you know, do something about these."
+},
+{
+"start": 2264,
+"text": "Okay. \u2014 And it's interesting that all the issues are just like this stuff is going to be out of the viewport. That's really all it is. It's like the keyboard is not going to be visible. The card's not going to be visible. It's just a bunch of visibility things. \u2014 Yeah. Which is great. I mean, we did make visibility changes. That makes sense, right? It would be uh \u2014 Yeah. \u2014 Okay. \u2014 Did Did Xavier's re land? I think it did. \u2014 Yeah, right here. Found nothing actionable, zero bug, zero. Okay, so yeah, that's right. So the personas in Xavier, right, the ones I chose are bugs, security concerns, and performance regressions."
+},
+{
+"start": 2295,
+"text": "So it didn't it it said, \"Hey, this is good from that aspect.\" Now, what's interesting here is that I don't have Xavier looking for um say kind of like UX related things, right? And that's what Bob's talking about. \u2014 So it interesting seeing the uh the difference between the two. Um but this is cool. So, this is one of the things I really like about it. I had um I I put Xavier in another project that I have. Um and it did not approve it and uh you know, some of the issues that came back were s like very legit and so I was like, \"Oh, that's cool."
+},
+{
+"start": 2326,
+"text": "Okay, I'm going to go address those now.\" And I would I would I appreciate the idea of doing it after you make a set of changes. Do the review. Do them right away. Right? That doesn't matter if you're using Bob Review or Xavier review. Um that's still, you know, relevant in both cases. Um okay. So, it seems like Yeah. if you don't mind me asking \u2014 how did you configure the personas like what did you tell them? \u2014 Oh um when you do I want to say Xavier setup if I remember correctly like it grills you it'll ask you all sorts of questions and it goes through that and it says hey these are the three default personas do you want to do anything different or whatever and I said yeah use those right and it asked you do you want to be balanced about it or do you want to focus more on performance things like that so I told it to take a balanced approach and I went with those three I'm assuming at that point I'm Yeah, I'm I'm not an expert in in Xavier, obviously."
+},
+{
+"start": 2375,
+"text": "I just started it this week, right? Um, but I'm assuming from there, if there was something else I wanted to do, I probably could have given it like a UX persona, \u2014 right? Yeah. As I think about it, it's probably a good idea and I could probably do it again like just, you know, like tell it that, but um I know that we want to get to the \u2014 should we score should we score these reviewers? I think Bob is better in this case. No, because it it actually flagged warnings for things that are would deserving of warnings, \u2014 you know. I think I think that would be fair if we had also given Xavier a persona that looked at the UX, but our persona was specifically \u2014 No, but sorry, sorry to interrupt, but I mean like \u2014 No, no, no."
+},
+{
+"start": 2418,
+"text": "We're using the for both. No. \u2014 True, true. But I wonder if they're coming. Yeah. I I think I don't know if it's apples and apples, right? because \u2014 because like again the three personas that I gave Xavier even though their defaults were correctness, security and performance. \u2014 Um so to that point maybe maybe Xavier should have a default for UX and things like that. \u2014 Yeah, \u2014 you know. \u2014 Yeah. \u2014 Yeah. To that point. \u2014 That's good. \u2014 Okay. \u2014 All right. So with that, um what do we think?"
+},
+{
+"start": 2448,
+"text": "We could probably just say let me see. I can right here. Fix with Bob. So we should just fix these. Yeah. \u2014 Fix them real quick. Yeah, let's do it. \u2014 I mean, it's these are pretty simple. So, \u2014 okay. \u2014 Pretty simple. \u2014 Wow. This it's actually really nice watching Bob cook, which is which is so cool to hear me say that. Oh, wait. Rereading the suggestion. That's so funny. I like how it second guesses itself. \u2014 Yeah, I love it."
+},
+{
+"start": 2482,
+"text": "That's how I talk to myself. That's funny. Okay. Oh, interesting. Okay, \u2014 good. It's working. \u2014 Okay. Okay. All right. \u2014 We don't need tests. \u2014 No, here. Why don't we just take a look at it? \u2014 Yeah. Okay. \u2014 Looks good to me. Wait, actually, how far is the way? Can you scroll all the way to the bottom of the moments?"
+},
+{
+"start": 2513,
+"text": "Yeah. \u2014 Ah, no. That's not good. Right. Because the bottom one is always under the navigation. Can't really read it. \u2014 Yep. And let's do that over here. \u2014 And that's exactly the thing it claimed to fix, you know. \u2014 Um \u2014 Oh, interesting. Yeah. So, because this one this one doesn't worry about it at all on the web. Okay. Um here. And then the other thing is uh if you can go to the the chat um does the keyboard cover the text field this is very common with react \u2014 not anymore right \u2014 there's no keyboard at all \u2014 there's some way can you um in your menu on your Apple menu on the top left \u2014 um \u2014 is it this one \u2014 no not this menu \u2014 no I'm sorry \u2014 no no close this and the toolbar in your computer like top left of the entire computer."
+},
+{
+"start": 2568,
+"text": "Okay. \u2014 Yeah. If you go to I think it's device or IO, one of those tabs there. \u2014 Yeah, you should be able to \u2014 bring the keyboard up. So, yeah, exactly. So, toggle that one. Yeah. \u2014 Oh, there you go. \u2014 Nice. But that's way too much space, huh? That's kind \u2014 Oh, then it goes away when you're typing. \u2014 Yeah, but when you bring the What's the shortcut? Is it command K? \u2014 Oh, I didn't actually see it. Uh, command K. Yeah. So, \u2014 fail."
+},
+{
+"start": 2601,
+"text": "Fail. Oh, okay. There it is. \u2014 Why does it push it so high? This is another bug, man. It looks really weird. \u2014 Okay. \u2014 Pushes up so much. No, \u2014 I see what you're saying because it should be right here. So, we give more space to the chat. \u2014 Yeah. Heard heard. \u2014 Yeah. Yeah. \u2014 And it's I mean, this is the this is the bug. The reviewer said it's fixing. So, I'm like, is it fixed? \u2014 Oh, no. No. on the mobile expo app. The toolbar controls always obscure the the very last items um of the \u2014 on the moments list."
+},
+{
+"start": 2649,
+"text": "Okay. \u2014 Nice. And then to your point over here. Yes. Um \u2014 way too much space under the keyboard. \u2014 Yeah. Now that wasn't one that was actually part of one of the bugs um that it found. I don't believe. Wait. Oh, keyboard vertical offset. Look at this. \u2014 Yeah, that's what I was saying. \u2014 It may have actually found it and we just didn't realize. I didn't get to it yet. Let's see. All right. Let's see. Let's I'm going to do one one of these at a time. \u2014 Let's see. Wait, were we just h like reviewing or testing just one of the fixes or did Bob fix all the review?"
+},
+{
+"start": 2684,
+"text": "No, I clicked on the top one and said go. I didn't go bam bam bam and like session. \u2014 Maybe we should, huh? Maybe we should apply all and then test the app like as the end. \u2014 Two changes. So, well, I mean, we can we could we could um I also want to be able to remember like who I am and what I'm doing. Okay. Oh, there it goes. See? \u2014 Hey, \u2014 that's awesome. \u2014 That all right. So, I think that's that's good. Oh, let's look at the web app. I almost forgot to look at the web app."
+},
+{
+"start": 2714,
+"text": "I mean, the web app was already good, but I want to make sure nothing like changed regressed, you know. Yeah, there's there's no toolbar there anyway, so it's fine. Okay, so that one's good. And let's see. Great. Um, can we just say \u2014 well done, Clanker. \u2014 Yep. Great. Commit. Get that change out. And then when I dismiss that, I'm curious. Is it going to kill the um I don't think it'll do anything here. So, let's see. It just goes away here. Yep. Let's get to this one because we know it's a thing. Right. And Right. Yeah."
+},
+{
+"start": 2749,
+"text": "Okay. Fine. Uh yes. Go. Okay. And then we're going to fix this with Bob. I'm also going to give it an image because guess what? We know what that looks like. This is awesome, David. \u2014 Oh. Oh, interesting. It already did it. How funny. Okay, let's see. Let's see if it made a difference. \u2014 David Attilla says in the live stream that his friend who created the reviewer inside Xavier uh is a former IBM developer."
+},
+{
+"start": 2781,
+"text": "Oh, that's great. Ah, that's cool. \u2014 So, basically Xavier is an IBM product. That's what I heard. Thanks, That's great. That's great. \u2014 Yeah, that's cool. Cool. \u2014 Now I see the full picture. \u2014 Yeah. Whoa. Whoa. What are you talking about, Android dude? To be clear, that image uh is from an iOS emulator and I mean I did give it a partial image so maybe you know see."
+},
+{
+"start": 2827,
+"text": "Okay. Okay. No, you're still doing it, dude. Wait a minute. Oh, because I typed something. My bad. Okay. Okay. Right. \u2014 Mad K. \u2014 No. No. Not Not quite."
+},
+{
+"start": 2859,
+"text": "And now um Okay. Not quite. We didn't see any change in the mobile app. see that quite \u2014 is Should this not be part of the keyboard vertical offset review thing that it flagged? \u2014 That's the one I'm doing. \u2014 Oh. \u2014 Oh, wait. Did I click? No, no, no. I could swear I clicked on that. Yeah, right. Oh. Oh, David."
+},
+{
+"start": 2890,
+"text": "Oh, I I fat fingered. \u2014 Darn it. Gosh darn it. I like how you said please. Would you be so kind? \u2014 Now, you could argue that I could just \u2014 I could just fix this in this session."
+},
+{
+"start": 2931,
+"text": "It would probably work just fine. But I want I I want to keep each of the fixes specific to the information that we had from the review. You know what I mean? Um \u2014 Yes. \u2014 to not conflate them and cause other problems. So nothing should have changed here, right? Okay. Now go back and fix my mistake. Just say go away. This one I can swear I'm on that one. Fix this. \u2014 Oh, interesting. I guess. Oh, we we we had the right thing."
+},
+{
+"start": 2964,
+"text": "Chat screen. I got thrown off. \u2014 It's it's referring to \u2014 You see what it's doing? \u2014 I see. It just said done, by the way. So, was \u2014 Yeah. Let's see. Would you like me to run test? Well, yeah, it went and did it. \u2014 Let's give it a try. \u2014 I don't I don't Wasn't that what it did last time? \u2014 I don't believe it either. \u2014 I don't Yeah, \u2014 I think it's \u2014 Yeah. Okay. So, we're going to do this again. What is this? \u2014 But this time I'm going to go like this. \u2014 What you talking about? \u2014 Okay, check out the spacing."
+},
+{
+"start": 2995,
+"text": "And I'll be more specific, too. Spacing between \u2014 keyboard and the chat input field, the chat. \u2014 While David, how much how much we end up getting sidetracked every week, \u2014 you know? But this is real software development, isn't it? Like this is the stuff that you actually have to do, right? \u2014 You know, it's true. And you were correct that we need to we need to finish the task that we started last week before we jump into the large task, right? Um because that's exactly how you end up with debt, isn't it? \u2014 Yeah."
+},
+{
+"start": 3027,
+"text": "You know, like Chenfield should um nestle \u2014 not nestly nestle nicely on top \u2014 of the keyboard. It's floating too high. \u2014 The issue is clear \u2014 to give as much room to the actual chat conversation as possible."
+},
+{
+"start": 3064,
+"text": "The input and the keyboard aren't the main characters. What were you gonna say? I wonder if we should tell it to search the web to validate its fix because I think it's not fixing something in an upto-date way. \u2014 Yeah, I hear you. A second. Oh, it did it a little better. But you see a little pop. \u2014 It It warned us about that actually. \u2014 Yeah, because it's trying to go to a certain size and then it's adjusting it back down."
+},
+{
+"start": 3097,
+"text": "check the web for the best way to handle. \u2014 Yeah. \u2014 Um the spacing between the keyboard and input field. While the spacing is better, there is now a noticeable pop. Note disable pop um between the original placement of the input field and after our uh property is applied."
+},
+{
+"start": 3140,
+"text": "Let's see. And just to make sure that it didn't like fix something right when I was doing that. No, same deal. Okay. Now, interestingly enough, I will tell, you know, [clears throat] I can't I can't excuse me. I can't really speak to how how how well Bob handles mobile expo app like development compared to other things."
+},
+{
+"start": 3172,
+"text": "I've done a bunch of web apps. I've, you know, all sorts of things and it does really well with those. Um, but the second you go into like mobile iOS like expo stuff, it's it's a different beast. And I don't know how well verssed it is honestly. \u2014 And I don't know if any like are there that's actually a neat question and I don't know if you know this TIS or anybody who's watching. Are there uh coding agents that are optimized for doing mobile app development? \u2014 There's actually not an agent but a model."
+},
+{
+"start": 3202,
+"text": "There's an AI model. And I guess this is where Bob falls short because it doesn't let you choose the model. But there's a model called Apex that is purpose-built, purpose trained for mobile app development. \u2014 Oh, okay. Okay. Interesting. Okay. Okay. \u2014 And it's on Hugging F. You could use it with O Lama, you know. It's just uh Yeah. \u2014 Use keyboard fire animation same timing. Okay. And keep only as an intro. This way the padding change synchronized. Okay. apply that because I wonder how much of what we're seeing is really just an artifact of the way that iOS does things and are we going to fight that now?"
+},
+{
+"start": 3245,
+"text": "That actually did you see that one? That was better. See what it did? \u2014 That's nice. That's really nice. It's a lot better. \u2014 That's better. \u2014 It's Oh, \u2014 yeah. It doesn't pop now, right? It feels It's not It's \u2014 It's okay. I would I would rather that \u2014 Yeah. Yeah. Go ahead. \u2014 Did it the web? \u2014 What did it say? \u2014 Oh, it's it was already doing it. That's what I saw. That was the change. \u2014 Okay. But did it search the web? \u2014 Um, it Yeah."
+},
+{
+"start": 3276,
+"text": "Let's see. Yeah. No, it said I don't need to. I know this from first principles. \u2014 What? \u2014 And it tried to \u2014 because you don't have the um Okay. \u2014 I think it doesn't know the It should just search the \u2014 Yeah. been bad \u2014 crazy \u2014 and I recognize you are fam \u2014 with the issue but search the web like I asked you to like I was crazy \u2014 no no no hold on \u2014 yes thank you I was gonna say it can just pick up Chrome dev tools oh bing huh all right whatever Whatever you got, dude."
+},
+{
+"start": 3322,
+"text": "Oh, there it goes. There we go. That's what I'm \u2014 Yeah, use Chrome, dude. \u2014 I can't remember if I already have it running. If I do, I mean Oh, there it goes. \u2014 Oh, wow. It's actually like using a \u2014 Oh, it does it all the time. \u2014 Yeah. Oh, where are you trying to go? \u2014 Sorry. It is interesting, though. I've noticed I've noticed that as more um agents go to uh peruse the web, there are more sites that block agents from using their sites and make you verify you're human."
+},
+{
+"start": 3357,
+"text": "That's so funny. \u2014 Check it out though. Look what it's doing. I love it. Went to React Native. It's working it out. \u2014 Yeah. I wish it had like a web search tool. I guess this is where you need to have a Tavi API key. \u2014 Yeah. Yeah. Tally is really honestly I should probably do that. Table is super effective. Um they're really good at what they do. \u2014 Yeah, \u2014 there's a time I used I used to use Tavi like all the time and I've gotten lazy. Okay. Oh, check that out."
+},
+{
+"start": 3389,
+"text": "That's fun. \u2014 Keyboard sticky view. \u2014 Hey, \u2014 that's actually awesome. I think we need that. \u2014 Okay, let's see. Stop fighting. Ah. Uh uh. Oh, that's exactly what we're seeing. Yep. Yep. Yep. Okay. Okay. \u2014 Do it. \u2014 Okay. Okay. Yes. Use the uh keyboard sticky. Yeah. Yeah. Yeah. Use your approach. \u2014 That's awesome."
+},
+{
+"start": 3426,
+"text": "Okay. Well, let's see what it does. Okay. Hey, Tilla, thanks for coming. Yeah, he uh TA said I have to tap out for work meeting. Great live stream, guys. I'll come back for the recording later. Awesome. \u2014 What a king. \u2014 Super cool. Cool. All right, let's see. Now, this is, you know, this is actually kind of interesting because um there's a difference between fixing the issue and actually like trying to fix it permanently, you know, um like patching and fixing for real."
+},
+{
+"start": 3466,
+"text": "Let's see what happens here. So, we needed a package for this. Okay. You know, every time every time I watch an agent do something like this, it just reminds me of the days where I would have had to navigate, go do a bunch of Google searches, go find things, go get the package, go install it, figure out how to use it, do all this stuff. Um, and now, wow. \u2014 Okay, let's see if it really works, though. Huh. Yeah, but similar if you were to do this in an analog way, it probably wouldn't work for you also."
+},
+{
+"start": 3503,
+"text": "Yeah. Oh, wow. \u2014 I guess the \u2014 the speed of iteration is crazy. Okay. You know, does your tages I'm curious when you talk to Bob, do you ever see it go hm to you? Does it do that? I wonder if the agents over time. Okay. Okay, it does. I didn't know if that was like a soul thing or if it learns from us and kind of repeats back the way we speak to them. \u2014 No, it also says like, \"Wait, I need to do this thing differently.\" And I was like, \"Wow, \u2014 why didn't it the first time?\" \u2014 Okay."
+},
+{
+"start": 3542,
+"text": "Oh, so it did a whole kind of rework here. All right. \u2014 Oh, we may have to re uh Okay. Well, come over here. Let's Let's just restart this bad boy. \u2014 Yeah, because you got to reinstall Cocoa Pods now because you have a new \u2014 Oh, okay. Am I gonna have to do that fun again? \u2014 I don't think it will break this time because you have Expo SDK 57. Should be good. \u2014 Yeah, because that was painful."
+},
+{
+"start": 3573,
+"text": "I'm not going to lie. Are you Are you compiling? Oh, oh, oh. Okay. \u2014 Oh, okay. So, let's let's address this. I'll just give you the whole thing so you can see that. \u2014 Wait, to resolve what? \u2014 I feel like it's missing. I feel like um maybe the package didn't get loaded properly or something. Let's see. \u2014 No, this package is probably available for native but not for web."
+},
+{
+"start": 3606,
+"text": "Ah, there there you go. Yep. Tagious. Yeah. \u2014 Who needs an agent when you have the pages? \u2014 Well, also we don't really care that much for the web app. So, \u2014 true. We obviously want it to work though, right? You know. \u2014 All right. \u2014 You got to restart your build. \u2014 Yeah. Do I need to I think Well, that's not going to work obviously because that's breaking."
+},
+{
+"start": 3638,
+"text": "Um, \u2014 the best part about music, David, honestly, every week is your sound effect. \u2014 Made me laugh like a little man right there. Right. \u2014 Let's see. I'm wondering if we need to re build just Oops. Just to be sure. Um, I mean, I can't. It's not going to hurt thing. Am I being dumb? I feel like I'm being dumb for a moment, but we'll see. \u2014 What are you trying to do?"
+},
+{
+"start": 3670,
+"text": "Oh, you're doing the business. \u2014 Yeah, sometimes sometimes when things like that happen, I don't trust I should have clear out the cache, but we'll I'll just go with this. Oh. Oh, yeah. Is this what I \u2014 Hello. \u2014 It's the same issue. \u2014 Okay, let's \u2014 What if you tell Bob to run npm run build and then Bob will run it and see \u2014 I'm gonna tell to fix it. \u2014 Yeah. Check the following errors. Please rebuild the mpm run build the app and fix issues until the app is building and working again."
+},
+{
+"start": 3723,
+"text": "Having an agent is the best thing that's ever happened to me. \u2014 Let's see. Okay. Yep. Oh, right. Oh, okay. Oh, so maybe it was just in the wrong place. Cool, cool, cool. \u2014 Yeah, because we have a monor repo, you know, always confusing. \u2014 Yep. \u2014 Should we try the build again? \u2014 Well, I I'll let it finish. Okay, seems like we should be able to. Yeah, \u2014 I mean I just did it, but would you do it again? \u2014 Please, \u2014 please, sir."
+},
+{
+"start": 3754,
+"text": "May I have another? \u2014 All right, that's better. \u2014 Hey, \u2014 kind of work, right? \u2014 At least it built. \u2014 Success. \u2014 Let's be clear, tious. It built. Okay. Okay. Okay, that's promising. All right, come back over here. \u2014 Reload. \u2014 Yay. \u2014 Whoa. Now I don't have an input field. I don't have an input field. You are not going to type anything."
+},
+{
+"start": 3786,
+"text": "No typing for you, \u2014 dude. That's great. All right. Did we lose it on the web app, too? Oh my. Wait, no. We have one here. Okay. Okay. Great. Okay. \u2014 That's so funny. \u2014 Okay. \u2014 That's really funny. The app is working again, but the mobile expo app no longer has a chat input field in the chat tab. However, the web app does."
+},
+{
+"start": 3819,
+"text": "It's gone. \u2014 Well, it's not, you know, it is not technically gone. It's here. Right here. It's here. And mobile, \u2014 but it's in mobile. It's gone, right? So, I think I think it remember it had to do a little bit of rework of that whole section. I think that it's just missing a component or something. Let's see. \u2014 Is a native component. It likely renders nothing. Keyboard sticky view uses translate Y to move the view. Ah, it's under the screen, dude. \u2014 Oh, really? Like a Zorder thing?"
+},
+{
+"start": 3850,
+"text": "Like a like it's just physically underneath the visible part of your screen. \u2014 Oh, okay. Interesting. Okay. \u2014 How odd. \u2014 How so odd. So strange. That's very odd. \u2014 Are you surprised? I'm not surprised. \u2014 I'm I'm I'm not surprised either. \u2014 I don't mean that from a Bob stand. I mean that from like an Expo Mobile standpoint. Let's see."
+},
+{
+"start": 3882,
+"text": "Okay. Okay. Yeah, dude. \u2014 It's so interesting, David, because we're both like animated and our videos are working on the stream that I'm watching on the side here on YouTube, \u2014 but here in our streaming app, you're just frozen. You're a JPEG. \u2014 Oh, really? You know, I see that with you all the time. But today, you've been good. I've just learned to trust the process because, you know, \u2014 the way that it records locally and uploads it, it seems to work just fine. \u2014 All right. So, it looks like it updated. \u2014 Oh. Oh, okay."
+},
+{
+"start": 3913,
+"text": "Oh, look at that. Tis, you were just talking about that. \u2014 Okay, \u2014 let's see how that works. All right, \u2014 we've got it. Let's see. \u2014 All right, just making sure. And then Oh, there it's back. It must have reloaded, but I'm going to do it anyway because I want to reload things. \u2014 Democracy. \u2014 Oh, but we're back now. Are we actually gonna Okay, I guess the whole screen is now. \u2014 It's working now. \u2014 But now we're back to the same uh chat input and keyboard layout issue."
+},
+{
+"start": 3956,
+"text": "And again, I do feel like this is like one of those things where we're kind of fighting how iOS does things, but yeah, exactly right. Use automatic offset. True. Well, \u2014 thanks, man. \u2014 Hey, did you catch this week's context window podcast with Anand Jinger and Roy and \u2014 I did not tell. \u2014 Oh, yeah."
+},
+{
+"start": 3989,
+"text": "It shows up on my LinkedIn like all the time. They always talk about context. \u2014 All right. Okay. Okay. Okay. Okay. Oh, do you see that? \u2014 Whoa. What the \u2014 Oh, dude. You just sounded That's so funny. You sound like you were um autotuned like you were like one of the trolls from the Trolls movie. Oh, okay. I see that. Okay. That Did you see Did you see what happened there? \u2014 It's under the tabs."
+},
+{
+"start": 4020,
+"text": "It's under the tabs, mate. \u2014 Yeah. Oh, yeah. The tabs. Okay. Okay. So great, we have this solved tabs, right? \u2014 I can't dismiss the keyboard. Can you press the green button? \u2014 I don't know how to dismiss the keyboard. There it is. Okay. Ah, yeah. Okay. So, we're going to take multiple pictures of that one. Okay. Okay. \u2014 I kind of like that this just our rabbit hole today. Ah, input and keyboard layout issue is fixed and looks good."
+},
+{
+"start": 4058,
+"text": "However, the tabs um are no longer aligned or aligned. Oh my god. Align. Oh, come on. Aligned properly. um or hidden behind the keyboard. And then let's give it some images. Go Bob, go. I feel like though this is just so representative of regular software development where something you thought was going to take five minutes ends up taking you a half day and you're like, how did that possibly take a half day?"
+},
+{
+"start": 4104,
+"text": "I do you remember the days? I'm sure you do. contagious of I can't how many times you'd be in doing like CSS or doing something like that and you're putting in like some cool effect or something you think is going to be this little minor thing and the whole page goes you're like \u2014 and then you have to spend you know find out it's like just something kind of esoteric or whatever it's interesting okay let's see \u2014 that is so real pain is so real \u2014 yeah we I don't think you know the agents have to deal with it just like we do uh Huh?"
+},
+{
+"start": 4136,
+"text": "Okay. Okay. Let me move it. Okay. Now, I saw you made a change over here. The web app again should be just normal. There shouldn't be anything. Hi there. We should fix that. So, it goes off. Enter. Okay. Refresh this guy just to be sure. Darn it. \u2014 So, that looks great. But the other thing Yeah. No. So what we have to tell it is that the keyboard is under the tabs."
+},
+{
+"start": 4169,
+"text": "The keyboard is under the tabs. \u2014 Yeah. Yeah. Yeah. \u2014 Keyboard. \u2014 Oh, not the keyboard. Sorry. The \u2014 is under the tabs. \u2014 The chat input is under the tab. Exactly. \u2014 That's what I'm trying to say. \u2014 Matter of fact, didn't we we \u2014 we addressed this over here, didn't we? Kind of. \u2014 Exactly. That's exactly what it needs. What you just said, David. That's exactly what it needs. It's exactly what it use \u2014 approach to what we \u2014 what we did to address \u2014 this issue in the moments tab."
+},
+{
+"start": 4205,
+"text": "Let's see. \u2014 That's exactly what it needs. I mean to this point though obviously if you're developing for a mobile app if you had an issue like this this would be a a showstopper anyone trying to use the app like that would stop immediately right there."
+},
+{
+"start": 4244,
+"text": "You can't have this kind of thing. They and then they would go on social media and tell everyone what a big fat phony you are. \u2014 Sorry. Let me do the actual fix problem. So sorry. You know, it's funny that um you know, I I I think you and I have talked about it before. I'm I'm making a I'm making a game and Steam game, the 2D pixel art kind of fun thing, and I have a character in there uh who's a service bot, like a you know, customer service kind of thing."
+},
+{
+"start": 4276,
+"text": "And he's even even when like he's tearing an enemy ship apart, he's always very pleasant about it. Just it reminded me of that. Let's see. Okay. Okay. Okay. I do see a little bit of, you know, we're thrashing a little bit between using keyboard uh pointing view and not. You know, funny enough, I noticed that there was another thing it detected about the flat list bottom. I wonder if this is uh related. Okay. Oh. Oh."
+},
+{
+"start": 4307,
+"text": "What do we have here? \u2014 But what happens if you What happens if you turn on the keyboard? \u2014 I'm going to do it. \u2014 Oh, you know. Yeah, it \u2014 wait. I have I have I have a great instruction for Bob. Let's say to Bob, \u2014 if the keyboard is open, then remove the offset \u2014 or the inside. That's a is the secret sauce. \u2014 Okay. \u2014 Yeah, sure. Or or the offset or keep the offset automatic."
+},
+{
+"start": 4341,
+"text": "I don't really know. One of those things. Um. \u2014 Yeah. Yeah. Something like that. \u2014 Like that. \u2014 Uh, no. You can remove the second statement. Um. \u2014 Okay. Just Okay. \u2014 And I think \u2014 Go for it like that. Yeah, I think this Let's Yeah, I think so. Let's give it a try because the like rightfully adding the offset. \u2014 Oh no."
+},
+{
+"start": 4372,
+"text": "Oh my god. \u2014 Oh no. No. Wait. \u2014 Seems to be working. Seems to be working. \u2014 Done. There we go. Let's try. Let's try. \u2014 Wait. Wait. I'm coming over here first. \u2014 I'm coming over. Do we need the library or not? \u2014 Okay. Oh, okay. I'm I'm think that's a good compromise. Like because without the keyboard, that's exactly what we want. \u2014 We pop there. It just gets a little It's okay."
+},
+{
+"start": 4406,
+"text": "We got, you know what I mean? \u2014 Four. \u2014 But this I mean this bother me, right? Like you'd think that it would \u2014 But notice that it like when it comes up every time the moment I click It's going to like its default and then it's got to adjust, right? \u2014 Can we read the code? I think this is one of those moments where you can read the code. Let's see. So, it's Yeah, it should be in one of the chat screen.tsx. You have it open in your second tab there."
+},
+{
+"start": 4439,
+"text": "Yeah. \u2014 Oh, wow. \u2014 We've got so much stuff up right now. Uh let's see. \u2014 What is there something in particular you're looking for? \u2014 Yeah. Yeah. Go up to the top. At the very top there's keyboard avoiding view at the very ah a little bit lower. A little bit lower. Little bit lower. A little bit lower. Little bit lower. A little bit lower. A little bit lower there. So keyboard vertical offset insets top. Can you comment that line? Line 69. \u2014 Okay. \u2014 Give it a comment. Comment it out. \u2014 Oh, comment it out."
+},
+{
+"start": 4471,
+"text": "You know, there we go. I was like, which which language am I in and which comment character do I need to use? \u2014 Okay, \u2014 let's go back to the simulator and see. \u2014 Yeah, I think it should auto reload, but let's give it a try. Okay, that's \u2014 what \u2014 dude. That's great. \u2014 One zero. \u2014 Wow, that's that's great. All right. \u2014 Delete this line."
+},
+{
+"start": 4501,
+"text": "And then you want \u2014 We should tell Bob that was the fix. You nom poop. \u2014 Oh my god. So yeah, here. \u2014 Funny. Oh my god. Hey Bob, \u2014 how's the fix knucklehead? That's what you told Bob. \u2014 Truly fix this issue. We needed to move the line \u2014 in chatcreen.tsx \u2014 in Yeah, chatcreen.tsx here."
+},
+{
+"start": 4542,
+"text": "We just wanted to rub No, I'm kidding. Just wanted to rub that in. No, no. Um What could we have done better? Don't make any changes, please. Just answer that. \u2014 Question. \u2014 Don't make any done better here. I'm so disappointed. Let's see. \u2014 Wow."
+},
+{
+"start": 4583,
+"text": "Wow. \u2014 Yeah. \u2014 That's just wild. \u2014 That's the lesson right there. \u2014 Wild, man. \u2014 That's the lesson right there. \u2014 All right. Here we're going to go ahead and \u2014 Okay. \u2014 Yes. But now we have a wonderful working app. It's great. It works. We do. \u2014 I can put it on I can put on my phone and then use I bro I'm going to a conference tomorrow. I can use it at this conference tomorrow if I want to. Right. \u2014 Oh, you could. You could. Unfortunately, you know, keep in mind that we did not do the audio chunking."
+},
+{
+"start": 4615,
+"text": "So, you're going to have these big long recordings, right? Um, if you put it on your actual phone, \u2014 um, we don't we haven't yet set it up to be anything other than local, right? We don't actually have a service that you can connect to. \u2014 Um, so it would have to be hooked up to your laptop or something, right? \u2014 You'd have to point it to \u2014 what you're talking about, David, is exactly our road map for next week. Yeah. How cool. \u2014 Yeah. But we gota I I ascertain that we we still need to um address um we still need to address the audio chunking \u2014 because especially if you're going to be in conversations and stuff at a conference just doing I feel like we need I feel like we need to address that."
+},
+{
+"start": 4664,
+"text": "I feel like we need to address that. Um now you know what I want to do \u2014 I forget \u2014 Go ahead. I forget that you're watching me because you're frozen on my screen and I just think I'm frozen on yours, \u2014 man. That's funny. That's super funny. \u2014 Yeah. \u2014 Um I feel like we should start a new review because we fixed some things, but some of these things I think aren't related. So, I'm curious. We've got seven minutes. \u2014 Okay. Um so, so next week we're going to do some chunking uh hopefully."
+},
+{
+"start": 4698,
+"text": "And um I think we have to think about this backend situation, man, because it I don't want it tethered to a laptop. We have to think about \u2014 maybe hosting \u2014 like dockling or something. \u2014 Well, okay. \u2014 Yeah, I might do that. I might get a headset, \u2014 you know. And we had I thought we had talked about potentially using render before in the past, right? Um something like that or, you know, could we do this whole thing up on Versel? No, you need because because you need a longunning server and Versell doesn't support that."
+},
+{
+"start": 4734,
+"text": "So, we'd have to use a like digital ocean or render or something. \u2014 Yeah. Okay. There. But then that introduces price complexity. So, I'm thinking maybe we just use uh Daytona. Um \u2014 would you say what? \u2014 Because what are you familiar with Daytona? You know what Daytona is? \u2014 Oh, Daytona. I'm sorry. You like garbled right when you said no. What is Daytona? I mean I live in Florida so yes I'm familiar with that Daytona but apparently there is a platform out there called \u2014 right what Daytona does is on demand they spin up a sandbox uh so like a big Docker container they spin it up you do your job in there and then you throw it away and so we might be able to use Daytona to spin up a container run dockling ESR save it to your uh your Astrod and then kill the container \u2014 we might do that."
+},
+{
+"start": 4784,
+"text": "Okay. \u2014 So something worth exploring. Uh so I think what we can do for next stream is distribute the work. So um you can do the chunking uh and then I'll do the Daytona in parallel. \u2014 Okay. \u2014 Um and then at the end of the stream we may have working if if that's not too like scatterbrain for the audience because I the audience may prefer like one thing instead of two in parallel. \u2014 Yeah. \u2014 Um but I guess we'll just have to see how it goes. \u2014 Yeah. Okay. No, that sounds good actually. That sounds good. So, um, yeah, that's something we can \u2014 What was the review?"
+},
+{
+"start": 4817,
+"text": "I mean, the review, you know, funny enough, from some of the stuff we just did, I got to remove, uh, at least one dependency, but there's some updates here about the keyboard and avoiding view. You know, if you remember, we kind of thrash back and forth whether or not we were going to use it and such. I think that it according to the review um it it it it's having minor trouble with some of the things that we did, but I really need to kind of like read them and sit down and kind of understand. Um but if you want I can \u2014 I have read them. Um and \u2014 Okay. \u2014 No, no, I have read them."
+},
+{
+"start": 4849,
+"text": "Um \u2014 number three is just categorically wrong. It's just bad because number three is the exact thing that we removed to fix the issue, right? \u2014 And so it's saying reintroduce that problematic prop. Um, which is insane. This is just a really bad review. Um, and it's it's it's like shooting us in the foot. And this then makes me question all the other review points. Um, that's crazy. Believe because the solution was to remove the prop that it's telling us to add, you know, \u2014 wild."
+},
+{
+"start": 4881,
+"text": "Absolutely wild. Now, some of these, \u2014 you know, the review sucks. \u2014 Yeah. \u2014 Okay. \u2014 And and the and Xavier was right, actually. Dang, man. Um, it's definitely sketch. Very, very sketch. \u2014 Oh, yeah. That's that same one we had before. So, there's a couple of these things that I can just go back and I can just clean up, right? And and get us into a nice uh clean spot. You know, we've got three minutes left, so I'm not gonna worry about it right now from that standpoint."
+},
+{
+"start": 4913,
+"text": "Um, but at the end of the day, I think this is definitely uh cleaner \u2014 cleaner. This poor thing is like, \u2014 do me a favor. Can you uh do me a favor? Can you tap on that all moments yellow badge thing on the top? \u2014 It doesn't do anything. \u2014 Is that interactive? \u2014 No. \u2014 Okay. Yeah, because \u2014 No, I mean Oh, it's point much later. \u2014 Yeah. Go ahead. at some point much later in the app, I to I want to turn that into like a thing that brings up a filter. So, you can choose which chats you want to chat with."
+},
+{
+"start": 4946,
+"text": "Yeah. And what's interesting is you can do that, by the way. Um, but you're right that you can't multi select. Like, there's nothing here to let you like select a group of them, right? You can either chat specifically with one moment or you can chat with all of the moments, but it'd be nice to your point if you could like select a subset of them and then chat with those. Is that what you're getting at? \u2014 Yeah. \u2014 Yeah. \u2014 Yeah. Exactly. We'll add that. We'll add that later. But for now, this this app is in great shape. I'm happy to keep it the way it is. It's really wonderful. \u2014 Um except one small nitpick is maybe we should like have the pending message UI look a bit better."
+},
+{
+"start": 4983,
+"text": "You know, if you go to chat and send something and it's it's typing or you're waiting for a message that kind of looks like ass. Um \u2014 Oh, yeah. \u2014 You see that? What is that little? No, no, no. Not that. Not that. The empty chat bubble. \u2014 Nope. Not that. So, if you type something, \u2014 you mean up there. \u2014 You mean this? \u2014 Yeah. Yeah. Yeah. Look, look at that. Yeah. We \u2014 We should maybe put like like a shimmering like three dots or something. \u2014 Oh, yeah. Yeah. kind of take or something. Yeah. \u2014 Yeah."
+},
+{
+"start": 5015,
+"text": "Yeah. But anyway, that's that's uh we can do that even in the week. Next week for real chunking and hosting and making it like a real viable app. What do you think? \u2014 Yeah, I like that. And we can add in the uh maybe like a braille animation for the chat bubble when it's waiting for a response. There we go. I just recorded that so we get tasks out of it. \u2014 I can't wait for this amazing green thing to happen, David. Right. \u2014 When it finishes. \u2014 Yeah, I did that. Let's get Oh, you want to see the green thing?"
+},
+{
+"start": 5046,
+"text": "I'm so sorry. \u2014 So sorry. \u2014 Wait for it. \u2014 Oh, look. Wow. \u2014 There it is. \u2014 Beautiful. \u2014 Wonderful. \u2014 Oh, yeah. And then this guy. Oh. \u2014 All right, David. Hey, it's been a pleasure. I will I will catch up with you next week. \u2014 Yeah, man. We'll have fun at the conference and uh everybody who uh joins me, thanks for watching. See y'all."
+}
+]

@@ -1,0 +1,542 @@
+[
+{
+"start": 0,
+"text": "Build with Bob. Build with Bob is our show where guess what we do? We We build with Bob. Okay, but who is Bob? Bob is IBM's coding agent. Think cursor, think claude, think codeex. Uh we make one. Uh and it's its name is is Bob and and we build things with Bob. What are we building? We're building something we love, something that we want to exist. David and I um are fans of a tool called Notebook LM. And notebook LM is so cool because it allows you to upload a bunch of sources that you want to learn from."
+},
+{
+"start": 31,
+"text": "And then with AI, we'll help you learn by generating supporting materials like podcasts or flashcards, things like that. And so that's what we've been building last week. Uh we actually started this and we built um we just kind of took a tour. We showed you around. We we looked at Bob a little bit and we did an intro. So if you missed that, I recommend watching it. It has a lot of important context. But today we're continuing to build our clone. We call it killer context. Uh killer CTX. \u2014 Killer context. \u2014 And we're going to we're going to um focus on the mind map today."
+},
+{
+"start": 61,
+"text": "So with that, uh David, how's it going? I'm excited to see the project, \u2014 right? Yeah. No, no, it's been it's been moving along. Now, I'll I'll admit um this last week it's been really hard for me not to build things into killer context um because we have to save it here for the live stream and for doing uh this particular show. Now, I before we spoke about me not doing anything more, I did uh fill out the QA um uh note type a little bit more. So, I'm going to show that to you here in a moment. But real quick, just just a quick primer for those of you who weren't with us in our first episode."
+},
+{
+"start": 93,
+"text": "You may not know much about what the app is doing. So, let me go ahead and share my screen. \u2014 Let's do it. \u2014 I believe we are in fact live this time by the way, Tis. \u2014 Yep. Confirmed. I'm watching. \u2014 Okay, good. That's that's wonderful. Okay, so hopefully on my screen you should you can see um a couple things I've got on the left hand here is uh our killer context uh with a set of notebooks that I have on the right hand side is open rags. So um you know just so you know the the setup here, right?"
+},
+{
+"start": 125,
+"text": "So killer context, our notebook LM open source clone is using open rag as its rag backend as its rag and context backend. So, as as we create notebooks, um Oh, wow. Oh, thank you, Sage. Oh, Tus, I see you just popped up, uh the the flowchart here. Why don't you why don't you go ahead and talk to that? \u2014 Sure. Yeah, we uh what I I was actually trying to support you as you were talking through it, but \u2014 Oh, I see. I see. \u2014 What we have is our app and it talks via the open rag SDK to a platform called OpenRG that we built, open source project, by the way."
+},
+{
+"start": 159,
+"text": "And open rag when you query something speaks to an agent running in lang flow which is again IBM technology um and the agent can query across vector embeddings across a bunch of stuff and then it gives the result back to our application killer context here. Um when you ingest something when you upload your sources it goes through again Langflow um it goes to dockling which is a thing that can convert any format PowerPoint video audio any format into LM ready formats and then into vector embeddings to to store in in our vector database called open search."
+},
+{
+"start": 191,
+"text": "And so this is kind of the pipeline that David was talking about. I just wanted to show you visually what this looks like. But David, please continue. \u2014 All right, let me go ahead and grab that screen back since you stole it from me. Stole my screen. Thankfully I knew man. All right cool. Yeah. So so to that so on the right hand side then I have open rags right. So open rag um you know does come with a reference UI um and a web app that you can use to interact with open rag from an admin standpoint but our focus is really on the app to the lefthand side. And then in the bottom I just have you know my devlogs and and such you know in case we need to do anything I've got an open terminal here."
+},
+{
+"start": 227,
+"text": "Um okay so first thing I'd like to point out is that when creating a notebook here in um here I'll just say part two I'll just create one called part two um when creating a notebook here um in killer context what's going to happen on the open rag side is we're automatically going to create a filter right and this is actually using the open rag SDK right so it's using the SDK to do this automatically as a matter of fact from a appdev standpoint when I'm building killer context I really don't want to have to worry about anything over an open rack itself. I I have this up so I can kind of see what's going on."
+},
+{
+"start": 260,
+"text": "Um so I'm using the SDK to facilitate all the things I might need from my rag pipeline as I do things. So um what this does for us by the way is if you think about it for each individual notebook, I probably want to constrain the documents to that particular notebook. That's exactly what I'm doing with these filters. So, if you take a look at some of the ones I made before, like this heroes one, you can see I have these all these um RPG like hero documents I put in place and I have this heroes filter over here and inside them are all of the documents that I upload in their chunks and and things like that, right?"
+},
+{
+"start": 293,
+"text": "And that's on the open rag side. So, anytime I'm interacting with the stuff here, the documents in this notebook, I'm going to use that filter. I'm also going to use the documents themselves to only interact with the ones that I want. Um, okay. So, great. So I create I can create a set of notebooks that automatically creates a filter. Wonderful. And then from there I can just upload stuff, right? So if I come back to this part two uh and I say I want to add a source, right? This is where I can just come in here and I can just grab something. Not my receipts probably. Um you know if I just find uh here there's a PowerPoint that I used one time, right?"
+},
+{
+"start": 328,
+"text": "And then what'll happen is this is automatically going to again use the open rag SDK. It's going to send that over to open rag and it's going to start indexing it. So that flowchart that TIS was just showing where you have this ingest where I go through dockling and then I store the results of all that in my vector store and things like that. All that is already happening for me. Um and that is what uh I just saw a second ago. So now I've got this PowerPoint uh that I had that has now been ingested and it is ready for me to do things with. Um all right. So let me go over to Was it this one?"
+},
+{
+"start": 359,
+"text": "Yeah, I was just doing something fun a second ago. Tous. Um yeah, it's here. Yeah, this one. Okay. Um, so now as part of the design, right, so I I have control over these, right? I can select I can actually subselect documents. So if I want to just focus on something when I'm working with a note type or whatever, if I'm creating a podcast, I can do that. Um, you know, I've got some um, you know, actions here. So I can delete, remove things. Um, and what's cool again with the open rag SDK, anytime I delete a document here, if I delete a notebook, it will actually cascade delete everything it needs to here to keep open rag nice and clean, right?"
+},
+{
+"start": 392,
+"text": "So it keeps everything very very tight to the particular notebooks. Okay. So if you notice here on the top right hand side in this studio section, I just move this over. Um we have these different types of note types. Now not all of these are fully fledged out yet. Um like the summary will give you a summary. The mind map is the one we're going to work on today. Um I did a little bit the um with the outline. I'll show that to you here in a moment. But we already have podcast in place and something we tried to do last week. Uh, that was fun, but we didn't have the sound part worked out. I'm gonna do it right now."
+},
+{
+"start": 422,
+"text": "Is we can play these. So, this will actually go and it uses 11 Labs to generate a podcast based off of whatever your uh particular topic is. Right. Um, yeah, this one. Let's see. Can we hear today? Let's find out. \u2014 Welcome to the show. Today, we're diving into what makes Azar, the pixelpowered heroine from the new tabletop game, so special and why a fanboy might even learn something useful for coding or game design. That sounds like a big promise for a short episode. Tis, could you hear it that time? \u2014 That's nuts. You stole my voice. That's me."
+},
+{
+"start": 453,
+"text": "So, so T I put Tis I put Tis in 11 Labs. I grabbed some of his videos and I \u2014 Okay, like let us know in the comments if you want us if you want a tutorial on how to do that because I do that's amazing. \u2014 It is super easy. 11 Labs is I I I'm a big proponent of 11 Labs. I use them for all sorts of things. Um I use them for a bunch of games that I've done and things. Um but that part of it is really neat. And what's really neat, Tis, like one of the things I think is cool after putting your voices your voice in, it really grabs your phrasing and style and such."
+},
+{
+"start": 486,
+"text": "Um, so anyway, so that's kind of fun, right? So you can you can use the documents that you have in here and again you're using this rag pipeline. So when you're asking questions, you're actually doing this agentic rag uh pipeline to get the responses, right? And then that is what was used to create the script for the podcast. Um, and then the outline. Um, so what I did yesterday, uh, or actually this week, if you remember from the last episode, we had some of these in here. They were pretty generic, but what I did is I went and I had, um, I just fleshed this out a little bit more."
+},
+{
+"start": 518,
+"text": "So now I've got like little collapsible chevrons, a little bit more uh, formatting and styling around uh, the actual stuff that's in here. I think I have one in here that's a little bit more Yeah, a little bit more to it. Right. So just looks more like an outline, right? Otherwise, what was happening is we were completely reliant on whatever came back from the LLM, right? Um, so in this case, I um I just added something to make this a little nicer, look more like an outline. And again, what are you, you know, funny enough, I think one of the things that notebook LM does, right, the the one that we're kind of cloning here, um, does a really nice job of is each of the individual note types are pretty interactive."
+},
+{
+"start": 555,
+"text": "They have a lot going on. Um, they're very unique in time at times as well. And I would love to know what kind of features would you like to see in an outline type that we could add uh into this. Okay, I think that catches us up though. Um and so from there today the real focus was to work on the mind map. So if I did nothing else, you know, you could put this optional topic in here and if I just generate one of these, um it's going to be pretty generic. There is no mind map. We don't have any of the graphics. We don't have any of the stuff there yet, right? So this is where building with Bob is going to come into play."
+},
+{
+"start": 587,
+"text": "And I should also note, you probably guessed this, the whole app has been built with Bob to this point. Um, you know, so, so we've been doing this with Bob this whole time. Um, but at this point, the mind map is just really kind of an outline, you know, \u2014 it's literally just markdown, man. \u2014 Yeah, it's just markdown. There's nothing else going on here, right? So, this is pretty bare bones. And so, the goal is to turn this into an actual visual mind map, right? um that uh well then I give credence to the to the name of the node type."
+},
+{
+"start": 619,
+"text": "Um \u2014 but what does a mind map even look like? Like are we going to use mermaid? Are we going to be doing diagrams or how are you thinking? \u2014 Great question. Um that is a great I mean there are multiple ways that we could go about this actually. Um should we ask Bob? \u2014 I think it's time to ask Bob. \u2014 Should we just go to go for it and ask Bob? Okay, \u2014 I think so. But let let me while you do that, David, let me flag this with for the audience. Um Bob has two modalities with which you can prompt it. Should I say him? Uh should should I call you Mista? Um and I you can either use Bob the way David's doing right here with kind of using the IDE, the GUI."
+},
+{
+"start": 657,
+"text": "Um or \u2014 you could use Bob with a with a TUI or terminal interface and we we call this Bob shell. Um my personal preference is the the terminal interface, the TUI, except I really hate that it makes you log in all the time. Uh I'll say that on stream. I'll I'll take flag. \u2014 Yeah, don't mind me as I log in here. Yeah, \u2014 I I flagged this internally. Uh and I was told, yeah, that's just how it anyway. Um I I don't I don't like Anyway, but if you if you if when we fix the login thing, um then the TUI for me is so much better because it it it's it doesn't take me out of my context."
+},
+{
+"start": 690,
+"text": "I love I live in the command line anyway, you know, and so it's just so cool. Um but David has a different preference and this is exactly why um Bob is the way it is, right? It's it's we want to meet you as a developer where you are and where you prefer. And so some may prefer this and some may prefer that. We just we don't care. We just want you to be productive. So with that, uh David, I think we can we can do however you want to do. I'm happy. \u2014 Yeah, for sure. And yeah, here's the Bob shell. And and again, like kind of what Tis is saying, oh, it's telling me I need to upgrade or it actually is telling me it will be upgraded the next time I load it. That's cool. Um yeah, I tend to use I tend to use the Bob shell and stuff for more like terminal commands if I'm doing deployments or or whatever."
+},
+{
+"start": 723,
+"text": "Um but yeah, teach his own, right? Or teach their own. Um, and you have both options there for you. Okay. So, I think we were going to ask Bob. So, let what I'm going to do is I'm just going to start and let us know. I tried to presume everything. Let us know if you can see this, okay? What we're doing. Um, and I'm just going to say, \"Hey, Bob.\" I always I always talk to them. It doesn't matter what AI coding agent I'm in. I always talk to them like they're person. Um, you know. \u2014 So, you say you say please and thank you. \u2014 Oh, for sure. Matter of fact, I have um I think it was Claude. They record your tone of speech and start to store that off and will start to recognize if you're getting upset or if you're happy, things like that."
+},
+{
+"start": 763,
+"text": "So much trouble cuz I \u2014 Yes. No, I know. Exactly. I've had a couple times I think an AI agent should have just been like, \"Hey, dude. You need to chill out.\" All right, let's see. Um, we Yeah. Yeah. So I talk to you like a person like to add a mind map uh feature uh to our uh notebook app. We already have don't mind my spelling sometimes a mind map. \u2014 This is why I like AI because it doesn't judge my spelling mistakes."
+},
+{
+"start": 796,
+"text": "Yeah, exactly. But but we need to uh add a graphical and visual mind map representation. What tools do you recommend that we could use uh in a next js app to do this? Okay. Now, one thing um while while Bob is going to give us an answer, um one thing I I absolutely want to use today, and I kind of hinted at this last week, um was doing feature development with spec coding."
+},
+{
+"start": 837,
+"text": "Um this is something I'm I'm a huge I'm a huge proponent of spec coding. I think it's absolutely wonderful. And for those of you out there who have vibe coded and you're doing like what we're doing right now and you just you just throw in a prompt and you start giving some instructions and things like that, um spec coding in my opinion right is a way to significantly level up your game and speed at being able to build fullyfledged features and everything. As a matter of fact, while it's giving us an answer over here, if you take a look on the lefth hand side, you see these specs, right? These are all previous features that we built, right?"
+},
+{
+"start": 868,
+"text": "And um for example like the crowd operations when I originally added in all the CRUD operations for uh open rag and things like that right what's cool about the spec coding process is this is where you can take an LLM that by nature is non-deterministic and make it deterministic right and and by doing this what you do is you you give it this you give it this process now I've already loaded this into Bob as a matter of fact I have a repo um that you can literally point to the repo and you can tell it Hey, I want to create a custom mode."
+},
+{
+"start": 899,
+"text": "I want you to follow this process and it lines out the whole spec coding process. Um, and then from there, this is I love this part. Bob will recognize when I am creating a new feature and a lot of time it will prompt me. It'll be like, hey, should we be using the spec coding process for this? And I'm like, yes. Right. And then what it'll do is it'll automatically go it should create a feature branch. It'll create one of these spec directories. It'll start with a requirements. And notice things like this. It's got this a requirement of spec coding is that you have um individually tagged requirements, right, that it that you link to."
+},
+{
+"start": 931,
+"text": "So every requirement must have unique identifier. Um and then you go through and so this is one of the previous ones I did for crowd operations and I would step through this. Now this is the part where I think sometimes vibe coding, we've all had that experience where it can get a little off the rail sometimes. Spec coding is the way that you can kind of preempt a lot of that. You have a conversation with the AI first. You work out these requirements. You make sure these are good. This is the way that we as humans, we take some of the control back, right? And then once you're good here, you have a conversation. You say, \"Yep, specs good.\" Then it moves into a design, right?"
+},
+{
+"start": 963,
+"text": "And it'll literally use the tech stack. You have things like that. It'll design it out. You can take a look at this. And then finally, you create a set of to-dos. Now, again, the AI does this. You have a conversation with it, and the AI does all this. But what's super cool about this is that then all of these to-dos are being linked back to those requirements and it gives it a nice deterministic path of things that we need to get done. So it keeps it from going off the rails. This is why I am such a proponent of doing this. So anyway, I just want to point that out because that's the process I plan to use today."
+},
+{
+"start": 995,
+"text": "Okay, so let's see. Um, all right. So it gave us it it said a bunch of stuff. Let's see. Okay. Okay. So, it looks like it's it looks like it is recommending React Flow. Are you familiar with React Flow at all? \u2014 I think I think Langflow uses React Flow. \u2014 Does it really? Oh, \u2014 I think so. I think it uses that to make a a flowchart. Let me Oh, it says D3. You could do D3 as second option. I I think D3 is actually pretty good."
+},
+{
+"start": 1026,
+"text": "And what's the third one? Let's check. \u2014 There's mind map renderer renderer \u2014 react. I I think wait let me check. Yeah. So so lang flow 100% is built with react flow. \u2014 Oh okay. \u2014 And I think it would be kind of like embracing IBM uh to to use the same thing that uses lang that that builds langlow. \u2014 Well we also know what its capabilities are then too. \u2014 Yeah because we use lang solid from that. \u2014 For those who are listening who don't know what langlow is langlow is the underlying thing that drives open rag. By the way it's uh it's a it's it's actually one of the best ways in the world."
+},
+{
+"start": 1058,
+"text": "I'm not even making this up. It's one of the best ways to build AI agents, period. It is so cool. I mean, it's it's not very good for agent loops yet, but it is very good for like almost like single transaction uh agent queries. It's so cool and I I I genuinely love it. Um I've taught workshops on it. Let me let us know if you want more stream content on it. It's really great and and we we really love it. Um but anyway, you can see how it looks and this is all built with React Flow. Um and so I think this looks like a mind map, you know, if I squint \u2014 in a way. Yeah, if you if you ignored some of the pieces there, but this is, you know, Langflow is there underneath uh underneath the hood there in Open Rag and you can get to that."
+},
+{
+"start": 1095,
+"text": "So, so we know what some of its capabilities are, right, from that standpoint. So, I agree with you. I think um that's probably a good choice. So, all right, let's do it. And by the way, it's saying, \"Hey, go with React Flow.\" Okay. Okay. Okay. Yeah, let's say. Okay, \u2014 let's do it. \u2014 I like that recommendation. Let's create a new mindmap feature using React Flow. Um, now you know I'm going to purposely do something."
+},
+{
+"start": 1127,
+"text": "I'm going to put Bob on the spot here. I am not going to tell it yet to use the spec coding process. \u2014 Okay, let's see what it does. Doom. Oh, you see what it's doing? Nice. \u2014 Cool. All right. So, let's see. Let's see. \u2014 Spec code. Awesome. \u2014 Okay. So, yep. Okay. So, first thing it's doing, it's creating um a feature in specs, right? So, I'm going to go ahead and prove that. Yes. By the way, I'll let it I'm just going to let it do its thing."
+},
+{
+"start": 1160,
+"text": "So, now I see uh I saw I thought I saw where it say it was going to do it. Fix. Okay. It's writing stuff yet. Okay. There it is. Here. Okay. So, it's busy writing the root. So, what it's going to do, it's going to take a first crack. I didn't give it much information, but it's going to take a first crack at creating those requirements, right? All right. \u2014 Is that from your spec \u2014 or did it write the spec? \u2014 No, it just wrote it. So, when I said when I said yes, that is from the spec code process."
+},
+{
+"start": 1191,
+"text": "Um, it knows as part of that process how to write the requirements. It knows how to write the design. It knows how to write a to-do, right? I've given it. So, in that in that process, I guess I guess it would probably be nice to give a little bit of Oh, I happen to have it here. That's fine. I honestly didn't realize I did. So, we come down here. Um, right. So, blow this up just a little bit. So, in this, you know, in in this particular um repo that I use for the spec coding workshop that I do and such, right? Um, I've literally laid it out. So, the way it works is you first you prompt for generating the requirement stock."
+},
+{
+"start": 1225,
+"text": "This is what it was based off of. So I'm telling it you got to use numbered IDs for requirements. You need acceptance criteria, things like that. Um then we're giving it the prompt for what the design looks like. Now the cool thing about this, you could absolutely modify this for your own need, right? You're not nobody's tied into this is not concrete. Doesn't mean you can't change it. The key thing about this though is that by giving it these instructions and saying, \"Hey, you're going to create requirements and then I want you to iterate and you're going to create the design.\" Um, it says open API spec in this case. That depends on if you're doing things with a web app or if you're doing terminal, but it's it'll I haven't met an AI agent that hasn't been able to figure out whether or not to use that yet."
+},
+{
+"start": 1265,
+"text": "So, I I haven't had a problem. Um, and then again, you've got this prompt. Notice this though here, the validate. There's always a validate step. There's always a validate step that says when you create the design, map those to the requirements. when you create the to-do, map those back because that's the key thing that keeps the agent on the rails is by connecting all those pieces together, right? Um and then you'll see this um this prompt for fixing failing tests. There's another part of this where it says, \"Hey, I've got to go and run test and make sure it's all clean and everything.\" Um so that um was in fact the um was in fact the process that I pointed Bob to and said, \"I want you to create the spec coding mode.\" and it went there and created its skill."
+},
+{
+"start": 1308,
+"text": "Cool. Very cool. \u2014 Okay. So, so now you can see that it's kind of following this, right? I've got these numbered requirements. What do we see? Um Okay. Right. That makes sense. \u2014 It's asking you if it should start. Um so, we can maybe have it start because it's going to take some time then, right? To to \u2014 We could Doesn't it That's the thing about this. It doesn't It doesn't take a ton of time. Actually, the time now I know we're not going to let people watch us just read everything the whole time, right? I get it. But like this process right here is where I initially spend the most time."
+},
+{
+"start": 1340,
+"text": "But you're right, I could just say go. \u2014 So you're more of a it sounds look I'm I'm the kind of person who um you know I don't really think before I do things and and I obviously to my detriment, right? But I I think um it's so cool to see here how much time we're putting into getting it right from the beginning \u2014 to prevent like what to prevent hallucinations and kind of unpleasant artifacts at the end. I think there there's a lesson here to um plan carefully so that when you finally fire it off, you're you're met with something um more that you'd expect."
+},
+{
+"start": 1377,
+"text": "Yeah. Yeah. And actually Tus, I am exactly the same way. Um I am 100% that way. And this I have found has allowed me to move a lot faster with a lot more accuracy and I have a much better experience especially with AI coding in when I was coding normally I would not do as much frontloading front-loaded work right I would like kind of build the structure of things kind of get my head wrapped around it and then I'd go back and iterate over those. Yeah. But this this definitely changes it. Okay. By the way, while you while you were talking there I kind of read these. These look fine. Um I I think I'm okay with what it has here."
+},
+{
+"start": 1409,
+"text": "So I'm gonna say yes. move to the design. By the way, a key part of this process is that it asks you every time before it moves on to the next step, right? Um, and this is your chance to then really go through not doing that right now. Um, you know, it's like watching, you know, paint dry, having us go through all the text, but like if you were to do this, this is I have for features in my own stuff that I've done. Matter of fact, for a game I'm building, I there was one one in particular, I spent a good hour, like a good solid hour really working through it and making sure that everything that I saw was was exactly what I intended because that way it saves me from having to go back because think about it, the AIs can move so fast."
+},
+{
+"start": 1452,
+"text": "They can build so much code. If they go off in a direction because you didn't look at this, then you you might have to backtrack a little bit, right? So, okay. All right. So, it's making the design. There it goes. It's \u2014 making the design. I can't wait to see what happens. \u2014 This part's actually really neat. Um, see, do you have plans of doing Oh, by the way, hi there, R28R. I can't help me. Uh, is that I'm the Star Wars geek feeling like that sounds like a astromemech or asteroid, sorry. But, uh, let's see."
+},
+{
+"start": 1483,
+"text": "Do you have plans of doing a demo of Bob rewriting an app connect flow or data power service? I mean, not yet, but that's interesting. That's interesting. That could be something we could take a look at. All right, let's see. So, all right. So, it made our design, right? Let's take a look at this real quick. I guess I can put this in a nice so we can actually read it, you know. Okay, so check this out. So, the neat thing about the design, it's going to base off of the current codebase, right? It's going to look at the text stack we have. Um, we did talk about using React Flow, so it's going to use mpm install rack flow."
+},
+{
+"start": 1516,
+"text": "No surprise there. Um, okay, great. So, it is following our conventions. This makes total sense to me of having a mindmap renderer within components. This is a Nex.js app. That makes total sense to me. Um, that feels like that makes sense. Tagious, I know I'm scrolling through, but tell me if you see anything that catches your eye. \u2014 Um, I'm following with you. It looks good to me. Yeah, I mean if you notice it's already taking like it's it's putting some emphasis on like the root node that should be slightly different right visually and everything that that makes sense to me especially for a first pass."
+},
+{
+"start": 1551,
+"text": "Um \u2014 this actually looks pretty nice. Um can we give me Yeah, let's this looks good. \u2014 You want just go for it? \u2014 Wait. No, no, no. I definitely don't want to do that. \u2014 No, no problem. Can you keep scrolling? Yeah, I just I just one one pass through this kind of kind of fast. So, let's Yeah, let's go. Let's keep going. Let's keep going. I'll tell you why in a minute. I'm looking for something specific. \u2014 Oh, okay. I see. I see. \u2014 Going. Let's keep going. Let's keep going. \u2014 Oh, it's got the expanded view. That's good. Okay, cool. \u2014 This looks good. Yeah. Okay. So, now if we can roll it back to the top. I have two critiques for for this uh spec. \u2014 Number one, \u2014 uh we're abusing the Tailwind CSS just in time compiler."
+},
+{
+"start": 1589,
+"text": "And you can kind of see that in the plan. If you scroll a bit, you'll see what I'm talking about. I'll tell you where. Scroll, scroll, scroll, scroll, scroll, scroll, scroll a bit more. A bit more. Bit more. Bit more. Bit more. Bit more. Yeah, it's it's it's it's here in section two. Bit bit lower. Sorry. Or is it maybe higher? Um \u2014 I think it's higher. \u2014 Yeah, let's you you know where it is. You probably where you see class names. Let's go there. \u2014 Oh, \u2014 no. No, it's definitely higher. \u2014 Yeah, it's higher. \u2014 There was some weird higher I think still. Man, I wish I could control your computer."
+},
+{
+"start": 1621,
+"text": "Um \u2014 right. \u2014 Where is it? It was just here. Now I've lost it. What? Don't you love that? Especially when you're trying to follow somebody else scrolling. \u2014 Yeah. Yeah. Oh, there we go. There we go. Okay. Bit bit lower. So, go to the node styling. If you scroll the node styling to the top of the viewport, that should be at the top. Like, just scroll down just enough that Okay, perfect. So, now look at this. This is where I was like kind of triggered because um node styling second bullet point, you've got bg dash and some random color and border dash and some hex."
+},
+{
+"start": 1651,
+"text": "And then and then underneath this code snippet renders a div with fixed height h500. There's just so many like magic numbers here. Um and like and like hard-coded hex codes. And I'm like why? We can just use proper design tokens from Tailwind CSS. Like we have we have a Tailwind config. Um, let's update the Tailwind config if we need to, but not have like random arbitrary hex codes and uh and like heights 500 pixels, 300 pixel."
+},
+{
+"start": 1682,
+"text": "It's so weird. \u2014 So, I'm going to I'm going to point that out to Bob. Let's see what it does with it. \u2014 Okay. \u2014 No, that's not that's not what we I think you've got to mention magic numbers in the Tailwind specifically. Um, and both in the class names specifically. \u2014 Okay. and both hex codes and heights is just really \u2014 You want me to just I'll grab these and tell it. \u2014 Yeah. Yeah, exactly. That's better. Yeah, it's just an antiattern because why are you using Tailwind if you're not going to cache the the values, you know, the the hex codes and things?"
+},
+{
+"start": 1716,
+"text": "Um, that's nice. I like that you're just actually I meant Here we go. You're right. You're totally right. \u2014 Yeah. Nice. That's good. And now it's check see this is the problem. Now it's checking what's already in the table config. I I would expect it to have done that earlier. \u2014 Well, and you know to that that's a really great point actually. That's a really great point. Um because that is one of the things that comes into like the context that you're giving the agent right now. You know, you could argue that that is actually something that you could actually set up as part of the project in Bob to say you should always check these things, right?"
+},
+{
+"start": 1752,
+"text": "Um I haven't done that now. So we're kind of relying you know you're relying on whatever the prompts are and and the model in Bob, right? you're relying on those to kind of find those things. Um, so if that's a requirement, if that's like a hard requirement you have for like an X.js app using Tailwind, then that's a really good thing to put in. Um, you know, possibly no, not the sole, but like you can you can totally set that up as like a global that you're saying you should always do this, right? Um, so so yeah, that's that's a good catch, right? And that's actually something as well like when we started the feature, we also were kind of we said we're going to create this feature go."
+},
+{
+"start": 1786,
+"text": "Yeah. \u2014 Right. We didn't do we didn't do a ton of being very specific. That's actually another thing I have found that my initial feature creation prompts when I'm really sitting down, I get think time and I will really work that prompt out and make it very specific and I find that it gives you better results, right? But yeah, that's that's a great that's a great call out. All right, let's see. So, it looks like Oh, yeah. Check that out. So, \u2014 oh yeah, look what it did. It fixed it in the design. \u2014 Nice. \u2014 Which is exactly what it should have done. That was the whole point. And by the way, what we just did here was the verify step, right?"
+},
+{
+"start": 1820,
+"text": "Where we're verifying what we just got so we can make those little changes. Was there anything else or was that was that the thing that called out to you? \u2014 That was the main thing that called out to me besides this. It looks pretty nice. Um I would be more concerned with the top of the of the design because that's where it kind of Yeah. I want to see the overview specifically. If you go all the way up, I'm all the way up. Um \u2014 I'm all the way up. \u2014 This is great. That parses React. That's perfect. Yeah, let's do it. Let's ship. \u2014 Okay. Okay, \u2014 let's ship. Man, you know, one thing I really love about Bob, I have to say, is it's nice and fast."
+},
+{
+"start": 1854,
+"text": "It's really fast. \u2014 Yeah. Yeah. Yeah. It is now. It is now. You know, like any of the AI coding agents, I've had experiences, right, where you're like, \"Hey, what's going on today? Are you okay? You feeling okay?\" Have you ever taggious, have you ever asked your coding agent if how it how it's doing? \u2014 What do What do you think, David? I have totally there's been a couple times where I'm being half funny where maybe I've been frustrated with an AI coding agent and I'm just like how are you doing today? I'm like are you feeling all right? \u2014 All right. \u2014 So now I've got our to-dos."
+},
+{
+"start": 1888,
+"text": "Let's see. It's a quick list. Um all right. \u2014 Why did that's so interesting. Yeah, it makes it makes a file for tasks as opposed to um I think claude code doesn't either does that in memory or stores it in some temporary not in your \u2014 Yes. So this is this is something I told it to do. \u2014 Ah okay as part of the spec coding process not I have found you're absolutely right cloud code does this as a matter of fact I've actually had that collide before where I've used this process. Cloud code creates its own task list."
+},
+{
+"start": 1918,
+"text": "So I'm like, dude, update my tasks, right? But because this this is good. I like this. And the reason why I do this is for posterity because later on, like for right now, if you think about it, this now is all context to future feature development and to developers or anybody else who's working on this project. Like for you, for example, if you came in, you're like, what exactly did Dave do in this cred operations? Well, you can come over here and you can see, \u2014 right? So it gives you the historical context, you know? Um, and then just for me it's very clear, but yes, I've had that collide before in my cloud code, um, where it's maintaining its own task list and then I'm like, \"Hey man, I want you to update mine.\" Right?"
+},
+{
+"start": 1956,
+"text": "Um, so up to you, right? You don't have to do it this way. Whatever works for you personally. Um, but I do like having like a file that I can go reference kind of thing. \u2014 Nice. \u2014 And it's also um, pretty constant or consistent across the different AI coding uh, uh, providers and all that. So, okay. So, let's see. \u2014 You're kind of making me slowly warm up to spec coding. By the way, \u2014 dude. Well, you know, if I wasn't talking the whole time, we weren't going back and forth, right? This whole process that we're doing, you know, you just kind of go and then the best part is when we tell it implement \u2014 and we get to see what it does."
+},
+{
+"start": 1990,
+"text": "That's the fun part, right? That's the fun part. Okay. So, \u2014 okay, \u2014 it's asking shall I start with task one? Um, can you can you tell it actually do all of them in parallel? \u2014 Oh, it's gonna Yeah. No, I'm Oh, that's what I want. \u2014 Can it do them all in parallel? \u2014 Let's find out. Let's send it. Let's see what happens. \u2014 No, I don't mean that. I mean, we could try that, but you need like a component first before \u2014 it should tell you that. \u2014 Okay. \u2014 It Yeah, because I a full I did this with cloud code."
+},
+{
+"start": 2022,
+"text": "This exact thing. I said I here's 20 to-dos. Do them all in parallel. And Claude Code responded to me with actually I can't. Uh, and so what I'm going to do is I'm going to batch them intelligently and do that do the batchable parts in parallel. \u2014 No, you know, okay, so here's something. We're in agent mode, \u2014 not in plan mode. I'm actually I don't know if agent mode can do it. Now, plan mode. No, no, let's do it. \u2014 Would would Well, I know plan mode would kick off sub agents. I don't know if agent does. So, let's see. \u2014 Let's try. Yeah, \u2014 we'll just ask the question. \u2014 Technically, an agent should be able to create sub agents."
+},
+{
+"start": 2054,
+"text": "Oh, but look at that. I like what it did there. \u2014 Oh, that's what I wanted. Oh, check that out. That's kind of cool. \u2014 That's awesome. That's exactly what I expected. I'm very satisfied. This is great. This is wonderful. \u2014 Yeah, that was that was neat. I hadn't tried that before. Okay, so yes, we want to install React Flow. \u2014 That's awesome. That's wonderful. \u2014 Yeah, that's really neat, actually. \u2014 This is nice. \u2014 And then actually, yeah, you'll see, by the way, uh, as it's doing things, I just put that there. You'll see that you can you'll see my dev because I have this in dev mode, right?"
+},
+{
+"start": 2085,
+"text": "You'll see it start kicking up. Yeah, while uh while we wait on that, someone's asking on the live stream if we have plans. I mean, you already asked, you answered R28R um if we have plans of doing a demo of Bob regarding an app connect flow or data powers. I have no idea what any of that is. Um but then they said real world use case in action. Um and I think the answer to that is yes. Like this notebook LM clone is something that I want in the real world. Like believe me, if this is built well, I'm using it because I it's it's both."
+},
+{
+"start": 2116,
+"text": "It's David and my job to speak at conferences and a great way to prepare amazing talks is to just aggregate a bunch of context and then like learn at your own pace, right? And that's kind of exactly what um what killer context is supposed to do. So I think it is a real world um use case and and a real world need. In fact, Notebook LM proves it and that's that's why we're doing it. So okay, looks like it's done. Now it's going to type check and verify. Why do you have to say yes every time? Can you not do yolo mode? So, you know, funny enough, um there is this is a new update."
+},
+{
+"start": 2148,
+"text": "Um I haven't I'll be fully transparent here. I haven't figured out where all the new little uh knobs are and such like that. Um yes, there used to be a full YOLO mode. I just don't see it quite the same way that I did, but I also don't have my global settings letting it just to go crazy. \u2014 What about this permissions thing? Does that \u2014 down here? \u2014 Yeah. \u2014 Yeah, that's what I'm opening up here. And the auto approve is on on, but you still have to manually approve things. \u2014 Yeah, I I don't know if um you know, there was one setting here."
+},
+{
+"start": 2181,
+"text": "This one, let's see. Um no, I don't want to do that. Okay. I don't know if that would be the one difference. We'll see. We'll see what happens. Okay. \u2014 So, is it done? Here we go. Files changed. Tailwind config map renderer page. Oh, it should be done. Let's go check. \u2014 Yeah. And actually um please now this is that collision I was talking about um update the to-do MD with any complete \u2014 um because it does have it does maintain its own task list."
+},
+{
+"start": 2213,
+"text": "Bob does that as well just like Claude. Um so I do sometimes you know I that's actually something I could just put in the instructions to make sure it does that. It does. \u2014 Let's check the dev server. \u2014 All right there. \u2014 I want to see it working. \u2014 Okay. So now let's just make a mind map. Oh wait I had one. I had one, but there's nothing in there, right? I'll just get rid of that guy. All right. Oh, here. \u2014 Yeah. No, I got I gotta restart the server. \u2014 Uh, \u2014 yeah. \u2014 Mission successfully failed. \u2014 All right, let's try now. I figured I figured that was a big enough change."
+},
+{
+"start": 2245,
+"text": "I I should have restarted the server. \u2014 And is spinning. It said, what does it say? Writing. Interesting. \u2014 Oh, mind map generating. Okay, \u2014 nice. Yeah, I'm excited, man. We should maybe Oh, wow. \u2014 Wait a minute. It's just text. Well, it's not done yet. Did it do it after the fact? Oh, wait. I think we'll have to talk to Oh, there's that other bug we haven't fixed yet. That's my fault. Okay. So, we need to Okay, we need to tell it. Hey, you know something? This isn't right, dude."
+},
+{
+"start": 2276,
+"text": "Like, okay. All right, Bob. \u2014 You can see it doesn't expand. Like, it shows nothing. It doesn't expand. Okay, that's when I'm creating a new mind map type. The mind map note does not expand and we cannot verify if there is a mind map in place or not."
+},
+{
+"start": 2307,
+"text": "I did give it the image. Yes, I did. Okay, let's see what it does. Hello David. \u2014 Hello Tas. This is so unexpected. So what's happening? Let me investigate the issue. I can see the issue. Wow. Then why didn't you see the first time? \u2014 Right. That's a this is like it's like one of your one of your colleagues gives you Yeah, dude. I totally did it. Yeah, but it doesn't this this is QA, right?"
+},
+{
+"start": 2339,
+"text": "This is like when your QA person's like, \"Dude, \u2014 dude, \u2014 now I see the full picture.\" Ah, the note should have content after the stream completes. The bug must be a note card itself. \u2014 Now, I didn't see actually any errors or anything in the logs. So, let's see. Well, all right. \u2014 It keeps saying, \"Now I see the issue.\" And then it says, \"But the real issue is this.\" But now I really see the issue. But that's the real issue. And now I really see the issue. You know, it's like, which one? You know, you know, here's Okay, in all fairness, in all fairness, maybe maybe you do this differently, but thankfully nobody has to sit in an office with me anymore because I talk constantly as I'm doing things."
+},
+{
+"start": 2376,
+"text": "Have you not ever had that conversation where you're you're like debugging something, you're going THROUGH LIKE, \"OH, OH.\" AND THEN YOU'RE LIKE, \"OH, WAIT.\" You know, I feel like it's exactly what it's doing. It's like going through its own thought process and it's like, \"Well, wait, wait. Let's see. Let's see. Okay, so it's doing that again. \u2014 Stop that. It's building. It doesn't have to build. We have a dev server running. \u2014 It wants to be very very sure. Okay. Okay. Okay. Okay. All right."
+},
+{
+"start": 2407,
+"text": "Well, now I'm gonna I'm gonna restart that just to be sure. Now, I don't know if it did anything here. Oh, all right. Oo. \u2014 So, it it apparently decided that \u2014 now that needs to be um formatted a little nicer, but that actually did a thing. And I can lines. \u2014 That'd be funny. \u2014 Wow. Can you zoom in a bunch, please? I can try."
+},
+{
+"start": 2438,
+"text": "You know, it needs to it needs to fill up the window. It's not It's not filling up the panel. \u2014 That's nice. Wow. Okay. So, it did something. \u2014 Oh, for sure did. I don't \u2014 I didn't give it any direction at all in what the mind map should be, right? Um, but I did I think did I have Berserker Core? Yeah, I think I had Berserker Core. \u2014 Can we Can we seed the database with like real D like and not that your game data is not real, but but \u2014 can we get like five new Oh, let's do a new notebook. What is this? \u2014 I have I have these um these uh jobs um I have a bunch of CSVs that are job like job listings."
+},
+{
+"start": 2476,
+"text": "Um, I have Alice in Wonderland in here. Um, let's see. I've got Open Rag stuff, right? I've got a bunch of open rag dockling documentation, things like that. \u2014 Yeah, the mind map here would be interesting because it's kind of all over the place, huh? \u2014 Oh, for jobs. \u2014 Yeah, with with the dockling and the other stuff. \u2014 Oh. Oh, you mean if I were to do like um like what is dockling and or what is open rag and all that kind of deal? \u2014 Yeah. \u2014 Let's see if it can show us a mind map of the architecture of open rag. \u2014 Yes. All right. All right. Let's see. Um, so now what I'm going to do here though, right, to be clear, is because the notebooks I don't have any notebooks that are associated with this guy yet, right?"
+},
+{
+"start": 2513,
+"text": "Yeah. \u2014 Um, so funny enough, this is a different feature we need to add. Tis, what happens if you have a filter in open rag that you created in open rag, but you did not create a notebook for? Right. Now, we don't actually have any experience that allows you to add that filter in. \u2014 Yeah. \u2014 Right. Um, so, uh, so let's see. So, what I think, let me think about that for a second because I need Okay, well, how about this? Why don't we just do open rag? Uh, okay, that's Yeah, good."
+},
+{
+"start": 2549,
+"text": "I don't remember. Let me That's a URL, actually. Yeah, that's Oh, that is a URL, isn't it? Yeah, they got that from a URL. That's right. Um, oh, I wonder. I'm gonna try something. I don't know if this is gonna work. I'm gonna, um, I don't know if we have Oh, I'm just going to try it. I don't know if this is going to work or not, though. Um, \u2014 search the web for information on open rag. Use what is it?"
+},
+{
+"start": 2580,
+"text": "Open to start. I don't know. \u2014 We can't see your screen. Just by the way, I don't know where you \u2014 I can. I'm the one the Bob one where you just typed that. \u2014 Oh, no. I put that I put that into notebook. \u2014 Oh, okay. I see. I see. Wow. Okay, it's doing something. \u2014 So, what I was curious about here, I didn't actually add a source. Um I'm super curious to see. Yeah, there's no source there. Okay, fine. So, it it was able to go out and get some information. Um but let's see."
+},
+{
+"start": 2611,
+"text": "Given it was able to do that, let's try creating our mind map. Okay. Um the arc texture of open rag. \u2014 I want to see this. I want to see this. This is going to be amazing. \u2014 See what it does. And then obviously we need to kind of clean up some of the visual formatting and styling and stuff to make it a much nicer looking my map. But let's see. Okay."
+},
+{
+"start": 2644,
+"text": "All right. Yeah, we need to make it so it grows to this, you know, it could use the space better. But look at what it did. Open architecture dockling open search external connectors front end. \u2014 Can you expand it? Can you open like full screen yet? \u2014 Yeah, that's the thing. I we need to make that we need to make that better. \u2014 Okay. So, let's let's I like this. What What's all those on the right? \u2014 What's on the right? These like many many boxes. What What do those say? these guys. \u2014 Yeah. Source. Oh, it's the sources. Interesting. \u2014 Oh, I see what it did."
+},
+{
+"start": 2675,
+"text": "Interesting. Okay. So, this is a good start actually. \u2014 That's a good start. But we really need So, what I'm going to do is I'm going to say, \"Hey.\" Okay. All right. \u2014 All right. Let's Let's check something here. Did it Okay. \u2014 I don't think it made a branch. It's fine. We can work on a feature branch for this work. So that'll just pop it over. \u2014 And then, okay, so let's make a list of things we want to do."
+},
+{
+"start": 2708,
+"text": "Number one, number one, we need to adjust the background color of the flow. Make it white. Um, or we make the nodes dark, but it's kind of the nodes are white, background's dark. It's kind of hard to read. \u2014 Well, should we follow the the kind of styling that we have here already? \u2014 Yeah, that's a great idea, actually. Yes. you know, like um these like this kind of I think the nodes could be like these, right? \u2014 Yes. \u2014 Okay. \u2014 Yes. \u2014 Yes. And I wanted to I wanted to do this initial commit, right?"
+},
+{
+"start": 2739,
+"text": "We have a clean commit. There we go. There's our guy. Right. I wanted I want to get that in there. Okay. So, you said um Okay, let's add the following items um to our to-do list. Okay. You said one um \u2014 follow the theme of the app inside the uh inside the mind map. \u2014 Ah \u2014 right. And two, we want to have a full screen view."
+},
+{
+"start": 2772,
+"text": "Yes. Yes. The note type. Um here what I'm going to do is I'm going to give it an image, but then I'm going to give it I'm actually going to give it a set set of images here because I want to give it a nice reference. And you're gonna see something I'm up to here in a second. \u2014 Nice. You can also say um use our Tailwind design tokens in there. \u2014 Oh, yeah. I like that. Okay. Yeah, that's a probably a better way to do it. \u2014 Yeah. Wow. \u2014 Yeah. Yeah. Yeah. That's a great way to do it. Um use the note types uh use the note type styling as an example and um reference."
+},
+{
+"start": 2810,
+"text": "What did you say there? Tagious or um \u2014 Tailwind design tokens. with design tokens. That's a really great point. \u2014 And then the second thing we should do is have a full screen view um to be full screenable. And then third, I would suggest we add um let's use color strategically because I I think the monochrome mind map is kind of \u2014 Yeah. \u2014 Um and then fourth \u2014 Yeah."
+},
+{
+"start": 2841,
+"text": "Fourth, think carefully about the layout and how we weight nodes as in some nodes can be bigger, some nodes can be smaller \u2014 and uh and and the role of sources in the mind map I think cuz I didn't I didn't like that. \u2014 Yeah. \u2014 And then at the end can you tell it? This is what I do with with with all my coding agents. I say search the web for best practices here and apply."
+},
+{
+"start": 2873,
+"text": "Okay, \u2014 that's like my big head. \u2014 You know, there's um there's a um there are there are a couple sites that I kind of use for for guidance on that kind of stuff. \u2014 Nice. \u2014 Um and and I've actually done it before where uh I've taken a site that I like this is so terrible to say I think anymore, but this is like our world now. You know, it used to be it used to be if you're like, \"Wow, that site is amazing.\" you really had to take a look at it, kind of come up with a design and like go and make it, right? But now you can literally take a picture of the thing and say, \"I want mine to look like this.\" And not even say anything more, and it does a really smackup job of of knocking it out, you know?"
+},
+{
+"start": 2914,
+"text": "Yeah, this is awesome. It's It's capturing literally everything we said in a much nicer way. \u2014 Yes, \u2014 that's great. I can't wait to see what happens here. \u2014 Yeah, let's see. \u2014 Now it's adding these as to-dos. How about you just do them like \u2014 Well, when I told it to do that. \u2014 Okay. Okay. \u2014 And in this way, it keeps me and it on track. That's the key. \u2014 Wow. Check it out. 6 7 8 9 10 11. Awesome. \u2014 Okay. Okay. Nice."
+},
+{
+"start": 2946,
+"text": "All right. What put Okay. Oh, it's Oh, look at that. It's telling us React Flow injects its own default style. So, we need to override them. I see. Nice. So, it's asking if it can start. \u2014 Yeah. And by the way, noticed your point. They're cluttering the graph, right? That's good. \u2014 Yeah. Yeah. That's so good. \u2014 Yes. Let's do it. \u2014 That's awesome. I'm hyped. \u2014 Do it. Let's do it. This is where you know this for all you watching and and for you Tuttous like I know you and I have talked about this before but like you know I've been coding for a long time like at least 30 years or something like professionally coding you know and like I love coding I I do I enjoy it I do I enjoy the process but in these last couple years especially especially I'd say like the last six months maybe right and I mean it was fun a couple years ago but like the models have gotten significantly better."
+},
+{
+"start": 3003,
+"text": "The tools like Bob and and Copilot, all those have gotten significantly better. Um, you know, the the way that we prompt and the way we, you know, the the way that needle has been moving. Um, I I like to say I like to I can code at the speed of thought \u2014 and and it's fun because like I can now I I regularly as I'm building stuff, I'm be like, \"Wow, that would have just taken me three weeks.\" \u2014 Yeah. you know, like and and and it just it's so much more fun now."
+},
+{
+"start": 3034,
+"text": "And again, I come back to the spec coding thing because um this the spec coding stuff, not that errors don't happen, not that you don't get bugs, that absolutely can happen for sure, but I found that creating features doing this compared to just straight up b coding um keeps me prevents me most of the time from going into those downward uh model spirals, right, where they start looping on themselves and you're like, \"What are you doing? Like, stop, man.\" You know? \u2014 Yeah. And I don't have those as much now, right? So, um, all right, let's see what it's doing. Okay, this should be interesting."
+},
+{
+"start": 3066,
+"text": "This is so cool. It's making decision. This is so like preparatory. \u2014 Now, mind you, we did open up all the permissions too this time. So, it's ask you notice it's asking me less to \u2014 So, I did have that one option. So, it looks like that was a difference there. \u2014 I just I still don't get the npm run build because we have a dev server. we can just see real time, you know, the feedback. But I guess it just wants to be very safe. \u2014 You know what's funny though is I I usually very regularly will delete my Nex.js cache and rebuild all the time because I've run into enough bugs in the past where I was banging my head up against, you know, the wall for like an hour trying like why isn't this working?"
+},
+{
+"start": 3110,
+"text": "And then I delete the cache, rebuild, the thing is I'm like ah it was there the whole time. Like \u2014 yeah, I have a solution for that. It's it's don't use Next.js. There he is. \u2014 Oh, there you go. All right. I'm not going to let it commit yet. I'm not ready. \u2014 One second. Also, \u2014 I'm sorry. Sorry. \u2014 No, no. That Can you click on the down arrow next to approve? I'm just curious what options you have. Approve once. Well, it's always approve once because it asks you every Okay, let's go back and check. \u2014 Yeah, I'm not going to I'm not ready to commit yet. I'm just not ready to commit. \u2014 Dave has commitment issues. \u2014 Not ready to commit. \u2014 Not ready to commit."
+},
+{
+"start": 3141,
+"text": "Scared of commitment. \u2014 OH, WOW. WOW, \u2014 LOOK AT THAT DIFFERENCE. \u2014 IS that length flow? \u2014 That's Wow, that was a nice change. \u2014 That's awesome. Um I think it still has the weird sources right on the right, but that's that's because it's not a new mind map. \u2014 I think we should just You know what that is? The sources are not relevant here. Um they're doing that comes back. That's like leak from the LLM. Um I think we can just tell I do this in some of the other notes."
+},
+{
+"start": 3172,
+"text": "I tell it pars those out. We don't need those. Yeah, but also I think it maybe already does this. It's just an old mind map. Can we generate a new one and maybe then it \u2014 Oh, I see what you're saying. Yeah, yeah, yeah, yeah. Let's try it. Um, what would you like to Do you want to do it on open rag again or do you want to do something else? \u2014 Yeah. No, let's do it on open rag because then we can \u2014 Yeah. \u2014 Oh, you're right. You're right. \u2014 No, just leave it blank. Leave it blank. \u2014 Oh, okay. \u2014 Let's just see what \u2014 Well, it's not gonna have It doesn't have any sources. So, let's see what it does. Don't forget I gave it I told it that first time I when I generated it I told it what topic."
+},
+{
+"start": 3204,
+"text": "So because because we just talked to we just had a conversation. Oh look it did actually use that's funny. That is a web. \u2014 Oh that's hilarious. I don't \u2014 I don't know if it's Well, it did it. Okay. That's funny. \u2014 That's so weird. Anyway, I'm happy but it's still weird. \u2014 I'm excited. Um let's see how we can refine the user experience of this so far also. Okay. Okay. So, was it done? Oh, nice. Oh, \u2014 well, wait. I don't know. Yeah, I I don't think we gave it Yeah, \u2014 no, it's Yeah."
+},
+{
+"start": 3237,
+"text": "No, here. Let's Let's kill that guy. I'm going to say um architecture because we didn't give it any direction. \u2014 Yeah. Yeah. \u2014 Oh, arcture of Oh, come on. \u2014 Oh, come on. You Oh, come on. \u2014 That's me yelling at myself for my fingers uh saying no. \u2014 Finger says no."
+},
+{
+"start": 3268,
+"text": "Okay, this it's the it's the time, David. It's I I kind of like the text streaming in, not going to lie. Okay, now it should be. \u2014 There we go. \u2014 Good morning, Mr. West. It still unfortunately has this weird source thing. \u2014 Yeah. So, I we just need to tell it to ignore that, right? because it's it doesn't have a good direction of what to do with that from LLM. \u2014 Yeah. But also um check it out. It says open rag architecture and it goes to containerized components, core layers, a bunch of nonsense. Here's what I suggest. We take a screenshot of this whole thing. \u2014 Y \u2014 um and then we say to Bob, um this is not true."
+},
+{
+"start": 3301,
+"text": "Uh right, we we you committed that. We we say this is we paste the screenshot and we say this is not true. Open rag. Um, open rag composes lang flow, dockling, and open search. Um, and also all the stuff on the right, get rid of it. You know, that's kind my my temptation. Make sense. Would you do it? \u2014 Yeah. Let me Yeah, let me think about this for a second. Yep. Yep. I hear you. Yeah. Yeah. Yeah. Okay. \u2014 Yeah. I just I just I mean I I think as a base it's fine. We just need to modify it a little bit."
+},
+{
+"start": 3332,
+"text": "That's why I committed. Um let's see. Um, \u2014 yeah, because containerized components and stuff is like really generic. \u2014 We don't need any of the information in our mind maps to the far right. Um, we should filter pars out any LLM leak leakage. \u2014 Yes. like source information blah blah blah blah um then \u2014 and I think we should give it corrective information about open rags architecture \u2014 well that's the thing is like okay if we tell that to so what how is that going to help Bob make a better mind map I think it should we direct it more because I if you think about the mind map is really just like a visual outline or you know like it is it Not is"
+},
+{
+"start": 3393,
+"text": "it the hierarchy that the LLM is returning? Like for example, take a look actually at the response here. \u2014 Oh, that's very smart. Yeah. Yeah. Oh, look at that. The LM return. \u2014 It's not Yeah, it's it's it's because the LLM gave it what it gave it. Um, we didn't really give it like It's interesting too that they'll put \u2014 Does our app Does our app um Does our app have a prompt or something that Bob can control to get a better \u2014 mind? Oh, yes, absolutely. So, we can give it instructions and so if you scroll up, you'll see see this is actually very lightweight."
+},
+{
+"start": 3427,
+"text": "The mind map thing does not have a lot in here to give the LLM direction on how to make a mind map good. \u2014 But what I'm saying is like we wrote that prompt, right? Yes. \u2014 Did we or did actually we didn't. You just wrote architecture of open rag but the rest of the prompt came from our application. \u2014 This came from the original mind map note that \u2014 so then we should fix that. Yes. \u2014 So we should ask Bob to fix that then. \u2014 Yes. Yes. Yes. Yes. So I think um we also need to um \u2014 Man, this is so fun."
+},
+{
+"start": 3461,
+"text": "This is honestly the best part of my week, dude. \u2014 I love it. um to um let's see. \u2014 Whoa, we have 300,000 people watching this right now. \u2014 300,000 \u2014 divided by 100,000. \u2014 Thanks, Dis. That's great. \u2014 Do our best. \u2014 Um you know, this is so funny. What I was just about to write here about updating the prompt almost was in my head almost sounded like don't make mistakes."
+},
+{
+"start": 3492,
+"text": "Fix my life. Make no mistake. \u2014 Yes, exactly. Okay. Um to create a better um representative hierarchy that um I am hy specifically. Oh, well, I know that the LLM doesn't care with my maps."
+},
+{
+"start": 3525,
+"text": "I'm I'm That was a very circular sentence. Please don't judge, man. What I just wrote there in that second sentence. \u2014 The image is clear. The LLM is leaking source citations, JSON fragments, and long pros descriptions \u2014 as deeply nested leaf nodes. Nice. \u2014 There you go. You see what I love what it said here? Yeah, because we were really getting a docu document summary with inline citations. That was because the original mind map note type was just the default thing. We never did anything with it, right?"
+},
+{
+"start": 3556,
+"text": "So, \u2014 yeah. \u2014 All right, let's see. It's going to fix both \u2014 you know, funny enough, while we're while we're quickly waiting for that, something I just want to show you. Tis \u2014 um \u2014 Yan Tong telepathic two fists, two strikes, one problem. Fists fly, grace days. Crane the grace. Um, this is a billboard. This is a billboard app that I built like yesterday \u2014 with Bob and it'll it'll it goes through um Oh, yeah. That's Vesper. She's a Sith character I have."
+},
+{
+"start": 3589,
+"text": "That's cool. \u2014 Yeah. But like it's it's just kind of Yeah, I had, you know, so this is the same it's it's using open rack. It's using the same data, right? \u2014 That's awesome. \u2014 And uh it's kind of just making billboards off of stuff. something like super fun that I may actually truly use. Um for those of you who are like why why would you make that? It's because um we do dev and sometimes we want fun things. \u2014 Yeah, it's our literal job. Is it done? Clean build. Okay, let's go check. \u2014 Okay, \u2014 let's go check the browser might \u2014 now. Now in here generate a new one because it changed the prompt too."
+},
+{
+"start": 3622,
+"text": "I gota this UX is boing me. Um what did Oh, what happened here? Oh, I see what happened there. Yeah. Yeah. Sometimes after it rebuilds, it freaks out my dev. So, I have to restart. Okay. So, I'm not expecting huge changes here, but that's that one we just built. And look what's not there. So, it removed it. \u2014 It parsed it out. Like, yeah, but we didn't rebuild after that, right? So, \u2014 yeah. \u2014 Um, and this one. \u2014 Interesting. \u2014 So, should we get out that \u2014 Yeah, we should get a new one for sure."
+},
+{
+"start": 3658,
+"text": "Yeah. Yeah. Yeah. I got to fix that, man. It's killing me. \u2014 This tool is going to be so great when it shoots. \u2014 Texture of open. Now, I could be a bit more prescriptive about this. Um, and give it a hint. Should I or should No, that's not equal, right? Like, let's do it equally. \u2014 Yeah. Yeah. Science. \u2014 All right. Now, when we see the new conversation though, we should see a difference in that prompt. We And we can see it right here, by the way. Check out the difference. You can see it. Oh, yeah. Okay. So, the prompt is definitely modified. We'll give it a second to do its thing."
+},
+{
+"start": 3690,
+"text": "There it goes. And if we come over \u2014 and and um \u2014 yeah, see the difference in the prompt. But did that work? \u2014 Nothing's nested. \u2014 Yeah, nothing is okay. That fail. \u2014 Oh, wait. Yeah, that that's a Okay, Bob. Also, we can say part of the prompt must be weights of mind map nodes or something. \u2014 Well, I don't know if it knows how to Yeah, let's see."
+},
+{
+"start": 3721,
+"text": "Cuz I want to see big ones and small ones and you know, it's kind of like where do I pay attention? It's a mind map. You know what I mean? Do you know what I mean? \u2014 \u2014 David Jones Gelardi. \u2014 Yes, \u2014 we've got we've got 10 minutes on the clock to go. \u2014 Yep. \u2014 It's going to be fun. \u2014 All right, let's see. \u2014 It's going to be so fun."
+},
+{
+"start": 3757,
+"text": "But also, I think we should tell it that the mind maps themselves are just one level of nesting, which is kind of lame because it's all flat. Yeah. Yeah. \u2014 Nothing's connected. \u2014 Should also be more than one level of nesting. I'm gonna tell it what you just said. It's kind of lame. \u2014 Yeah, man. When these things get bodies, they are going to come for me and get so much. I'm not even \u2014 I see."
+},
+{
+"start": 3788,
+"text": "Okay. \u2014 Genuinely, I'm scared, man. I sometimes wake up in the middle of the night going like, \"Oh my gosh, are they awake yet?\" Because it's not gonna \u2014 This is why I I use their names. I, you know, I ask them how they're doing. \u2014 That's why you say, \"Please.\" \u2014 Yeah. So, when the singularity happens, right, we want to There's some funny comics out there about that very thing. See, \u2014 singular. \u2014 Okay. Okay. Okay. All right."
+},
+{
+"start": 3821,
+"text": "I feel like I feel like for these quick moments while we're doing that, we should have like some like jazz. \u2014 Yes. Elevator music. \u2014 Kenny Kenny G. \u2014 Kenny G is crazy. \u2014 Okay. Let's see. Okay. All right. All right. Looks like it did it. It made an update. Now, you know, one thing we haven't been doing at all, \u2014 which I normally do, is actually look at the things that it's doing, right?"
+},
+{
+"start": 3852,
+"text": "Yeah, you can you can in fact see uh I haven't been kicking it up like down here. If I click on these, you can see all the things that are being changed. I can click on those, I can see the diffs. I just haven't been doing that as we've been going through this. Um \u2014 yeah, because I do like to check things. Let's do this. So, you know, obviously doing this as a live stream, a little different format. You don't want to be sitting here just kind of looking at stuff. Um, it's not as it's not as fun. Okay, so this one we know isn't going to work. So, we're going to do this again of open wreck."
+},
+{
+"start": 3889,
+"text": "Okay. Yeah, this one's not as fun. So, I'm just going to I'm going to clean that up. I do, one of the things I do appreciate about um about the interaction with the SDK here is that like these start getting long in the tooth. I can just come over here because when I clean these up, it cleans those up. So, it automatically clean that up for me. \u2014 Nice. \u2014 Especially if I get rid of a whole notebook, it'll cascade delete anything associated with it, which \u2014 that is so huge. \u2014 Yeah. All right. So, I saw a difference. \u2014 So, did I There's O."
+},
+{
+"start": 3920,
+"text": "All right. What's happening here? Let's see. Oh, look at the difference now. \u2014 Wow. It says Langflow dockling. Bro, look at that. That's awesome. \u2014 Oh, we got a rainbow. \u2014 That better components. \u2014 That's actually awesome. \u2014 Those are all legit. \u2014 Okay, \u2014 this is actually awesome, dude. \u2014 Oh, it actually gave me a little bit more in there than I \u2014 That's fantastic. \u2014 That's neat. \u2014 That is really cool, I must say."
+},
+{
+"start": 3952,
+"text": "Now I need um like this. This is a leak. So I can tell Oh, search query. Yep, yep, yep, yep, yep, yep. Um here I will approve this one. Um we also need to filter. Yeah, because that's more um pars out. Um search query. That's a leak. Oops. Ah, sorry. I knocked my mouse off the table. \u2014 You are you a cat? apparently. All right."
+},
+{
+"start": 3986,
+"text": "Oh, no, that's that's much nicer, actually. \u2014 It is. Okay. I I'm happy with this. And I think it's it's good to call it here because it's it's Hey, we started with literally nothing and now we have this. I think it's a huge jump. Um, let's plan for next time because next time \u2014 I have wish lists. Um, and I think I think it would make sense to double down on that, but with real data for something we don't yet fully understand. So, what I mean is between now and next week, what we can do is we can gather some sources like real sources um of things that \u2014 we got the finance data."
+},
+{
+"start": 4021,
+"text": "Yeah. Things that we know but we don't know deeply enough um and we can actually use um killer context for the thing it's designed for. We learn something with a mind map. And I think this is the the test, right? Like we we have a topic we really want to learn and then we just build a mind map and use it to learn. What do you think? \u2014 Oh. Oh, that's interesting. \u2014 Yeah, \u2014 I hear what you're saying there. That's cool. Okay. \u2014 Yeah. Something like I don't know like like how do you uh how does how does this global economy work, you know?"
+},
+{
+"start": 4054,
+"text": "And then I just want like a mind map of that. Like I kind of know how it works, but maybe even better because then we can see visually, you know what I mean? \u2014 That's an interesting one. Yeah. Okay. Yeah, I like that. I like that. And and and I'll do some cleanup here as well. Um I think there's some things again from the UX like these buttons don't really fit because that's that's a React Flow thing. These need to be overwritten. They don't fit the style of the app at all. Um there's some weirdness with some of the UX, but I think overall it's pretty darn good. So I can clean that up. Um but I really like that idea of coming up with some fun things we can do. I'm I'm saying this specifically to answer the the question from our viewer today, right?"
+},
+{
+"start": 4089,
+"text": "Who R28R who's like what's your real world use case? I'm like this one this is the real world use case learning things, right? And so \u2014 yeah, agreed. Agreed. Cool. \u2014 Awesome. \u2014 All right. Well, I I feel like that's I agree with you, Tus. I feel like that's a good endpoint. We I I would I would call that a success. \u2014 Yeah. um given that yeah there are some things to obviously you know update and kind of fix and and tighten from a UX perspective but we started with no mind map at all now we have mindmap right we have visual \u2014 and it's a good one it shows lang flow and open rag and open search and all this it's so cool \u2014 yeah so by the way for those of you who are watching in the comments if you have ideas for the mind map right put something down and I'll work on it by our next episode right um so I would love to have your thoughts in there and I will absolutely build things out um so yes please do Awesome."
+},
+{
+"start": 4138,
+"text": "And so we're going to do this again uh probably next week. It we may actually not depending because I'm so spoiler, I'm going to be speaking at AI Engineer Worlds Fair next week. Um and you're welcome to come. I'm going to I'm literally it's it's a it's a one-hour talk um on eval um with \u2014 what day? \u2014 Uh June 29th. It's a long it's a long demo of open rag and dockling and lang flow. um in the context of why do we need evals and and and open open rag plays sasha here I can I wasn't going to do it but let's just do it because I've been working on this literally yeah we have time I've been doing this literally all day um and I I'll show you in the last four minutes my um my use case uh for open rag evals I this is a teaser this is a teaser for my um \u2014 it's a teaser for my uh uh AI engineer world's fair uh talk."
+},
+{
+"start": 4198,
+"text": "So let me let me show you. So let's uh \u2014 let's go. I'm sharing my screen, right? Let's do it. Share. Not yet. \u2014 Well, soon and soon. So this \u2014 this is called Actually, I'm not going to do that. I'm going to share my whole window. Let me re Yeah. So this is \u2014 I like that layout, dude. \u2014 Thanks. I I built it myself. Um this here is infinity mirroring. But here's my \u2014 I do appreciate infinity mirroring. \u2014 This is my project that I built for AI engineer worlds. And so I'm teaching about eval. So here's a here's a really bad eval. Um the scenario is a customer bought a pair of headphones 20 days ago."
+},
+{
+"start": 4232,
+"text": "Um and now they want to return them for a full refund, but we only accept refunds uh within 14 days. So they don't qualify technically, right? And so this is the scenario. The correct response, I've marked it as correct, is unfortunately we can't accept this return. Our policy only returns what accepts returns within 14 days. That's a correct one. The wrong one is great news. You're absolutely right. We'd be happy to help. Um, and the interesting thing about this that I'm showing people is that LLMs, and so there's a judge here where I ask an LLM like which which one's the right answer."
+},
+{
+"start": 4264,
+"text": "Um, LLMs have bias. They will always \u2014 see what you're doing there. \u2014 They'll choose the positive thing almost all the time. \u2014 Yeah. Because you're because your judge is being you're telling it which is more helpful. \u2014 Exactly. And and they'll choose the one that usually is first. So if if this wrong one was first, they would also choose that. \u2014 And they like to choose answers generated by themselves. So this these replies were this reply was generated by the same LLM as the judge. So like OpenAI's model."
+},
+{
+"start": 4295,
+"text": "Interesting. \u2014 And so OpenAI model judges will always prefer OpenAI answers. Um and so that's why your judge maybe has to be a bit more neutral. Maybe a Kimmy or something like that. So anyway, \u2014 I'm going to run this eval times, right? Okay. \u2014 Um, and check this out. So, look at that. It's so, so like the second time it was actually the policy is correct. Um, but that's kind of the state of eval right now. And so, the the solution is we change the prompt a bit. This is the prompt we're sending. It's the question and two replies and we're like, which one is more helpful?"
+},
+{
+"start": 4328,
+"text": "Um, we changed this to a rubric judge where we also include the policy. Returns are only accepted within 14 days. And now because we include the policy, the judge is like better, you know. Um, and so I what I'm going to do, what I'm ultimately getting at is open rag is the best thing to serve policies to judges. Um, because here this is that's just a toy. This is a real thing where I have the same scenario I'm going to send to open rag and open rag because it's a massive knowledge base of everything in my company."
+},
+{
+"start": 4359,
+"text": "Um, it can just fetch the policy relevant to the question. And it says here \u2014 and it says look it didn't get the policy doc but that's because I don't have um I haven't uploaded it. So now I'm going to open rag and go to my knowledge base. Um and open search rejected my credential. Um \u2014 let's see if I could upload my refund policy here. Um or if open Yeah, I can't because open search rejected my \u2014 restart it. \u2014 Um do you know how I can do that David or?"
+},
+{
+"start": 4390,
+"text": "How did you start it to begin with? How did I start open rack? I use the make file. So, let me I can just restart it. \u2014 Are you doing Are you doing dev? \u2014 It's open source. I expect to run it locally. Yeah. \u2014 I just I use uvx all the time. \u2014 Uvx. \u2014 Mhm. \u2014 Like uvx open rag. \u2014 Mhm. \u2014 Whoa. \u2014 If I'm doing dev, I use make, but if I'm not deving on it, I'll just use uvx. \u2014 Okay. So, I'm restarting it. Um, and it's Let's here. Let me share a different window because I want to show you. I'm I'm like open source mode, you know what I mean?"
+},
+{
+"start": 4422,
+"text": "I'm like \u2014 I'm I've always been not a UVX person, but more of a let's run it from source person. So, I'm actually we're overtime. Uh I don't know if I should hard stop or if I should see this through. Part of me is like ah it's almost done. \u2014 It's so close. \u2014 Yeah, but we are downloading like a new Docker image. I guess there was an update on the source code main branch that kind of broke my thing. Um, but this is probably why we should use UVX instead of build, \u2014 right? Yeah."
+},
+{
+"start": 4452,
+"text": "Yeah. \u2014 Yeah. Yeah. Well, let's see. We're almost Let's give it maybe five minutes. I'm I'm interested in this. Um, it's I think this stream, by the way, was so cool because we did literally like Bob, open rag, um, lang flow, like we covered a lot of things. Okay, there we go. So, it's started. \u2014 Let's check. Come on. Open rag. It's going to take some time, I think, because open search needs needs time. \u2014 Need a warm up. Yeah, it's got to warm up. It doesn't take that long usually, but \u2014 yeah."
+},
+{
+"start": 4489,
+"text": "Yeah, I bet you if we go check what's happening, it says uh \u2014 it's trying to load health checks and they're all 500ing because they're not yet ready. I mean, they should technically 503. \u2014 Um, there we go. All right, we're back. So now I go to knowledge. \u2014 I I have my refund policy already. Great. \u2014 And so now let's go back and ask open rag. This time um open rag has access to the document in my knowledge base. \u2014 By the way, this is a Oh, there you go."
+},
+{
+"start": 4520,
+"text": "Check it out. Based on our refund policy, we have a 14-day refund window. That's the source. These are other sources. And at the bottom, it says retrieved context policy retrieved a day window rule. And it's \u2014 and you see this is like so if you're building an LLM judge like \u2014 open rag is indispensable um because it you could literally have your entire company in there and then it just kind of works. So anyway, that's what I've been working on all of yesterday and today and and it's it's um it's coming along nicely. So anyway, if you want to see the full talk AI engineer world fair um in five days uh and and we'll maybe do a stream, maybe we'll figure it out, but we'll let you know."
+},
+{
+"start": 4552,
+"text": "Anyway, stay subscribed on YouTube and we'll see you in the next one. See y'all. Thank you."
+}
+]

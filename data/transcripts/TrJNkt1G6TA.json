@@ -1,0 +1,498 @@
+[
+{
+"start": 0,
+"text": "with Bob. Bob is IBM's coding agent similar to Cursor, Claude Code, Codeex, whatever you want to call it. And and we we love it. We love coding and we build things together. I'm joined today by my co-host and good friend, David Jones Gelardi. Hi, David. \u2014 Hello, Tis. Good to see you. How are you, David? \u2014 I am well. I am well. I'm having a, you know, good week. We finally got some rain. Like a lot of rain. All the rain came to uh where I live yesterday, which like like you, it has been very, very hot. Um, and uh, we usually get rain, like rains every day and it hasn't been happening and everything's been like dying and it's been like parched and now we got lakes again."
+},
+{
+"start": 38,
+"text": "So, that's wonderful. \u2014 We We give thanks for lakes. \u2014 Give Yeah, give thanks for legs. I like that. I like that. \u2014 Very, very happy. \u2014 How's it going over there, Tis? \u2014 Oh, it's going so well. It's going so well. Yeah, I'm uh I'm happy. We just actually celebrated seven years of my wedding anniversary. \u2014 Oh, congratulations. That's awesome. Very cool. Very cool. It's it's it's definitely a blessing. Hey, I'm excited to continue building Wallfly. So, for those joining the the the project uh Wallfly is a project we're working on. It's this wonderful granola real life style meeting recorder situation."
+},
+{
+"start": 70,
+"text": "Uh the the end goal is it's it's a it's it works on your wearable and you just wear it to your meetings and you hit record and then it just gives you AI enabled insights and action items and things like this. Um we're we're building it using Astra and Dockling. Uh, and last week, just to catch you all up, \u2014 right? \u2014 Last week, we got to a point where the UI was built, it's all wired up, the database is connected. Uh, we just we record and then we send off the recording to be transcribed and then, uh, stored, and that's where we ran into some issues."
+},
+{
+"start": 102,
+"text": "Now, since then, there has been some some updates and some \u2014 Yeah, I saw I saw the uh I saw the amount of changes uh in uh in the repo there, Tus. It looks like you were busy. Yeah, but we uh we are going to um I think we're going to play a bit of whack-a-ole because what we what David and I recognized before starting the the stream was it's it's a it's a it's a universal app. It's built with Expo which allows us to write once build and ship anywhere. So you can ship a native app and a web app uh with a single codebase."
+},
+{
+"start": 136,
+"text": "And this works really well for the most part. Um, but I we're dealing with like media, so audio. Um, and there's a package called ExpoAV, which uses if you're using it on a native device like an iPhone or an Android phone. It will use the devices audio APIs, the microphones. Um, and and similar if you use the app on web, then it would use web native audio APIs. \u2014 But the problem with XOAV is um it works on one sometimes and not the other other times. And it's it's been a bit flaky. So, I think today we might run into some issues with with that as well, but we'll see how we go."
+},
+{
+"start": 168,
+"text": "We'll we'll work through it. Now, one thing I I'd like to like before we really get going in earnest, you know, I I I realized something this morning, Tis, you know, is I was kind of um you know, spinning spinning everything up. And it dawned on me that last week at the end of it, we were so focused on the audio portion and getting that working. I think we totally just kind of um missed some of the things that were in fact working in the app. So, real quick before before we get into like the absolute latest, let me just share my screen. Make sure I get the right one."
+},
+{
+"start": 201,
+"text": "All right. So, hopefully you see Wallfly and everything like that. So, I've just got Wallfly on the left and you know the database here on the right. Now if you remember um from last week you know right we were having some challenge with the audio portion but we were in fact logging everything from the database aspect like that plumbing is hooked up and working and this is what I noticed today. I went to you know I I I went to record but then I I clicked around and I was like oh now not that it got these recordings but I want you to I want you to notice that maybe I should blow these up a little bit. Notice what it did. It used the georreerencing to get the address."
+},
+{
+"start": 234,
+"text": "Right? remember we put that in \u2014 right so this is you know don't you know if you want to come visit you know say hi or something like the address is you know this is this is my location this is absolutely where I live um and so it was actually doing that already \u2014 and we didn't give any credence to the fact that when we because if you remember we used a spec code process to start this whole thing up we we told Bob we wanted to do all sorts of things right we spent the hour and a half going through that and one of those was to geo reference the of where the recording was um taking place, get the time, all that."
+},
+{
+"start": 268,
+"text": "So, even though we're having some trouble with the audio portion, that is actually working, right? And then, funny enough, underneath the hood, uh you can actually like some of these um uh some of these uh if I Yeah, you remember some of the errors that we were running into that we could see in the uh in the logs? Well, they were actually putting them right here, right? It was It was kind of funny. I I was just We never even looked. And then on top of it, I was like, \"Oh, well, does the chat do anything?\" Right? You know, and um again, we hadn't really looked at this, but yes, it is in fact wired up."
+},
+{
+"start": 303,
+"text": "And when I asked it about recordings, it's like, well, you don't have any recordings yet, which is true because we haven't gotten the audio part worked out. So, so it was funny. We just totally glossed over the fact that other major components were already there and working. Um, so now that again the key thing though at Lynchpin is getting the audio going, right? And uh and I know that's where we're at. Anyway, so I just wanted to see because I got so excited when I saw that this morning. I was like, \"Oh my god, wait, there's there's more here than than the error that we are running into with the uh the you know, the audio part.\" So \u2014 that's so good."
+},
+{
+"start": 336,
+"text": "You know, I think we we were \u2014 we were so locked in that we didn't even clock that there was so much more going on. \u2014 Yes. Yes. Yes. Yes. All right. So, I'm going to stop sharing and then I guess Tis, you know, I got a question for you, man. Like, so you did make a bunch of changes, right? Um, you know, we we left it last week that you were going to you were going to go through this is no pressure on TIS at all, right? You know, go through and make it all make it all nice and all that. So, what did you do? Like, what did you change? I I I looked at the uh diff for like two seconds this morning. I didn't actually take a look at it."
+},
+{
+"start": 366,
+"text": "So, I'd love to know. \u2014 Yeah. Yeah. I'm actually looking at it right now, too, just to uh make sure I \u2014 What did I do? That's me. That's I have that conversation all the time. \u2014 No, it's it's more it's more Wait, hang on a second. It's it's it's because it's um it was mostly stability things around the \u2014 native app. Uh \u2014 okay. \u2014 Because because I'm thinking, you know, we need this to be a solid wearable device. You know what I mean? \u2014 Um and so I'm I was just like locked in on wearable, wearable, wearable. Meaning we decided the the form factor should be like I open my watch, I get a big record button, I tap record on my watch and then it and then it records and then from there the watch with the Bluetooth pair to the iPhone sends it to dockling and Astra."
+},
+{
+"start": 411,
+"text": "Right. So \u2014 Right. Right. \u2014 I think the story has to begin with a very solid first step from your your wearable or your watch or your phone. And so \u2014 okay, \u2014 I I give you some example. We never uh in the mobile app uh requested microphone permission. Can you imagine? So, \u2014 oh yeah, that's kind of important, right? Okay. \u2014 And we did it we did it on the web, right? That's why \u2014 um but but so you know step one is like let's let's maybe ask for permission. Uh so then the device itself unlocks the microphone API."
+},
+{
+"start": 444,
+"text": "So that's okay. \u2014 Something uh that that was um that was important. Then a lot of it was also around making sure that we actually have like a file because if you remember last week we were saving a webm uh as an asset, \u2014 right? \u2014 Um and and this was also problematic because not everything can parse webm and so it's making sure we have this file that we then send off to be enriched that can be enriched. Um and making sure that when we upload the file it's always uploaded as a as a multiart form data as opposed to like you know B64 or whatever."
+},
+{
+"start": 478,
+"text": "Okay. Um, \u2014 and so a lot of it was the native app and the native audio containers. Uh, and then and then really just like API solidity, which which then means \u2014 that I um neglected the web UI. Um, and so that's kind of what I talked about earlier when you have something like XOAV um, and and you have your native app and it's working and it's nice. When you go try it on the web, it's like, oh, okay. And now I now I broke some things on the web. \u2014 Yeah. That's \u2014 Yeah. And so to that, like you know, right before we got on here this morning, you know, we both I think downloaded the uh the Expo iOS simulator, right, because it was complaining about that uh because we didn't have that in place if we're going to do this on a mobile app."
+},
+{
+"start": 519,
+"text": "Um mine is up, right? I don't know if you've got yours up. Um, I wonder if it's worth a test to try it through the simulator app, try it through the mobile pathway instead of the web and see if we get any kind of different outcome. \u2014 Yeah. \u2014 Or is the error just universal right now? Right. Is it just it's broken regardless \u2014 or is it or is it really platform based? \u2014 I have some guesses about the mobile experience. Um, I think if it works for you, I would be surprised because there's an issue on fresh installs with React Native SVG."
+},
+{
+"start": 552,
+"text": "Okay. Um so this package is a peer dependency of some something deep in the expo tree that uh if you just cloned if you just pulled um you would and if you did like npm ran it on the simulator you would see like can't find dependency react native SP then the corrective action is npm install react native SVG when you install that then it would be interesting to see what the simulator does. \u2014 Okay. Okay. Well you want you want to give it a shot like um Sure. \u2014 All right. Well, here you want since I have this up, do you want to see because I just did a fresh install from the changes that you made?"
+},
+{
+"start": 585,
+"text": "Yes. \u2014 Uh during the week. So, let me go ahead and share mine real quick. \u2014 All right. Do you see it? \u2014 Yes. \u2014 I have I have my expo over here. Let's see what happens. Oh. Oh, it asked me for permission. And it's asking me for permission and asking me for permission everywhere. All the permission. Okay. So, that was a lot of permission. Let's see what it does. \u2014 Oh, okay. Oh, okay. But hey, hey, that's a lot more decisive of an error."
+},
+{
+"start": 617,
+"text": "Oh, okay. \u2014 That error is dockling uh serverless uh from IBM. Um and it's it's it's valid. It's because it we we're telling it like I need you to process this inbody uh which doesn't exist and it says there you know what does exist is Astrod chunks or an Azure blob or Google drive something like this \u2014 right and so we're just passing in nonsense um or it's not nonsense but it's dockling oss \u2014 it's not a format that it understands right \u2014 it it's it's also dockling OSS not dockling SAS and this is just like small differences here and so I I fixed that locally \u2014 you did Okay."
+},
+{
+"start": 653,
+"text": "Yeah. Yeah. And so now uh if if I can take the screen share from you. \u2014 Please do it. Let's see it. Okay. \u2014 Um and and it should in theory be working on the web. \u2014 That's an exciting ch I'm I'm actually That's cool. I want to see what you got. Let's see. \u2014 Yeah. Thanks. So this is now um should be working on the web as well. Uh let me see. Share my screen. Infinity mirror. Fantastic. \u2014 Infinity mirror. Yeah. \u2014 Here. And we reload. Um and we will record. \u2014 Okay. \u2014 Hello. My name is David. You may know me as the sailor Davy Jones."
+},
+{
+"start": 684,
+"text": "I have a locker at the bottom of the ocean. \u2014 Wow. \u2014 Wow. \u2014 And so now we are processing. And the cool thing because I'm running you, you can actually \u2014 There we go. Tous. I'll just go with your theme here. \u2014 We're posting and you can see that it's actually posting and it's returning a 200. \u2014 Okay. Oh, okay. \u2014 So, it's it's going There we go. There's a new error now. Dockling task failed while processing the audio. Internal processing error. And unfortunately um with internal processing errors."
+},
+{
+"start": 716,
+"text": "There's nothing I can do because this is some you know uh it even says it here. Look I love this error because it's not it says um non-auudio documents convert normally on this deployment. So this is an ASR capability gap. Not a payload problem. No client flag or container change fixes it. transcription needs a deployment with the ASR pipeline enabled or a dedicated SD provider that speech text provider behind the three. \u2014 So, okay, so isn't this the whole whisper thing, right? I mean, this is and and I know that Dockling supports this."
+},
+{
+"start": 749,
+"text": "So, \u2014 doling supports this, but here's the deal. Dockling SAS runs Dockling in a container in IBM cloud and that container needs the right configuration. So is the solution here then and I realize this sounds a little funny in a way but is the solution here then we could do one of a couple things. We could either pipe this portion of it in the pipeline \u2014 through to dockling OSS that kicks off whisper right it's got that whole process and then take the output of that and I guess at that point do you really need to go to the SAS or we could just use whisper to do the initial audio transcription and then pipe that to doling and go through the rest of the pipeline."
+},
+{
+"start": 789,
+"text": "But why would we do that if Dockling's one job is to transcribe? \u2014 Um, well, is it is it just to transcribe or is it to give I mean, you could just take a transcription and feed that right into an LLM. But one of the things that Dockling does that's really good, right, is it will convert that into a format that is more optimized for LMS. But I hear what you're saying, right? Is it do we even need that if we're already doing the transcription here locally? \u2014 Yeah, we want to take audio we want to put audio in and get SRT out. That's it. That's that's that's that is dockling. True. We don't care we don't care about a format for an LLM, right?"
+},
+{
+"start": 820,
+"text": "Okay. \u2014 And so if it doesn't do that, then why are we even using Dockling? And I think we we should use because it's IBM open source that we make, \u2014 right? \u2014 But if then the problem is hosted Dockling SAS is so poor that it can't do this, then we might have to just pivot and use open source dockling. Um which which I hope we don't have to res. Would it be would it make more sense to go ahead and start with open source first, get it working, \u2014 do it local with open source, get it working, and then see if we can go over because I I don't know off the top of my head if the dockling SAS supports that functionality."
+},
+{
+"start": 853,
+"text": "And \u2014 what I'm thinking is we could take a we could both take a dual approach where maybe you work on the local dockling portion, get that working, and then I can go research to find out whether or not that's something that's supported in Dockling SAS. \u2014 That's a really good idea. Um I want to give it I think that's a really good idea actually. Yeah. So so what you're saying is we pivot this and and at least for the transcription use dockling locally right \u2014 for now just to get that working because I know for a fact without a doubt I have done that with dockling. I've done that with dockling open source locally."
+},
+{
+"start": 886,
+"text": "It was the very apps that we were talking about last week right that you and I have both made. We have done this portion with open source. I've just not tried to tackle this with SAS before. What um what port does dockling serless listen on? Do you know this off the top of \u2014 001? \u2014 Okay, cool. I don't have it running. Nice. So, we can docker run dockling server like this, right? And then just point it at that. That should work. You think \u2014 we could try? \u2014 Yeah, let's do it. \u2014 We can try. \u2014 Uhhuh. Yeah. \u2014 While you're doing that, what I'm going to do, I have my previous app that I worked all this out with with using Dockling and Whisper and all that kind of deal."
+},
+{
+"start": 923,
+"text": "I'm while you're while you're working over here, I'm gonna take my Bob. I'm gonna say, \"Hey Bob, I have this app over here. I've done this already with with local dockling. Let's let's see how we can wire this up, right? Or or how this might work because I've already I've already worked that out before.\" Um, so and actually, I'll have it do an analysis first. So, we actually \u2014 Yeah. Yeah. All right. So, give me just a second as you're working through that. And so I'm going to use every time I drive I like it because I use Bob Shell, not uh \u2014 I use Bob Shell to \u2014 Do you though?"
+},
+{
+"start": 956,
+"text": "Do \u2014 I do actually? I do. I do. You know, I've been using a lot of MCP agent mail lately. Have you gotten into that? \u2014 No, \u2014 dude. It's a way to coordinate your agents, \u2014 right? \u2014 And uh and they use like mail, right? You know, like and uh it's actually really cool because then you can register a set of agents, especially if you're working in a single codebase or something like that. Um, and then each agent has a task and they will then talk to each other and make sure they don't clobber files. All sorts of stuff. It's actually really \u2014 Hey, check it out. Bob \u2014 Bob shell doesn't work."
+},
+{
+"start": 988,
+"text": "How sad. \u2014 What do you mean doesn't work? \u2014 Check this out. Make this use dockling local instead of SAS. Watch this. \u2014 Wow. A JavaScript error. \u2014 That's interesting. \u2014 That's kill it and start over or something. That's That's a new one I've never seen. \u2014 How do I upgrade Bob? Let's see. Where is my app? Oh, you know something? I have it up in GitHub. I have it up in GitHub. \u2014 Wow. An unexpected critical error occurred. Object. Object. This looks very good."
+},
+{
+"start": 1019,
+"text": "Did you Did you break your Bob? \u2014 Did I break my Bob? \u2014 You broke your Bob. I'm blaming you. \u2014 Yeah, that's that's the way. \u2014 You broke the Bob Tis do that. \u2014 Let's just reinstall this and see. \u2014 All right. All right. So, I have what I need here. Okay. So, nice. I've got to sign in."
+},
+{
+"start": 1066,
+"text": "Of course, I got to sign in. Come on. We care about security. Okay. Nice. Now we can say use dockling locally not SAS. All right. \u2014 Okay. Oh, you got it fixed. Good job. \u2014 Yeah, I just upgraded it. \u2014 I upgraded it, Captain."
+},
+{
+"start": 1099,
+"text": "Okay. Okay. Okay. Okay. \u2014 Okay. Okay. \u2014 Okay. \u2014 Okay. \u2014 Okay. \u2014 Okay. \u2014 Duckling Sass. Oh. Nice, man. The config check shouldn't reply. Doclet. Yeah, cool. All right. Bob's working, mate. Bob's working. \u2014 Oh, that's great to see. \u2014 I'mma push you on my other screen so we don't infinity mirror."
+},
+{
+"start": 1131,
+"text": "Oh, I mean, I like the infinity mirror. I think every time we infinity mirror, though, we need to have a sound that kicks off. Like, \u2014 yes, that's the right sound. Approve once. I want to approve always. I should have ran Bob. I don't know if you know this, but if you run bobshell with dash \u2014 yellow mode. \u2014 Yeah. You like it, huh? \u2014 Best mode. \u2014 Oh, you really? Okay. \u2014 Yeah. Do you like it? Yeah, bro. YOLO mode is like peak. \u2014 That's great. \u2014 That's great."
+},
+{
+"start": 1164,
+"text": "Um, hey Bob, please don't leak my environment variables. Thank you. \u2014 \u2014 You know, funny enough, I actually noticed I don't I haven't done it in Bob shell, but I notice in Bob IDE, it will actively cut out PII. Wow, that's so sweet. \u2014 Let's see. Okay, so I have my analysis running, by the way, while you're doing this. Um because I think I think last week we we kind of you know we we started off really strong with the the spec approach and got the initial app and everything working and and even found out there was more things that were finished that we never really gave credit for."
+},
+{
+"start": 1205,
+"text": "Um and then we obviously we struggled a little at the end with the audio part, but then we kind of went into vibe mode and that's fine for certain things. But as I thought about it, I'm like, you know, um, we already I already had this worked out in another app. And so I think a better approach, which is what I'm doing right now, would be to have it do the analysis, be like, hey, what are the gaps here? What's missing from what we implemented here that had this pipeline, this kind of pipeline working, and then I could take that and create a task list, right? And then have it go and march down those things. So I'm looking right now to see kind of uh what we end up with."
+},
+{
+"start": 1239,
+"text": "See? Okay. Okay. Okay. \u2014 All right. Now, I've got to change my end local and then uh Bob I I was told Bob is going to be my uncle. Do you believe that? Can you believe it? Okay. Do service URL. Okay. local host."
+},
+{
+"start": 1272,
+"text": "So, I guess the dockling SAS doesn't really work, huh? Sad. \u2014 Well, no. I I use it all the time. I just haven't used it for audio transcription. So, \u2014 so I think I think again I think it might just be a mode that it doesn't support, right? Um as compared to like a a blanket statement. \u2014 David, this is why you're better than me. \u2014 It's just true. \u2014 Oh my god, dude. It's just true. I work almost exclusively in blanket statements."
+},
+{
+"start": 1306,
+"text": "All right. I'mma test it already. \u2014 All right. All right. All right. Go. Go. Go. \u2014 Hello. My name is David. Uh, it's not really David. I don't know why I keep saying my name is David. \u2014 Okay. Let's see. \u2014 H. So, I have I think I have Dockling running locally. Let's check. Locost 501. Detail not found. That means it's found. Awesome. Um, what's going on here? Am I Let's restart my dev server probably. Okay, come on."
+},
+{
+"start": 1339,
+"text": "Show me the magic. Hello. Hello. I am testing Wallfly and I think it should be working about now. Hey, \u2014 hey, \u2014 rejected target type. What? Okay, man. Sure, man. But do I did I set this somewhere? I think I did. Do it. Oh, it's in my environment variables. \u2014 Okay. So, it's telling me I need to restart. Okay."
+},
+{
+"start": 1371,
+"text": "Okay. \u2014 Okay. So, just paste the error in. Budget exceeded. \u2014 Dude, what have you been doing? You got to you got to give some feedback there. Tis, did you did you max out? \u2014 It just it just says that I don't know. \u2014 Did you max out? \u2014 I was told I had all the Bob coins. Let's check. Bob coins. Please give me Bob. Bob settings."
+},
+{
+"start": 1402,
+"text": "Log. Of course, I got to log in. \u2014 Yeah, you got to lo \u2014 because logging in shell doesn't log in the editor. Come on, Tis. You should have known that. \u2014 Tis. \u2014 Okay. \u2014 All right. And now please open IBM B. Let's check. Oh, no. I've used all my \u2014 How many do you have? \u2014 I have minus 1% remaining. \u2014 No, no, no. I mean what? Oh, no. You can get more. You got to give feedback. \u2014 All right, I'll do that. \u2014 Yeah, you can get it'll double it this time. You'll I I think you'll This is by the way, you know. Yeah, this is a that this thing that you're seeing is like an internal IBM thing to for for us."
+},
+{
+"start": 1436,
+"text": "But let's see. All right. Okay. All right. Oh, okay. I might have some movement. Let's see if this works. Um, okay. Sure. And there apps mobile apps mobile mobile mobile apps."
+},
+{
+"start": 1480,
+"text": "Nice. \u2014 Yeah. \u2014 Did I get Bob? Oh, I got 500 Bob coins. Oh my god. \u2014 Yeah. Nice. See? See, \u2014 I'm probably a Bobcoin millionaire. Okay, I think that's good. Let's give this Okay. My name is Tiskumar and I am testing the app. \u2014 You're testing the app, too. \u2014 Yep. \u2014 Oh, wait for it. Oh, okay. Okay, that was something."
+},
+{
+"start": 1511,
+"text": "All right. So, what I did locally is I essentially told it, hey, I've already got this process working over here in this other app. I want you to take a look, do an analysis against that and um and work this out. Now, I got a different response. So, I'm kind of testing that out right now. \u2014 What What did you get? \u2014 I'll oops. I'll tell you in a moment \u2014 when I'm done quickly record a test for myself. \u2014 Okay. Um hello, I hope this works. Uh because I'm using Dockling locally now and local Dockling slaps."
+},
+{
+"start": 1547,
+"text": "Okay. Uh, let's check. Oh, okay. We're processing. \u2014 Yeah, same same. \u2014 Same same. \u2014 Same same, \u2014 but different. So far so good. The pipeline is whacking. Who is that man in my family who said I would fail? Oh no. Um, no audio documents convert normally on this deployment. Am I still speaking to the cloud? What do I need to run?"
+},
+{
+"start": 1583,
+"text": "Wait, let's go check dockling serve. Dockling serve ASR run dockling serve with ASR. What are you crying, David?"
+},
+{
+"start": 1622,
+"text": "Um, hold on. I am also, um, I'm right now I'm adding a bunch more verbose logging to every step in the pipeline. Um, I'm also uh pushing all of my particular audio tasks to Dockling local uh over open open source. \u2014 Um, I'm essentially mirroring I'm looking to mirror what I already had working in that other app, right? Uh, for that portion of it because again Dockling should kick off whisper."
+},
+{
+"start": 1653,
+"text": "Um, but I do distinctly remember when I did the other app, right? There's things like ffmpeg you need you need whisper, you know, you've got to go through there's extra steps from the audio part. \u2014 So, I'm I'm working through that right now. Cool. Nice. Um, it says the UI is available, but I don't Oh, here we go. UI just says details not found, but it it says, \u2014 oh, I remember the difference. I didn't use Dockling ser."
+},
+{
+"start": 1686,
+"text": "You can do it that way. I actually imported Dockling directly into my app and is it okay? Okay. Um actually instead of using Okay, I'm gonna Yep. Okay. I'm going to do this. Yep. What? \u2014 I'll tell you in a second. Here we go."
+},
+{
+"start": 1734,
+"text": "So, I need to figure out how I ran the Dockling ASR pipeline. Interesting. Interesting. Interesting. Interesting. So, we have to actually write code. We can't use a server. Interesting. I Yeah, I'm I'm actually coming to a similar realization that if I take a look at my um uh my my video uh to what did I call it? My video to open rag that was what that was. That's exactly what it does. So, yep. I'm I'm having that realization again."
+},
+{
+"start": 1766,
+"text": "Let me see. \u2014 Yeah, because like it's \u2014 Dockling serve has some like extra configuration. \u2014 It does. It does. That's right. \u2014 Yeah. \u2014 Okay. All right. You know, I'll Okay, let me restart Dockling Serve with the extra ASR. \u2014 How do you do that? \u2014 Apparently, you can when you start it up, you can just do D- extra ASR. I've not done that before. \u2014 Wait, so D-extra- ASR- extra space ASR. \u2014 What?"
+},
+{
+"start": 1797,
+"text": "Okay, that's okay. Sure. \u2014 What are you going to give that? Oh, are you looking? \u2014 I mean, I'm looking at the help and I don't see any dash anything. \u2014 Try it out, I guess. See what happens. \u2014 Yeah. Yeah, sure. Why not? Uh, \u2014 can't hurt. \u2014 Sure. No such option. D- extra. That's what it says. \u2014 Okay. So, is that hallucinated? \u2014 Who Who are you asking? You asking Bob? \u2014 Yeah. \u2014 Yeah, it's definitely hallucinated. \u2014 Okay, let's find out."
+},
+{
+"start": 1836,
+"text": "I think the only way to do ASR is with manual code. I don't see anything with duckling serve in ASR. feel"
+},
+{
+"start": 1898,
+"text": "like we need uh when we're, you know, for for those of you who are watching and you've ever gone through uh you know, obviously sitting down and coding. I don't know about you, but I always have music going like always. Unfortunately, you can't really play anything on here without like potential copyright uh infringement issues. Uh, but I would totally have some some tunes jamming right now doing a pair programming thing. \u2014 Focus mode. \u2014 Mhm. Dang, bro."
+},
+{
+"start": 1932,
+"text": "Actually, I did mean to do that. Go down. Yep. Okay. Okay. Okay. Well, this is kind of unfortunate, but we make I'm going to do a test. Okay. Real quick. \u2014 Go for it, man. \u2014 Hey, go for it, man."
+},
+{
+"start": 1963,
+"text": "I'm David. I tell people to go for it. \u2014 What? What's so funny? Bob is so cool. I love watching Bob work, honestly. \u2014 Mhm. \u2014 Yeah, it's like I can see it. Do you see it? Are you watching my screen or you doing anything? \u2014 No, I'm watching both, but I I have you over here. I can see you."
+},
+{
+"start": 1994,
+"text": "It's so cool. You see the transcribe it detected some issues here and it's uh going. Oh, here we go. Wow, it cleaned up a lot of nonsense. All right, it's fixing is tribal. Let me do another test while it fixes that. \u2014 Hey, so sometimes the weather is your friend and other times it's your enemy. That's deep. Okay, let's \u2014 Very nice. Very nice. \u2014 Ooh, it's working. Nice. Oh, all right."
+},
+{
+"start": 2025,
+"text": "We need an LLM. \u2014 I don't remember needing an API key for Whisper. \u2014 No, it's just for an LLM. And you gave it Olama. You remember that? \u2014 Oh. Oh, okay. Okay. Okay. Okay. \u2014 But I didn't have that. Uh, so I got to find my own. \u2014 Um, and so how do I find my own? I got to find my own. Hey, so David, do you have an API key for me? I'm joking. I'm joking. Pick a card."
+},
+{
+"start": 2057,
+"text": "Any any card. \u2014 Pick an API. \u2014 Good. Okay. Good. Okay. This is actually something neat about Dockling. Um, it'll automatically on like Mac hardware like this. It'll automatically use MLX Whisper. It's actually something cool that Dockling does. Um, it doesn't just invoke Whisper for transcription. It will invoke the correct version of Whisper depending on the architecture that you're on. Um, \u2014 so I'm I think I'm getting close. We'll see. We'll see here. \u2014 Okay."
+},
+{
+"start": 2088,
+"text": "All right. Let's see what happens. \u2014 I like your sound or whatever. \u2014 Yeah. Yeah. Yeah. \u2014 Do you believe me if I told you I did I I do that normally? \u2014 Of course. \u2014 Okay. \u2014 It's not like you fake yourself on stream, man. \u2014 No, that's true. That's true. Okay. \u2014 I believe David is like the most genuine person on earth. \u2014 Only on Thursdays to just other days I'm ingenuine. \u2014 Right. Right. \u2014 Let me test."
+},
+{
+"start": 2121,
+"text": "I I just said David the most genuine person on earth. \u2014 I'm also testing too and we'll find out. \u2014 Hey. Okay. \u2014 Oh, here we go. \u2014 That was a really dumb reaction. Um I didn't set the API key. My bad. \u2014 Okay. Okay. You know, this is giving Okay. Okay. So, mine. Okay. This is I I'm seeing something very promising in my end right now. \u2014 What What are you seeing? What are you seeing? \u2014 Um Well, I have it not only putting out very verbose logs, but the time it's taking to process tells me it's probably transcribing \u2014 because it does because it's using local models right now, right?"
+},
+{
+"start": 2159,
+"text": "And um um yeah, let me see here. Uh, and the verse the verbose logging I have is very promising, but it also tells me that there's an opportunity here. I recognize from the app standpoint, nobody cares about the underlying services that are running. They just want it to work. You press the record and it does its thing. Um, but I think there's opportunities for us maybe in like an admin panel or something like that to actually kind of spill out some of the steps so you can really like see what's going on. But I am seeing Yes, I'm seeing some very promising stuff right now."
+},
+{
+"start": 2194,
+"text": "Like what? \u2014 You want me to show \u2014 um in a in a second. I just want to \u2014 Okay. \u2014 get my \u2014 Well, it's it's almost there. It's almost there. \u2014 I know. Same thing. [clears throat] \u2014 My API keys are in order, but it doesn't seem to matter. \u2014 Matter. \u2014 There you go. I just uploaded. It's processing. unsupported model. Hey, that's awesome, dude. That's a good error. \u2014 Okay, \u2014 only the default one val unsupported value temperature does not support 0.3 with this model."
+},
+{
+"start": 2227,
+"text": "What the \u2014 what the temperature? \u2014 Okay, so I Man, that was so close. Ah, whoops. \u2014 All right, let's try again. \u2014 I didn't know I could do that. What? \u2014 Hi, David is is very high temperature person. Um, is it working? Is it working? Oh, I think we have \u2014 temperature. My temperature. \u2014 It's done. \u2014 AH, [screaming] YOU GOT ONE."
+},
+{
+"start": 2259,
+"text": "I got one. \u2014 Darn it. You beat me. \u2014 Let's go check the database. \u2014 I was just about to do that. Yeah, I was just about to do that. You beat me, Tis right there. \u2014 Dang, David. It's not a competition. It kind of is. \u2014 It is. It is. Oh, look at all these. Oh, that's actually funny. We have a bunch of stuff in here now. Oh, there it is. I see it. I see it. \u2014 So, wait. I need to see it. Where is it? It's \u2014 There it is. Right there. \u2014 David is a very high temperature person. \u2014 Y describes David as a very high temperature person. David is characterized as having a very high temperature demeanor."
+},
+{
+"start": 2292,
+"text": "Well, I mean, we did remember. Okay. Wait, wait, wait, wait. Back up for a second. Notice what just happened there. It gave you a summary of that. And again, that was one of those things that we had originally baked into. So this whole thing, right? Remember, it built out this whole app, but we were just we got hung up on the audio portion and now it's actually it didn't just store the record in the database. It actually did, \u2014 you know, it had the LLM kind of, you know, process that information, right? And I realize we're not done yet at all, but that is super promising."
+},
+{
+"start": 2325,
+"text": "That is very cool. Okay, \u2014 David's temperament. It's ready. Look at that. \u2014 Oh, is it in the my recordings or whatever? Oo, this Yeah, check out the summary. Bro, you should have this same database. \u2014 Okay. Oh, wait. Duh. I can't wait. Wait. Oh, wait. I can see it on my end because we built this to work over \u2014 uh the the network. Duh. \u2014 Yeah. \u2014 So, we're using a shared database. Oh, I see it. Let's see. Okay. Okay. \u2014 Oh, show the full transcript. \u2014 Now, I don't actually see the Oh, no. That was it. Yeah, that is the transcript. Okay, \u2014 that was it."
+},
+{
+"start": 2356,
+"text": "Yeah, I love it. It works. \u2014 Hey, that works. Now, what's missing is the the playback, but we'll get there. \u2014 Yeah, I'm just I You can chat with your trans A. Man, this temperature thing is really irritating, bro. Let me fix it. \u2014 Oh, here. Let me see if I can because mine was um tell me about the transcript. \u2014 Well, bro, this is perfect. This is actually perfect. It works so well."
+},
+{
+"start": 2387,
+"text": "Oh, I got it. Yeah, mine's working now, too. Okay. \u2014 Not the audio part, but the transcript or the LM part. Yeah. \u2014 Okay. So, step one, commit. Let's do it. Bob, please commit this. \u2014 Now, what change did you make that that worked on your end? \u2014 Uh, so I'll tell you. I don't need Bob to tell me. I can tell you. We just moved from Dockling SAS to local Dockling. \u2014 I did that, too. Yep. \u2014 But not Dockling serve, but like an actual Python file that imports Dockling."
+},
+{
+"start": 2418,
+"text": "Same. say, \"I'm sorry. We were working on the same thing at the same time.\" This is great. Go ahead. Keep going. Sorry. \u2014 That's That's all I changed, bro. Um \u2014 Okay. So, here's what I'm going to do. I'm going to stash my changes. I'm stashing my local changes. Okay. \u2014 Uh because your changes apparently beat my changes and worked. \u2014 And now I'm going to pull \u2014 Oh, you got to push. Please push. Yes, I'm committing first."
+},
+{
+"start": 2450,
+"text": "Well, that too. \u2014 All right. So, just for the record, even though Tis and I weren't battling, Tis did in fact beat me right there. Um, I'm not going to hold \u2014 If David If David beat me, he would say we was definitely battling and he won. \u2014 I owned you. \u2014 Let's see. No, that's that's actually super satisfying. I'm very satisfied to see that. I have pushed Captain David. \u2014 Oh, have you? All right, let me pull."
+},
+{
+"start": 2482,
+"text": "Boom. I got changes. All right, let me restart a server. I I'm going to lose all of the stuff I did, but I just stashed it, so it's not a big deal. Um, I probably don't need to restart the the mobile app because that's just using an API to our back end. \u2014 Yeah. \u2014 So, theoretically, this should just work theoretically. Okay, \u2014 I'm gonna stop sharing because I accomplished my mission, David. But uh \u2014 Okay. Well, now it says it says on my end whisper one not found. So, did you have to do something to pull whisper?"
+},
+{
+"start": 2513,
+"text": "No, because that was just part of it, right? \u2014 Let's debug on your end. \u2014 Okay, \u2014 let's if you can share your screen, we can take it from there. \u2014 All right, let me take a look. \u2014 I love David Gelardi sound effects. The \u2014 Okay, \u2014 highlight of my \u2014 sound effects for me. Yeah, so I just pulled your changes. I restarted the Nex.js server. Um, oh, I didn't rebuild or I didn't do anything useful like that. Um, but I see the whisper API call failed. Did you have to do something in your v.local for that? \u2014 Bro, bro, yes, of course. You're still sending it to dockling like not local."
+},
+{
+"start": 2544,
+"text": "No, it's local. \u2014 I can't confirm or deny because I \u2014 That's true. Here's what I'm going to do here. Give me a second. So, I'm not going to share all my uh my fun stuff, right? Yeah. No, I am I was already working um with Dockling local. Um but let me just make a shuro. Okay. Okay."
+},
+{
+"start": 2576,
+"text": "Ah. Okay. Okay. But you shouldn't What is What is Do me a favor. Where'd you go? Jesus. \u2014 I'm here, man. \u2014 Oh, hey, do me a favor. Can you show me your env local? We'll just do it in Slack or something. Yeah. I want to see I want to see your keys, man. I want your keys. \u2014 It's not really the keys, David. It's there's this one environment variable uh called uh \u2014 Wait, what do you mean right? You don't even know what I was going to say, man. This guy. Um it's called \u2014 It's called \u2014 read your pageious except for the parts that I miss. \u2014 Doc mode."
+},
+{
+"start": 2609,
+"text": "Do you have that? \u2014 Yeah. See, I'm missing that. Which envo is that in? \u2014 API. API and it's dockling mode. \u2014 Yeah. \u2014 See, that's See, I don't have that on mine. And um I take it what is it? Local. \u2014 Yeah, exactly. \u2014 Dockling mode local. \u2014 Okay. All right. Let me uh let's see what happens. I can get rid of the service one because \u2014 David literally said to me on stream, \"Hey, Tas, can you show me your bro?\" \u2014 I I did over Slack."
+},
+{
+"start": 2642,
+"text": "Over Slack. Over Slack. It's different. That's different. \u2014 That's different. \u2014 All right, let's see. Let's see if this did anything then. Okay. All right. I guess I can share again. So, I just set my um Okay, let's see. Triskumar, man of the century. Okay. Okay. Okay. I still have the same thing with the whisper one not found. Um, but I think whisper API 404."
+},
+{
+"start": 2680,
+"text": "That's fine. That's fine. Transient failure is fine because it's transient. Okay. Grab that while this is working on it. \u2014 Bro, where are you seeing whisper one? I think that's a \u2014 API call failed. Error four or four. \u2014 I think that's a local dockling configuration problem. I agree. Um, but did did it fail in the browser? \u2014 Well, it's still working on it. David, \u2014 yes, these streams are awesome, David."
+},
+{
+"start": 2713,
+"text": "I'm glad you like them. \u2014 David, David, \u2014 just \u2014 can you tell me where I can get Oh, it still failed. Got \u2014 Yeah, it's the same. So yeah, let's see what's going on because there's clearly something different between Right, right, right, right, right, right. And \u2014 we're calling the Whisper API instead of Dockling. Why? \u2014 H I don't know. I pulled your changes. \u2014 You know what?"
+},
+{
+"start": 2745,
+"text": "Here, let's do this. Let's do this. Let's do this. Let's do this. I have a hunch. My favorite command. \u2014 Um, hey David, \u2014 can you tell me where I can get really awesome beretss? Um well this one actually came from the Highland Games which we run here locally uh which is um uh like a whole Scottish uh Scott they it's awesome like they have all the you know all the sports and stuff like the cable toss and all that kind of deal but that's where I get this kind of stuff. These are like handmade. I I go there every year and I pick up new ones."
+},
+{
+"start": 2777,
+"text": "Okay so I wiped out my my next uh directory. you know, I just went I rebuilt, right, just in case from that standpoint. Um because I pulled your changes in and I restarted and everything, but I don't I'm not um I'm pointing it to dockling mode local things like that. So it it seems to me and you know just \u2014 in your mobile app on the simulator, can you press R \u2014 R? \u2014 Yeah. Okay. \u2014 Oh, okay."
+},
+{
+"start": 2808,
+"text": "Let's try now. \u2014 Okay. All right. Let's see. Testy, testy one, two, three. \u2014 That's \u2014 same deal. Same deal. Okay. So, clearly there's something different in my configuration than yours, right? And I guess give me your EMV local Slack or something. I got to wonder if there's a difference. Do we have a difference in configuration? Or did you already have Whisper or something? You know what I mean? Like I feel like I'm missing a step here. \u2014 Uh yeah. Let me send it over, brother. and and I'll paste it so everyone can see it."
+},
+{
+"start": 2841,
+"text": "Thanks. Yeah. \u2014 What is Bob telling me here? Clear. Right. Okay. Right. Right. Right. Right. Okay. But you said that it should be running locally. \u2014 Yeah. \u2014 Oh, wait. No, you're using localhost. No. Whisper is not served over. Dude, why are you trying to do that? Um Oh. Oh. Do you have a whisper base URL or anything? How does it how does it where is it getting whisper from? Is it doing it directly from dockling?"
+},
+{
+"start": 2873,
+"text": "Uh this is the problem. This is the problem. \u2014 Okay. \u2014 I'm not using I'm using open AI. \u2014 Oh. Oh. Oh. Okay. \u2014 Yeah. \u2014 Okay. Okay. Okay. Okay. So, you gave it your open AI key. \u2014 Yes. \u2014 I see. I see. Let me Okay, that's let me let me Oh, did you uh give me that your uh ENV local so I can take your key? You want my open AI key? \u2014 I want all your stuff. Yeah, I want all your stuff, Tis. \u2014 Classic."
+},
+{
+"start": 2904,
+"text": "Everybody always wants all my stuff. \u2014 Okay. Let me see what's going on here. \u2014 All right. I have sent it to you. \u2014 Okay. Okay. Okay. Oh, you have Doclin UD project, huh? Oh, yeah. I I bet you it's just pulling it from OpenAI. \u2014 Yes. \u2014 Instead of using Instead of using it via Dockling. \u2014 Uh, but I got an SRT transcript."
+},
+{
+"start": 2938,
+"text": "No. And and that's fine, but Okay, let me think about that for a second. Well, here's the thing. Yours yours is working, right? \u2014 Yes. \u2014 So, how about I fix mine? I'll stop sharing, right? Let me let me get that fixed because given that I'm using a llama, it's not going to have and you can tell it's trying to use a llama. \u2014 Bro, David, David, David, you're totally right. \u2014 You're totally right that I think I'm just sending my transcript to OpenAI and like Dockling is not even in the chat. Um, and the reason for that is I just inspected here."
+},
+{
+"start": 2971,
+"text": "I can share my screen. \u2014 Okay. Um, I just inspected my uh I just inspected my output from the transcript \u2014 and it's uh it's unfortunate \u2014 because it no because I'll show you check it out. I'll show it to you here on my screen right now that I'm going to share with the in check it out. Look, watch. Um, you see it says where's bro? It says um this is not SRT, bro."
+},
+{
+"start": 3003,
+"text": "This format here. \u2014 Okay, \u2014 this is not SRT. This is some weird format. So, I'm thinking it goes straight to OpenAI. Um and we but \u2014 let's keep let's try again. Um, hey, this time I'm going to speak a lot more and I'm going to give you a nice uh one minute essay on the history of of Indian Batman. So, you see in India sometimes there's caves and there's bats inside. And so, one day this guy like he went there to eat chicken curry and he was very startled when a bat suddenly appeared."
+},
+{
+"start": 3040,
+"text": "Um, and he was like, \"Whoa, that's crazy.\" And ever since then, he came out of this cave, right? And he told everyone, he's like, \"Bro, I saw a bat and I got startled.\" And then people went like, \"Oh my gosh, how do you feel about that?\" He was like, \"I don't know. It was just a bat, man.\" And then from there, they started calling him Batman. Anyway, so that was just \u2014 nice. \u2014 And so now, let's see what happens. I'm sending it to AP. \u2014 By the way, \u2014 you know what's really fontious? While you're doing that, my Bob just confirmed exactly what you just said and it's like, \"Yep, the poll changes moved away from dockling entirely."
+},
+{
+"start": 3072,
+"text": "Now use OpenAI Whisper API. \u2014 Open AAI Whisper API. Okay. So, it's still using It's still using Whisper. That's nice. \u2014 Mhm. \u2014 But do we get a \u2014 Interesting. So, it does give you type. This is not SRT, \u2014 right? \u2014 But maybe we should just use opening. Oh, no. But Docling is \u2014 Well, no. I mean, again though, again, like, and that's fine, but one of the benefits you get with Dockling compared to just doing it directly with Whisper again is the output that you get to the LLM. Um, and I think that's that's one of the benefits there, right?"
+},
+{
+"start": 3104,
+"text": "Um, and and again, Dockling itself uses Whisper to to do this very thing. So, let me I'm I'm working through it here real quick. \u2014 Yeah. Did you like my story? \u2014 I liked your story. \u2014 Nice. \u2014 I will never forget it. I will tell it to my children at bedtime. \u2014 That's awesome. \u2014 See? Okay. \u2014 Wow. So I asked Bob if we use dockling and Bob said almost no. Um \u2014 that's funny. \u2014 It's really funny."
+},
+{
+"start": 3138,
+"text": "How do we process? \u2014 Try try try. \u2014 Okay. We must use document. Okay. Oh, okay. Oh, I did it. I got it. I got one. I got one. \u2014 How did you do it? \u2014 All right. Well, I had it. So, what I was doing um originally is I was using like a a dockling um like a transcription sidecar um that kicks off."
+},
+{
+"start": 3174,
+"text": "It does the same thing you did where it imports Dockling locally as part of the uh as part of the application. Um, but then dockling it at it has a transcription mode that you can kick in that will then use whisper and go through its process. Now I got the green, but what did it actually do? That's what I'm looking at now. Um, so let me see. Uh, oh, repeated word. Oh no, it did it. It for sure for sure did it. Okay, great. So now now to your point from earlier, you seem to notice that it wasn't in the right format."
+},
+{
+"start": 3210,
+"text": "What tipped you off? How did you know that? \u2014 Well, because I know what SRT looks like and \u2014 I see. \u2014 But I think it's fine because it gets the time stamps anyway. \u2014 Um, but check it out. It's crazy because it says if the requirement is SRT, Dockling can't do it. This is what Bob told me. But it smells a bit because I I've done SRT with Dockling before. \u2014 So, what gives? And so then I said, search the web. Um, and then Bob said, \"I can't search the web directly.\" Uh, \u2014 Bob can do that, \u2014 bro."
+},
+{
+"start": 3246,
+"text": "I'm so confused. \u2014 Yeah, you should have a I do that all the time, actually. Oh, it depends on what mode you're in. You're in agent mode, I think. Try advanced mode. Switch it to advanced mode. \u2014 How do I do that? \u2014 Uh, you uh shift tab or whatever. \u2014 I pressed \u2014 Yeah, you should be able to cycle modes, I believe. \u2014 Yeah, should is a great word, man. Um, \u2014 what did you do? There we go. Try. Yeah. No, no. Shift. Oh. Oh, you can do with the slash command. Oh, okay. I use Okay. I use shift tab. \u2014 Shift tab. I'm pressing shift tab and nothing."
+},
+{
+"start": 3278,
+"text": "Oh, well then do slash mode. I don't Yeah. \u2014 And then do slash mode and hit enter and there's no list here. It just says just tab to view mode or enter to switch. \u2014 But these buttons don't do anything. \u2014 And escape to close just closes it. So, \u2014 all right. Wow, that's nice. So, I had a full picture. You're right. Dockling does export to VTT, but not SRT. Let me also quickly verify if VT comes to the rest API. Oh, it's crazy. Okay, so wow, that's wild."
+},
+{
+"start": 3311,
+"text": "Um, so now it's going to do it. Okay. So, should I since mine worked there. Ah, that's right. Okay. Right. Right. Right. Okay. Should I then push my sidecar changes? \u2014 What What are your sidecar changes? Um, that's the one that instead of going through OpenAI is using Dockling's ability to invoke Whisper directly."
+},
+{
+"start": 3347,
+"text": "Wow. You can do that. That's awesome. Yeah, let's do that. \u2014 Okay. Let me um let me get the time stamps and stuff in there proper. \u2014 Mhm. \u2014 Okay. Okay. Admittedly, I don't know if I'm a big fan of the sidecar approach, but well, I mean, like it the import approach I'm fine with. It's the I don't know if we need a sidecar to do it. Okay."
+},
+{
+"start": 3379,
+"text": "Okay. Okay. Okay. So, let's try this again. I am going to talk to Tis for a moment because like he told the story. I won't do that the whole time, but I do want to get some time stamps in there. All right, let's see. \u2014 Like a robot. \u2014 Okay. All right. Here it goes. There it goes. It's actually pretty fast, too."
+},
+{
+"start": 3409,
+"text": "But we'll see. The one thing we're not doing yet is diorization, which definitely takes a moment. Um, I've seen that definitely take a moment. All right. So, I had a successful recording there. Okay. All right, here I'm gonna share. \u2014 Please do. \u2014 Yes. Here we go. So, this is the plan with Tagious, right? I'm going to talk to Tious for a moment. You see this? \u2014 Wow, that's awesome."
+},
+{
+"start": 3441,
+"text": "Got some uh the full thing. No, I I didn't say much, did I? How about this? Why don't we try something? Um maybe I'll read off of something. \u2014 Let's see. I'm gonna read your Ian yourv.local. \u2014 Wow. \u2014 Let's see. \u2014 No, Dave. Dave, for it to be something appreciable, it has to be a long time and and I don't think we should We can do this off camera. Uh have \u2014 True, true, true, true, true, true. True. \u2014 I think \u2014 actually, you know what I'm going to do? We're having a conversation right now, right?"
+},
+{
+"start": 3473,
+"text": "Yeah, that's just record the conversation much like we would do. Now, I don't know if it's going to pick you up. \u2014 We'll see. \u2014 Yeah. I think we're at an interesting crossroads because it seems like we can't use Dockling for this which which kind of \u2014 I am using Dockling for this. \u2014 Okay. But let's think about hosting it, right? Like how do you what are you going to do? How are you going to host Dockling? You going to like spin up a container or something like how's \u2014 No, you could I don't I mean I get what you're saying. It depends on where you deploy the app, right? \u2014 Right. \u2014 Um so because Dockling is just going to kick off its own local models, things like that."
+},
+{
+"start": 3508,
+"text": "It can use CPU if it has to. Um, obviously it will optimize for better architecture, you know, if you've got the hardware for it or something, but just straight out it can use CPU, right? Um, \u2014 so if we were to push this to production and deploy it today, right? Uh, where would you what would you do? You could I mean you could just import dockling as part of your application and it will just it may not be the most efficient way to do it because you're you're relying on whatever cloud services uh CPU to do the translation."
+},
+{
+"start": 3543,
+"text": "Okay. So you're saying you would this app and host it on like render or something, \u2014 right? \u2014 Okay. Yeah, that would I think that would work fine, but there there are probably better ways to do it from a performance standpoint, right? And we still haven't. So, this was just the first part to get it working with Dockling local and I'm still curious about um like how I hear you. I I'd have to honestly sit down and look more at whether or not the SAS would work in this case because the SAS is a lot faster, right, than dockling local."
+},
+{
+"start": 3577,
+"text": "Exactly. And it's a lot better and it's well built. But the SAS the SAS has two issues. One, it has no ASR pipeline. ASR meaning automatic speech recognition, \u2014 right? \u2014 And two, it doesn't output SRT or VTT, the format that we need. So like it's completely useless for our use case. Um, and it bothers me, man. It really does because I I really want to use Dockling, but it seems like we just can't. Um, \u2014 yeah. And I think I think as well too like you know one of the things I'm with you that maybe makes more sense not here while we're live or whatever is I think we we need to sit down and actually do a bit deeper research on the dockling SAS portions and like some of these pieces because you know it would obviously be super boring for anybody to watch us just like thumbming through uh uh all sorts of let's see oh here we go."
+},
+{
+"start": 3626,
+"text": "Here's our Oh, here it is. Check it out. You see this? \u2014 Yeah. That's awesome. talking. Yeah. Now, I didn't put the diorization in. That's a whole different step. But \u2014 let's take this apart a little bit. So, it's two minutes long. Um, how to host doc link. \u2014 I love that. Doc link. Doc link. \u2014 That's awesome. This is really good. And then key takeaways. That's awesome. Look at that. Wait, whoa, whoa, whoa. \u2014 Sorry, sorry, sorry. \u2014 That's okay. Um, wonderful action items. Evaluate whether THE SAS VERSION MEETS. \u2014 THAT'S EXACTLY WHAT WE'RE GOING TO DO."
+},
+{
+"start": 3657,
+"text": "That's actually really kind of great. Yeah. And now, can you scroll all the way down and let's chat with it? Um \u2014 Oh, yeah. \u2014 And be like, uh, explain. I guess \u2014 that's it. That's all you're going to give it. \u2014 I mean, or whatever. No, like whatever you want. \u2014 Um, well, I mean, it already gave us a summary and it gave us highlights and stuff, you know, like um um let's see why. Um, you know, I'm actually curious now about uh I haven't."
+},
+{
+"start": 3689,
+"text": "All right. Yeah, let me let's actually, you know what I want to do? \u2014 Let's let's do this. See, ask across all recordings. \u2014 Um, \u2014 yeah. \u2014 Give a summary of the last three recordings. \u2014 Dude, that's amazing. Well, \u2014 let's see. You know, we need to put markdown support in here or something, huh? \u2014 Yeah. \u2014 Yep. Yeah. There it is. So, if you think about like the whole goal of this was to I mean, you know, was to be able to then do an analysis across, right, and have conversations with it across um all the recordings."
+},
+{
+"start": 3728,
+"text": "So, that is working. I mean, obviously there's a lot of refinement that's needed here, but that is absolutely working. \u2014 Um \u2014 that's amazing. And there's a lot more that we could add. \u2014 Amazing. That's really \u2014 Yeah. Here. Actually, while we're sitting here, I'm just gonna be like, \u2014 okay. Right. \u2014 Yeah. Go ahead. \u2014 Can you hit record right now \u2014 and I'd love to um I'd love to, \u2014 how do you say uh record this as homework for our next stream and then we already use for our action items."
+},
+{
+"start": 3766,
+"text": "You know, \u2014 I you know, actually, I love this because then we can take we can take those action items and then use that to spec out the next part. \u2014 And so, next week, I want us to wallfly the entire stream. Uh, that's what I want. \u2014 Oh, yeah. That's a good that's a very good proof point, right? Um, \u2014 but before that, we need to do some homework. I love what you said, David. I think we need to deep to understand our options a bit deeper specifically with dockling SAS and abilities \u2014 and I for me honestly that's what I want um because it just makes sense it's faster it's more accessible any serverless API can talk to it um so we try to get it working with dockling SAS if that is really a hard no um then \u2014 then we talk about that yeah \u2014 then then we explore what can do local do for us."
+},
+{
+"start": 3820,
+"text": "Um, especially in terms of outputting like SRT or VTT because like what I'm doing right now, I'm not even using Dockling and I'm just sending it to OpenAI Whisper. \u2014 Well, here's a here's I actually I want to push back a little bit on the SRT thing is the the whole idea of the SRT um I mean I I think you're more well versed in SRTs than I am, but as I understand I mean it's really just like a transcript with time stamps, right? \u2014 Yeah, exactly. \u2014 So, is there any reason it actually has to be in that format? Does VTT do it? And if you notice, Dockling was able to handle that just fine."
+},
+{
+"start": 3851,
+"text": "It gave us a transcript with timestamps. \u2014 Um, and it does in fact have a time stamp, the time coding capability, which is what it used to do that. So, does it need to be are we \u2014 are we constraining it down this path over here when it really can already do what we're asking it to do? \u2014 That's Hey, that's that's a really good push back. I think you're right. We don't need SRT or VTT. We just need timestamps. Um, \u2014 and so if Dockling SAS can somehow process audio and give us timestamp transcripts, awesome. If it can't do that, then we must explore how we do it locally."
+},
+{
+"start": 3884,
+"text": "But the problem is if we do it locally, there there's a huge hosting burden. \u2014 That's right. \u2014 Um, and I I really don't want people to have to What I want and I think what we want, David, is we want like developers to get clone, put a few environment variables in, and go. \u2014 Yep. That's right. No, 100%. So that's our homework. That's it right there. Our homework for next week is to really dig in to the dockling SAS thing. Figure that out. If it's not the answer, it's not the answer. And we just be very open about that, right? \u2014 But but also I think we have the advantage of like working at IBM who makes Dockling SAS, you know, and I think we can have some internal conversations even around like, hey, can we what's it going to take to enable this?"
+},
+{
+"start": 3922,
+"text": "And we can try and and see if we can actually affect the product too because \u2014 it could be a real blessing to developers uh in general. \u2014 Yeah. \u2014 Okay. Yeah. You know, there are some other potentially interesting options I just thought of. Um, there's Nexa AI. Um, it is meant for um, uh, small devices, edge network kind of, uh, GPU kind of things and they can, um, take advantage of NPU processors. Um, so if you think about it, you're wearing a wearable or or you're on a phone or something like that, they most of them have NPUs now."
+},
+{
+"start": 3955,
+"text": "Um, so that might be another way to get some local processing because you're right. You know, it would be nice you could just plug in a key and go and then you don't have to worry about anything else, right? And it and it just does the thing. Um, but if it can also process locally where you don't need a network hop that that's a thing, you know. So, so it might be worth checking that out. \u2014 Yes. If Doc can do that on device, that'd be amazing because I have used Apple intelligence native this kind of thing. It's just bad. It's very, very bad. Yeah, \u2014 it just doesn't get the right words."
+},
+{
+"start": 3986,
+"text": "It's just not ready. I didn't experiment on with this already and and the \u2014 the platform native AI is just I mean Apple intelligence itself needs to reach out to Shad GBD for most things because it's that bad. \u2014 Right. Right. Right. \u2014 So, okay. So, that's that's our homework. I think we have a plan. I'm really happy that it's working and it's working so well. I can already see your things in my browser because we're using \u2014 Are you serious? That's awesome. All right. So, I'm gonna stop recording here. \u2014 Yeah. I will call this a success. \u2014 Yeah. And I think it's a really good checkpoint. But next and and so next week I want us to wallfly the whole thing and I want to really I think the go the objective for next week is we solidify the audio pipeline."
+},
+{
+"start": 4026,
+"text": "Yeah. \u2014 Um and and with a solid audio pipeline then the following week so not next week but the week after that I would love it if we just focus strictly on the UI and product and the feel and the aesthetic and things like that. \u2014 Yeah. And and to that and something I want to add once it's done is we should have like right now it's hap what I'm just about to say is happening. By the way, I have to say that for the amount of stuff we just said. \u2014 Yeah, \u2014 that was actually really fast. \u2014 Yeah, \u2014 I'm like that \u2014 that's awesome."
+},
+{
+"start": 4057,
+"text": "That's cool. Um so so yeah um um one of the things that would be a nice feature uh is right now this is clearly optimized for someone to just click click on their device or their phone or whatever record and then stop. But what happens like right now where you're processing the processing needs to be asynchronous because if I need to start a new conversation I don't want to have to sit there and wait right so um more tasks for next week right is uh recording processing needs to be backgrounded and asynchronous so uh as a user I can continuously record um different sessions one after the other without having to wait for the previous one to finish processing."
+},
+{
+"start": 4100,
+"text": "But um \u2014 I I'll add \u2014 Oh, sorry. I stopped. \u2014 No, can you can you kill the app real quick? Just like exit your simulator because I think it is already async. Just quit the \u2014 You think so? \u2014 Yeah, because the API is doing the processing. So, let's try it. Let's Let's record. \u2014 Oh, I see. So, you want me to kill the app and bring it back up and then see if it is handling the I want you to record on the simulator. Kill the simulator and then in your browser. \u2014 Okay. Okay. All right. So, I'm I'm recording again. Tus go for it. \u2014 Yeah. No, I don't I have nothing to say. There's like while it's recording."
+},
+{
+"start": 4132,
+"text": "Uh let's let's kill the sim. Wait. \u2014 Well, no. Once we stop recording and then it's processing, right? Then do it. \u2014 Yeah. Yeah. Exactly. Okay. So, like now. All right. Boom. \u2014 Die. \u2014 Kill it. Kill it. Kill it. Kill it. Kill it. \u2014 I did kill it. \u2014 Oh, nice. Okay. Let's check the browser. \u2014 I love how the I love how the the mobile app is still going even though I actually killed the the mobile app part. But to your Well, it's still it's obviously processing now. So, to your point, let's see what happens. \u2014 Yeah. See, it totally works. Oh yeah, you're right. Because it just sends it off. \u2014 Yeah."
+},
+{
+"start": 4162,
+"text": "So it's already as \u2014 Oh, okay. Okay. No, that's true. So, so it really that's just a UX thing. \u2014 Yeah, \u2014 is what it is. \u2014 In fact, I wonder if there's \u2014 You bring up a good point. This is This is probably post MVP. It would be cool if we just transcribe while it's recording. \u2014 Did that actually kill the mobile app or the simulator or not? \u2014 Because I killed Expo Start, but that was just the start. I think it's still running. \u2014 \u2014 So, so I think I think I need to kill it, right?"
+},
+{
+"start": 4193,
+"text": "Yeah. Let's stop recording first. So, it's \u2014 stop recording and then \u2014 Yeah. \u2014 Okay. Let's see what that did. I saw I saw I saw the back end though going. So, let's see what it does. \u2014 Yeah. \u2014 Oh, there it is. Oh, \u2014 that's cool. \u2014 Okay. So, what I also want to do is like transcribe. \u2014 Yeah, it is doing it. Yeah. \u2014 I want streaming transcribe. But anyway, that's post MVP. I figured out that \u2014 that's right. That's exactly right. That's right. \u2014 All right. I think we're going to call it here. This was awesome, Danny. We made a good progress. I'm happy. \u2014 And and the last the very last thing I'm going to do uh is I'm going to say summarize all of the to-dos for next week."
+},
+{
+"start": 4234,
+"text": "Oo, the speakers were talking about because then I'm going to use that to go ahead and um speck it. Yep. Let's take a look what you say, Bob. Hello. \u2014 And then we need to obviously add Markdown to that. \u2014 That's awesome. \u2014 Yep, there it is. \u2014 Perfect. \u2014 Yeah, that's great. That's great. Cool. \u2014 All right, dude. This was a pleasure. Thank you so"
+}
+]
