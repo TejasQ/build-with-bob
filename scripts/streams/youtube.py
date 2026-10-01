@@ -15,9 +15,15 @@ def list_streams(url: str = CHANNEL_STREAMS) -> list[dict]:
     return [{"id": e["id"], "title": e.get("title", "")} for e in json.loads(out).get("entries", [])]
 
 
-def fetch_video(video_id: str, raw_dir: Path, retries: int = 3) -> bool:
-    """Download info.json + English auto-captions (json3). Returns True when both exist."""
+def fetch_video(video_id: str, raw_dir: Path, retries: int = 3) -> str:
+    """Download info.json + English auto-captions (json3).
+
+    Returns "ok" when both exist, "pending" when YouTube has the video but no captions yet
+    (live, upcoming, or a just-ended stream still processing; retried on the next sync), or
+    "failed" when even the metadata could not be fetched.
+    """
     raw_dir.mkdir(parents=True, exist_ok=True)
+    info, subs = raw_dir / f"{video_id}.info.json", raw_dir / f"{video_id}.en-orig.json3"
     for _ in range(retries):
         subprocess.run(
             [*YTDLP, "--skip-download", "--write-info-json", "--write-auto-subs",
@@ -25,6 +31,8 @@ def fetch_video(video_id: str, raw_dir: Path, retries: int = 3) -> bool:
              "-o", str(raw_dir / "%(id)s.%(ext)s"), f"https://www.youtube.com/watch?v={video_id}"],
             capture_output=True, text=True,
         )
-        if (raw_dir / f"{video_id}.info.json").exists() and (raw_dir / f"{video_id}.en-orig.json3").exists():
-            return True
-    return False
+        if info.exists() and subs.exists():
+            return "ok"
+        if info.exists() and not json.loads(info.read_text()).get("automatic_captions"):
+            return "pending"
+    return "failed"

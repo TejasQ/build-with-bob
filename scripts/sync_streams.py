@@ -1,6 +1,8 @@
 """Keep the show fresh: find new Building with Bob streams on the IBM Bob channel,
 download their captions + metadata, write transcripts, and register them in
 data/episodes.json with a provisional slug/project. Prints a JSON report of what's new.
+Streams whose captions YouTube hasn't generated yet are reported as "pending" and picked up
+on a later run.
 
 Usage: python3 scripts/sync_streams.py [--rebuild]   (--rebuild re-derives every entry)
 """
@@ -28,19 +30,20 @@ def main() -> None:
             known[e["videoId"]] = catalog.entry_from_info(info, e["slug"], e["project"])
             transcript.write(e["videoId"], RAW)
     streams = [s for s in youtube.list_streams() if catalog.SHOW_TITLE.search(s["title"])]
-    new, failed = [], []
+    new, pending, failed = [], [], []
     for s in streams:
         if s["id"] in known:
             continue
-        if not youtube.fetch_video(s["id"], RAW):
-            failed.append(s)
+        status = youtube.fetch_video(s["id"], RAW)
+        if status != "ok":
+            (pending if status == "pending" else failed).append(s)
             continue
         info = json.loads((RAW / f"{s['id']}.info.json").read_text())
         known[s["id"]] = catalog.entry_from_info(info, provisional_slug(info["title"]), "unassigned")
         transcript.write(s["id"], RAW)
         new.append({"videoId": s["id"], "title": info["title"]})
     catalog.save(list(known.values()))
-    print(json.dumps({"checked": len(streams), "new": new, "failed": failed}, indent=2))
+    print(json.dumps({"checked": len(streams), "new": new, "pending": pending, "failed": failed}, indent=2))
 
 
 if __name__ == "__main__":
