@@ -1,7 +1,7 @@
 # Checks https://www.youtube.com/@ibm-bob/streams every 6 hours. When a new Building with Bob
-# stream appears, it downloads captions + metadata, registers it in data/episodes.json and
-# pushes straight to main. The episode page goes live once its post is written
-# (see AGENTS.md → "Living site loop").
+# stream appears, `sync` downloads captions + metadata, registers it in data/episodes.json and
+# pushes to main. `publish` then has Claude Code run the rest of the Living site loop
+# (AGENTS.md) for every episode without a post, verifies the site and pushes to main.
 name: Sync streams
 
 on:
@@ -63,3 +63,91 @@ jobs:
               print(f"::error title=Stream fetch failed::{f['id']} {f['title']}: {f['reason']}")
           sys.exit(1 if failed else 0)
           PY
+
+  publish:
+    needs: sync
+    # Still publish whatever was ingested when another stream failed to fetch.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      id-token: write
+    env:
+      NEXT_PUBLIC_SITE_URL: https://build-with-bob.vercel.app
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Find episodes without a post
+        id: missing
+        run: |
+          python3 scripts/streams/missing_posts.py | tee missing.txt
+          echo "any=$([ -s missing.txt ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - if: steps.missing.outputs.any == 'true'
+        uses: astral-sh/setup-uv@v6
+      - if: steps.missing.outputs.any == 'true'
+        uses: denoland/setup-deno@v2
+      - if: steps.missing.outputs.any == 'true'
+        uses: pnpm/action-setup@v4
+      - if: steps.missing.outputs.any == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - if: steps.missing.outputs.any == 'true'
+        run: pnpm install --frozen-lockfile
+      - name: Build the prompt
+        if: steps.missing.outputs.any == 'true'
+        id: prompt
+        run: |
+          {
+            echo "text<<PROMPT_EOF"
+            MISSING="$(cat missing.txt)" envsubst '$MISSING' < .github/prompts/publish-episodes.md
+            echo "PROMPT_EOF"
+          } >> "$GITHUB_OUTPUT"
+      - name: Write posts, grow the graph, refresh guides
+        if: steps.missing.outputs.any == 'true'
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: ${{ steps.prompt.outputs.text }}
+          settings: '{"attribution": {"commit": "", "pr": ""}}'
+          claude_args: >-
+            --model claude-opus-5-5
+            --max-turns 300
+            --allowedTools "Bash,Read,Edit,Write,Glob,Grep,WebSearch,WebFetch"
+      - name: Verify (lint, typecheck, build, SEO audit)
+        if: steps.missing.outputs.any == 'true'
+        run: |
+          pnpm lint
+          pnpm typecheck
+          pnpm build
+          pnpm start > /dev/null 2>&1 &
+          for i in $(seq 1 60); do curl -sf http://localhost:3000 > /dev/null && break; sleep 1; done
+          pnpm audit:seo http://localhost:3000
+          python3 scripts/streams/missing_posts.py | tee still-missing.txt
+          [ ! -s still-missing.txt ]
+      - name: Commit and push to main
+        if: steps.missing.outputs.any == 'true'
+        run: |
+          git add -A content data
+          if git diff --cached --quiet; then
+            echo "Nothing to publish."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          titles=$(git diff --cached --name-only --diff-filter=A -- content/episodes \
+            | xargs -I{} sed -n 's/^title: *"\(.*\)"$/\1/p' {} | paste -sd ';' - | sed 's/;/, /g')
+          git commit --no-verify -m "Publish episode: ${titles:-new episode}"
+          pushed=0
+          for attempt in 1 2 3; do
+            git pull --rebase --autostash origin main && git push origin HEAD:main && { pushed=1; break; }
+            echo "Push attempt ${attempt} failed; retrying…"
+            sleep $((attempt * 10))
+          done
+          [ "$pushed" = 1 ]

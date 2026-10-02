@@ -44,8 +44,11 @@ Claude, Perplexity, Gemini, Google AI Mode / AI Overviews, Copilot).
 
 1. **Sync streams:** `pnpm sync`. This reads https://www.youtube.com/@ibm-bob/streams, ingests any
    new Building with Bob stream (captions, metadata, transcript) into `data/` and prints what's new.
-   CI runs it every 6 hours (`.github/workflows/sync-streams.yml`) and pushes new streams straight
-   to `main`; any registered episode without a post in `content/episodes/` still needs one.
+   CI runs it every 6 hours (`.github/workflows/sync-streams.yml`): the `sync` job pushes new
+   streams to `main`, then the `publish` job runs Claude Code with
+   `.github/prompts/publish-episodes.md` to do steps 2-8 for every episode without a post
+   (`scripts/streams/missing_posts.py`), verifies and pushes to `main`. Needs the
+   `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`) repo secret; `YT_COOKIES` is optional.
 2. **Assign each new entry** in `data/episodes.json`: set `project` (existing slug, or create
    `content/projects/<slug>.md` for a new project) and a keyword-led `slug`. Re-run `pnpm sync` to
    renumber. Numbering is global and chronological; `part` is the position within a project.
