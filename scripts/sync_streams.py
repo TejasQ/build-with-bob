@@ -34,9 +34,9 @@ def main() -> None:
     for s in streams:
         if s["id"] in known:
             continue
-        status = youtube.fetch_video(s["id"], RAW)
+        status, reason = youtube.fetch_video(s["id"], RAW)
         if status != "ok":
-            (pending if status == "pending" else failed).append(s)
+            (pending if status == "pending" else failed).append({**s, "reason": reason})
             continue
         info = json.loads((RAW / f"{s['id']}.info.json").read_text())
         known[s["id"]] = catalog.entry_from_info(info, provisional_slug(info["title"]), "unassigned")

@@ -1,0 +1,670 @@
+[
+{
+"start": 0,
+"text": "with Bob. Today I'm joined once again by my coworker. \u2014 Hello Tis. I didn't you know you had me there for a moment. Uh I were gonna do a staring contest. \u2014 Sometimes the stream needs time, bro. So um for those who are new to the channel, Building with Bob is where we build with Bob. Bob is our coding agent at IBM. You can find him at or her at bob.ibbm.com. \u2014 And what we do is we just build cool stuff. Uh lately we've been inspired to build um an open source version of this. This is a B strap um or an open source version of this."
+},
+{
+"start": 32,
+"text": "This is a Apple Watch and Apple has Apple intelligence audio intelligence where they uh record all your conversations and then uh totally do very private things with them in a closed source way. And so we're going to we're just building that but open source. It's called Wallfly. And what it does is it just passively listens to environments where you start recording um and then um it gives you AI summaries and takeaways and things like that. And to do it, we're building it on open source. So we're using Dockling, which is an open source project, right? And Astrob, which is also, I believe, open source."
+},
+{
+"start": 65,
+"text": "Astra Astra itself isn't open source, but it's got a very generous free tier uh \u2014 on Cassandra that's open. \u2014 Cassandra is built on Cassandra. That's open source. That's right. Yeah. Yeah. Yeah. \u2014 Server Cassandra. And so that's what we're doing. Um so far in the project, we've got it working. David has done some great things last week around chunking, which we were stuck on. Um and so it's in a state now where we can actually eat our own dog food. So, what I'm going to do today is I'm going to hit record here in running Wallfly. Uh, and it's going to actually record our entire live stream and this will and a half recording."
+},
+{
+"start": 96,
+"text": "I'm \u2014 Yeah, this is going to be a first test because, you know, for those of you who've been following us in the last so many episodes or throughout this whole series, um you know, we've definitely recorded plenty of things before, but one of the reasons why we had the audio chunking task is because, you know, once you start recording an audio file, you know, past any good length of time, I mean, you're going to get an absolutely huge file, right? And then you have to process all that in one big chunk. What happens if you have a failure? All sorts of things, right? So, we had proposed that we needed an audio chunking mechanism that as you're recording like you are recording now."
+},
+{
+"start": 129,
+"text": "Did it go? \u2014 Not yet. I'm going to press the button. \u2014 Press the button. Press the button. \u2014 Check out. So, this is \u2014 my other and this. You see that's a wallfly right there. \u2014 Okay. \u2014 So, I'm going to press it. Ready? \u2014 Press. \u2014 Three, two, one. Boom. So, we're recording this. \u2014 Feel a presence. I feel a difference in the force. \u2014 I feel there's a Dude, there's a fly on my wall. Um, no, \u2014 it says streaming audio checkpoints. Wow, look at that. \u2014 Okay, \u2014 so it's Let's see if Let's see if we have \u2014 Let's see if this works, right?"
+},
+{
+"start": 160,
+"text": "Yeah, because uh actually while we're doing that real quick, I will just share my screen and I I haven't looked yet. So, if it's in fact working when I refresh here. Oh, there it is. So, I can see there's a live recording that's happening right now. So, that's wonderful. Now, it doesn't have anything yet because, you know, the chunking process, what what's it going to do, right? It's going to it's going to go in like 30 second chunks. It's going to wait till like one of us is done talking. So, if I don't stop talking, it'll just keep recording and recording and recording and recording and recording until I stop and pause."
+},
+{
+"start": 193,
+"text": "And then if it's after it's 30 seconds, it'll it'll take a chunk and it will upload that chunk, but continue to record. Right? So, what'll be fun is while we're talking today, we should probably check back in on this to see if it's getting any of the uh the transcription coming through while we're talking. \u2014 Yeah. And if you see me looking over at my device here, I'm just making sure it's still recording. \u2014 Yeah. Right. No, no, no, no. I'm with you. I mean, if anyone you see me looking over, I'm looking over at Tis is what I'm doing. Tis is over here. Yeah. \u2014 Yeah. \u2014 Yeah. We're far away, but close. All at the same time. All at the same time."
+},
+{
+"start": 224,
+"text": "Yeah. So, this is exciting, man. I'm really excited to Oh, look at that. There's already there's transcription coming in right now. Yeah. Yeah. Yeah. That's cool. \u2014 So great. So \u2014 we got to see if another one comes in though. The real test is if we get another one, right? So another chunk will come in \u2014 hopefully. \u2014 Yes. \u2014 Right. Okay. \u2014 So So Tagious, you know, I I we've taken on like every week I usually I I've started now. I like to surprise you with things. Right. Um, so I'd like to do that again this week of surprising you with things um that I've done in the app."
+},
+{
+"start": 257,
+"text": "Um, do you want to do that or is there anything that you want to like float before I start digging in? \u2014 What I want to float is something I'm really excited about because like David, we we have this incredible live stream series. I really enjoy it. You know, the three people who listen to it in real time really enjoy it. \u2014 Hi, three people. But people don't while we don't get the real time stuff or or maybe we don't have a large real-time audience. I did go back and look at the recordings of the live streams."
+},
+{
+"start": 290,
+"text": "Bro, there's like 500 views on this thing per video. \u2014 And you know something I'm really tickled about and I hope this means that we are making content that's actually interesting is the uh the average view time has gone up significantly. There there are a lot of folks watching the whole thing. So, thank you for those of you who are sticking with us and you're watching the whole thing. I hope that that means we're doing something uh that's useful for you and and hopefully maybe if you're one of those people, I want you to go on social media like LinkedIn xlue sky and tell people because if if it's valuable to you, it's probably going to be valuable to other people, right?"
+},
+{
+"start": 321,
+"text": "Or comment or make a sarcastic comment or something in on the video itself, you know? Um someone actually did ask uh last week about Xavier, right? Um unfortunately in YouTube I can't post the link without the comment being filtered out, right? But uh the question on that is they were like, \"Hey, what is this Xavier thing? you know, where do I get it? Xavier.team. Xavier.team is where you need to go. Yeah. \u2014 And it's your agent superpowers. It really does. \u2014 Yes. And then a matter of fact, we've been using that, you know, kind of, I'd say, halfway through this project, right? Um, as a neat way to handle some of our agent orchestration, it does a really great job."
+},
+{
+"start": 354,
+"text": "Um, one of the things I' I've as we've used it more and more and more, one of the things I've really appreciated about it is that it, you know, when you have it learn, um, it will take down, uh, all of your architecture, the decisions you made, things like that, and then it stores that off. And so when you go to do a perform a new task, it references that stuff and it will call it out to you and everything. I think it's really powerful because it ensures like it's not hidden, \u2014 right? It's not the background. There's a lot of agents that do things like this, but it's kind of hidden from you. and Xavier kind of brings it up to the front. \u2014 Yeah, it provides memory integrity."
+},
+{
+"start": 388,
+"text": "It's really awesome. \u2014 So, so you know, thank you to our audience, but I was thinking, David, I was like, look, I I wonder if there's a way to increase the ROI, the return on investment in these streams because like we do these streams and I love the streams. Um, you know, it's it's genuinely like at work it's easily a highlight of my week, if not the highlight of my week. Um, and so I'm thinking that's awesome, but what we do is we come together here for 90 minutes and then we're like we, you know, we create something, we make progress. Uh, but I was like, how can we make the 90 minutes we do this for um, return on investment for the next 90 weeks or days, right?"
+},
+{
+"start": 428,
+"text": "Okay. Okay. \u2014 And I was thinking, what can we do? And so I decided, you know, we should actually just document everything we discuss and and make some type website. And so that's what I want to show you. I made \u2014 Let's see it. What do you have \u2014 the URL? Uh, and we'll put a link maybe in the YouTube description. The URL is build with Bob. Build-with-B.verel.app. \u2014 Here. I thought you were going to like juggle chainsaws or something. I was, you know, \u2014 I didn't even Yeah, I didn't even bother um I didn't even bother honestly like doing um a like a like a domain. It's just a subdomain off versell.app because we love Versell here at IBM and and I think I think it's not uh \u2014 we're developers, you know, I don't think we need all the the drama."
+},
+{
+"start": 465,
+"text": "So, I made this beautiful little website and blog. Let me show you. So, \u2014 I will reserve judgment on how beautiful this is. Tages, \u2014 here you go. This is what it looks like. \u2014 Nice. \u2014 Looking at this, the first thing we see is we need to really change our thumbnail game, bro. Look at this. These are from \u2014 Are you saying that these thumbnails look really consistent and um uh very maybe sameish, you know, across the board. \u2014 We have building with Bob, real apps built live with IBM Bob. Uh, and just a little subtitle here. But the thing I want to show you is this Bob."
+},
+{
+"start": 496,
+"text": "He waves when you wave at \u2014 That's That's really fun actually. \u2014 Yeah. Um, \u2014 wait. Is that in the like the the official IBM Bob like iconography and stuff or That's great. I didn't know. \u2014 Yeah, you just wave it. Anyway, but what it does is these are our latest episodes from YouTube. Okay. \u2014 And they have now a recap. So last week uh in part six we did audio chunking and thing in docker and so you can watch the stream but also you get this beautiful experience where there's a tldr \u2014 and there's just how do what how do you coordinate AI agents with human teammates there's this \u2014 because we talked about savior you know we talked about last week we talked about the GitHub project thing you remember that \u2014 yep \u2014 um that's this is what we talked about um what UX improvements did we ship wall so it's just a huge recap of our 90-minute thing \u2014 also \u2014 with fixed sticky chapters here."
+},
+{
+"start": 548,
+"text": "Um, \u2014 and it's just it's just a yeah, just a whole recap. But also there's inline like once again, David, we're doing more planning than coding. Do you think it don't think that don't you think that's interesting? And it has these little numbers and when I click on this, it takes me to that exact moment in \u2014 so cool. \u2014 Oh, I love it. I love it. That to me is a richer experience than just chapter time codes in the video description kind of thing. \u2014 Yeah, because it's contextual and that's this is just one episode, right? And we've got tons of these. We also have the notebook alm clone project that we so killer content."
+},
+{
+"start": 580,
+"text": "All the episodes are here. And \u2014 um I figure you know you maybe don't want to read like individual episodes. And so there's also guides that combine episodes. Um so you can see for example this one is com combined nine episodes into how do you use plan mode with Bob and how does Bob shell work on real? \u2014 Now I got to ask you TA. So, I have a hunch, but did you So, when you made these guides, right, \u2014 is that something where you're like, \"All right, Bob, I want you to just make a bunch of guides or did you have topics in mind?"
+},
+{
+"start": 610,
+"text": "Did you like feed it any topics or whatever and things like that?\" Where did that come from? \u2014 That's a good question. I definitely I Oh, man. We lost a chunk. I just see something in my log here. Did we? Did we? All right. Let me see what's going on, though. All right, let me refresh this real quick. It's \u2014 the chunk. So, the problem is Oh, \u2014 well, we have a lot of it. Yeah. The problem is we we lost one chunk because Astradb has a limitation of 8,000. So 8 kilobytes per chunk \u2014 and we sent \u2014 Yeah. Yeah. So we sent one chunk that was very large and so we lost it."
+},
+{
+"start": 642,
+"text": "Oh well that's okay. You know what I'm going to do while while you said that I'm going to um we need \u2014 Wait, no. Let's do it together. Let's do it together. \u2014 Oh, I'm not going to start it now. I'm just taking the note down so I don't forget. So when we start into it, we can fix that. \u2014 We're losing many chunks actually because of Okay, good. Okay. Yeah. Good. \u2014 8K limitation. \u2014 8K. Yeah. And and we're shipping chunks that are like 8.3K and Astra is like \u2014 Oh, \u2014 yeah. So, anyway, um \u2014 Okay. \u2014 So, yeah, I I I hate slop."
+},
+{
+"start": 674,
+"text": "In fact, I'm one of the proponents of taste. And so, this isn't very much like, \u2014 hey, Bob, just make stuff, but it's more right, \u2014 here's our conversations. Here's what we want to give developers here. Like for example, I'll tell you here's every guide has a short answer for example, right? And if it was if it was hey Bob make stuff then the care into like give me a TLDDR would not have gone through it. This would just be a lot worse than it is. So this is very very curated. So it's not hey Bob make stuff."
+},
+{
+"start": 704,
+"text": "It's hey Bob I care about this as a developer. My peers care about that as a developer. These are very important topics. Um so let's craft something together if that makes sense. Yeah. So it's not it's not AI working alone and then me just shifting slots. More a collaboration like a he like Bob here is like a co-pilot that's that's bringing my vision into reality. \u2014 Got you. You know and to that to that this actually ties into something one of my surprises for you today. Um, but you know, I I'm I'm I'm assuming that a lot of the people that are watching the show, uh, and Utage, you're already familiar with Jev, but if not, right, um, the system one models, you know, Jev system one models from Typesafe, um, are proving so far to be really quite amazing."
+},
+{
+"start": 748,
+"text": "Um, as far as like when it comes to like doing decision trees and things like that, you know, they're not they're not going to be a chatbot. They're not meant to be. Um, but they're extremely fast, very cost-effective. But one of the things they do really well is being able to look at text and determine whether or not it's AI slop. Um, there have been all sorts of tools now that have come out with people that are doing this very thing. And I actually started using uh doing this in one of my recent projects where I'm like, you know, because like you, you know, and I think a lot of our listeners and and such like that like yes, I'm absolutely using AI, right?"
+},
+{
+"start": 782,
+"text": "A lot of times I will use AI to like build like my base content based off my voice, but then I'll go through and I'll edit it and such, but there are still tells, right? There are still things in there. And and I think this is actually I think this is a good positive thing because like, you know, AI makes it so much easier for us to be able to get certain types of work done, right? Um, but there are \u2014 a lot if you can actually see it. You can see it in um site design. You can see it in text. you can see these tells. You can almost tell where it is."
+},
+{
+"start": 814,
+"text": "And as a content creator, as somebody who builds this kind of stuff, I have a unique voice. You have a unique voice, like we all do. And I think we need to keep that. I think it's super important that that is reflected. So anyway, I've now started um using Jev as an AI slop detector \u2014 after once I've done like an initial kind of pass and I've created things, I'll do that and then it's perfect because it's not going to it's not rewriting anything for me, right? It doesn't give me output tokens that are actually rewriting the thing. It just tells me, hey, this feels like slop or this is really good or whatever, you know, based off the criteria I give it as that decision tree."
+},
+{
+"start": 850,
+"text": "And it works really great actually. Um, so I'm finding it's really nice even in my own writing to help identify parts of that content that I might might go take another look at. Right. \u2014 I wonder I wonder what Jeb would say about the content on this website. Yeah, I was actually curious that I think, you know, we don't have to do that right now, but that could be really fun to take a look at and there's all sorts of tools out there. Yeah. \u2014 Yeah. As I was saying, guides um are composed of many different episodes like like look at this. How do you coordinate multiple coding agents and so this is the guide all our discussions and the cool thing is at the bottom it shows you it was these particular episodes where we \u2014 where we've talked about it or whatever."
+},
+{
+"start": 890,
+"text": "Yes, exactly. episodes this guide it draws on and it's just \u2014 amazing. \u2014 So it's not just discrete episodes but then they compose into guides. Um and of course you can you know these are open source projects so we link them GitHub and so on and there's a big summary of what the project does along with \u2014 this. This is super cool \u2014 dude I love this. And then the last thing or maybe the second one is there's a search because like we make we make Astra DB so I figure why don't we eat our own dog food. This search David is built on Astra and so you it gives you some suggestions. For example, why did hosted dockling SAS fail on audio?"
+},
+{
+"start": 922,
+"text": "Right. I saw it the other day when I Yeah. \u2014 Yeah. If you search for this, it just gives you an answer. \u2014 Yeah. \u2014 But then also um points you to the episode, right? It's just so wonderful. Vector is hybrid search \u2014 by the way. Yeah. By the way, did you see that in Astra they released the reranker now released? Uh yeah. So \u2014 Oh, go ahead. Sorry. \u2014 I said it uses the reranker as well. Oh, it is using it already. Oh, that's excellent. Excellent. Awesome. \u2014 It's so wonder."
+},
+{
+"start": 954,
+"text": "And so this I think I mean look, I I came at this with asking the question um how can I make our 90 minutes work for us for the next 90 days, right? \u2014 Yep. I like that a lot \u2014 because like people can now whenever they want after the stream if they're like wait there was this one specific thing I forgot then they just go use the vector search. It's there, you And so that's uh I'm very proud of this work and I think it should \u2014 it should help us get more out of our live streams as well. \u2014 I love it. No, no, no. So you showed something. Now I'm going to show something. No, honestly that's awesome. Thank you for doing that."
+},
+{
+"start": 984,
+"text": "Um this is this is part of the fun of the show. Like Tus and I like to surprise each other. I had no idea he was going to work on this and he had no idea about what I'm just about to show either. So let's see. So I'm gonna take the screen. All right. You see my screen there, Tis? \u2014 Yes. Can you wait? Actually, can you refresh that? I want to see if we have the latest chunks. \u2014 Yeah, let's see. I'm gonna go down. Oh, yeah, it's going. \u2014 Okay. \u2014 Okay. Yeah, it was the Bob website. \u2014 Yeah."
+},
+{
+"start": 1016,
+"text": "Yeah, that's cool. Oh, wait. \u2014 We're dropping a lot of chunks. \u2014 Like a lot. \u2014 There's a there's clearly I need a I just noticed a bug in the web app that does not exist in the um the mobile app. when you're navigating. Oh, it sometimes works, but sometimes it forces you to go to the back button. So, there's something that's interesting here, but I'm not gonna worry about that right now. Okay. So, one of the things I you know, Jev, Jev is obviously I I feel like at least in our bubbles in our industry and stuff like that is like taking taking everybody the world by storm and all that, right?"
+},
+{
+"start": 1050,
+"text": "Um and for good reason, right? This isn't just another frontier model with some new capability. It is a model, a set of models that has been completely reworked in in terms of like what its goals are. And like for my own um you know personal development and things like that, I've been using Jeb a lot now um for certain types of operations that would have been very costly uh and taken a lot of processing time with a regular LLM that it can just \u2014 just tear through in milliseconds."
+},
+{
+"start": 1080,
+"text": "I mean and thousands and thousands of them. And I'm it's amazing. It it has honestly become a game changer. So one of the things I was looking at is I was like well one of the one of the things that Jeb is really good at is you know classification right? \u2014 Yeah. So we had kind of briefly talked about this before Jev which is in our moment section here you know we after over a time you get a lot of these audio these recordings these conversations right um but there's a lot of information in them not just their titles not just whatever the keywords were you know the actual text and stuff that would help you determine what those things are but then how do you organize it right and that's where Jev comes into play so if you notice here now tagious you'll see uh can you see that okay do you need me to blow it up or is it okay \u2014 it's okay Okay, you see here we have all smart clusters work with knife by intent."
+},
+{
+"start": 1130,
+"text": "So probably timed out. So if I click on buy intent, it's gonna actually run Jev right now. It'll cache it once I do it, right? Um and then boom, now it's going to decision commitment, status, and updates, um exploration and learning, right? Like so it's \u2014 so it's it's cool because it's able to tease these out. And as I was looking at these Oh, I love how the David reminds me of a Boulder show up. Casual and social, right? And now that it's cache, you know, I I can save that. If I had other things come in, I can regroup it or whatever. If I go to work in life, it'll do the same thing."
+},
+{
+"start": 1160,
+"text": "Now, mind you, \u2014 in order for it to do this, it is not just using the titles and the tags and such. It's actually getting the context of all the transcripts and everything and then that's being fed in and it's doing that. So for the work in life now I have work in projects you know and it's doing this dynamically personal and family um you know ideas and brainstorming logistics daily you know like and then finally the smart clusters is the one as you can probably imagine is fully dynamic right these these have like overall topics that it's given but this one's fully dynamic um so the process is going to figure out like it's it's going to come up with clustering on its own takes just a little bit longer from that standpoint \u2014 wait for that now I have a 10-minute TTL on these."
+},
+{
+"start": 1205,
+"text": "I could probably make it a lot longer than that or take off the TTL until you regroup. But um I thought this one was really neat. Notice here we've talked a lot um in our tests about recording transcription and such. Uh you get those groupings. Um yeah. And so I mean look at these groupings. They're dead on, \u2014 right? Yeah. \u2014 Um so so like I'm really happy with how this turned out. Now if I come back, these guys are cash now \u2014 unless I regroup them. Um, so yeah, it could be something where we increase the TTL or whatever. But I felt this to me is a great use of EV where could I do with an LLM?"
+},
+{
+"start": 1240,
+"text": "Yes. But think of what I'm gonna pay in those tokens. \u2014 Yeah. \u2014 Right. Uh especially in the I mean input tokens usually don't cost as much as output obviously, but like what I'm going to pay in those tokens on doing this every time. And then you know sometimes the LLM could do it but um they're not as good at classification in this way. So anyway, this was an area that I was like I after I did the chunking work, um I was I felt compelled to see where I could bring Jev into play because I'm just loving what I can do with Jev."
+},
+{
+"start": 1271,
+"text": "Yeah. \u2014 So anyway anyway, that is my surprise for you today. \u2014 How long did it take to to classify them? \u2014 Honestly, like you mean to do the to to do the feature? \u2014 Yeah, exactly. \u2014 I don't know. maybe an hour of work. Maybe um I use open router in this case. So because like I don't I don't know if um um I don't know if types safe site has finally opened up. Uh it's a lot of weight list but you can get jev through open router. There's also kev right on like there's been there are now open source models that do it."
+},
+{
+"start": 1305,
+"text": "I as I understand it Jev is still the best one. Um yeah so but open router exposes jev which is amazing. So I already have open router access. So what I did is we were previously with the app um if you were to look at our LLM config I was using Olama directly \u2014 um but now I've switched to using open router because Jev support is there so I can just use open router and then I can use you know we're using what GPTOSS uh 20 billion for the transcription you know for like the the chat thing we don't need anything super powerful there and then using jev for this so I'm able to use the single interface uh through open router \u2014 that is so Cool."
+},
+{
+"start": 1343,
+"text": "Yeah, I'm I'm happy with this turnout. I think this is pretty cool. So, if those of you watching, by the way, have ideas of other ways we could use Jev here. That'd be great. And Tesus, I don't know. What do you \u2014 I'm think it's very tasteful use of Jev. Genuinely, like I I've seen people try to like shoehorn Jeb into places where it doesn't fit. \u2014 Yeah. \u2014 Um but this is this is really really really wonderful. \u2014 I'm not going to lie, I've tried to shoehorn Jeb into places where it doesn't fit. Matter of fact, if you take a look here, this is funny. If you if you take a look here, uh you'll see that I have a bunch of closed out tasks that I reverted."
+},
+{
+"start": 1377,
+"text": "Um I had done an experiment where I was like, how cool would it be if we had like a mini email, not in the app itself, that would totally break the, you know, the whole point of the app. Um but I had a SLScoring page that would compare the pure LLM rag response to a Jev output. Um is actually really neat because the Jev decisions are near instant. They're near instant, right? Um, but I was like, for what we're doing here, the LLM with the transcriptions and then what Astra is already giving us, honestly is really accurate and it's fast."
+},
+{
+"start": 1411,
+"text": "I don't need any extra overhead, things like that. And and so I decided I was like, even though Jev is fast, you're still adding, you know, to do those comparisons and then judge it and do all that, right? You're still adding on like a good half half second, another second or so, and then you have to wait for all the judge responses, which are totally different models. So it was just adding complexity for very little value I thought. Um yeah because I was I've seen now um there have been a lot of posts from people that are essentially looking at Jeb for rag platforms \u2014 and essentially bypassing embedding models altogether and just using Jev uh against the text and there are some really promising results."
+},
+{
+"start": 1447,
+"text": "Um and so it's kind of interesting. So I was like oh maybe I'll shoot that here. Uh but that doesn't quite apply. I just don't think it's needed. It would be overengineered in that case. \u2014 Exactly. Yeah. \u2014 Or in other words, shoehorn, right? Like so we it needs to fit. And I think that's part of the challenge with Jeb is like \u2014 because I think a lot of people also don't understand it. And I really love like when you onboard to Jeb. \u2014 Um it by the way the recording stopped here. I \u2014 Oh, did it? Oh, okay. Okay. Okay. \u2014 Because I don't think we have new chunks after this is what it looks like because our Astra record grew past 8,000 characters and now \u2014 Okay."
+},
+{
+"start": 1482,
+"text": "So that Okay, I get it. That's the thing we need to fix. Okay. Yeah. \u2014 Um but I was Jeb like I think a lot of people don't know like that it doesn't generate language and so like as soon as you do the onboarding it's like do you understand this doesn't generate language right? Um and so I I think that's part of the reason people find it hard to fit. But I'm really happy we found this. Um and I can't wait to see where else we can add it. Let's uh actually fix this chunking thing and then I'll restart the recording. The sooner we fix this the sooner I can restart the recording. I'll just \u2014 Okay. You want to do it like that?"
+},
+{
+"start": 1513,
+"text": "Okay. Okay. Okay, so that answers because I was going to say we have a set of to-dos that we've kind of had in place for a bit, but we were waiting until we got the chunking worked out, which obviously we need to fix this bug first. \u2014 So, okay, \u2014 when you get a bug, it becomes the highest priority, right? Like whatever features have planned, we don't want to. Yeah. So, let's let's fix. So, how how are we going to word this prompt? \u2014 Well, let's see. Um um yeah, I started I just took some notes down um because of um storage."
+},
+{
+"start": 1547,
+"text": "Um so where is by the way T just school me here where is the 8K limitation \u2014 AstraDB? So \u2014 but where in where specifically like \u2014 can you can you open Astra? \u2014 Yes, I can I can open Astra. Oh, actually, \u2014 what are you? \u2014 No, maybe I can't. We'll we'll see in a second because um I can't pull my phone down. \u2014 Oh, I see. \u2014 I'm Let me stop. Let me stop sharing. Yeah, hold on. Please hold."
+},
+{
+"start": 1578,
+"text": "You don't have the fingerprint pass key on your Mac. \u2014 Oh, you know I do. You're right. You're right, Tis. I do. \u2014 Yeah, \u2014 I totally forgot about that. Let's see. Please hold. \u2014 Yeah, \u2014 sure. \u2014 Please hold. Please continue to hold. Okay. Ah, that's right. Yeah. Oh, wait a minute. Wait, wait, wait. I can do it this way, can I not?"
+},
+{
+"start": 1612,
+"text": "Nothing like uh \u2014 nothing like awkward, \u2014 right? \u2014 Yeah. This is going to be great on the blog. On the new blog. \u2014 Oh, this part of it. watching David struggle trying to sign in. \u2014 Yeah. Crickets. \u2014 Yeah. \u2014 Did you know that I'll say this here, do you know that Jeb is free on Cloudflare? Like output \u2014 Oh, really? \u2014 output tokens from Jev is totally free. Yeah. \u2014 And and and it's 4 cents per input per million input tokens."
+},
+{
+"start": 1642,
+"text": "You know, you know what's funny, Tis? I just realized I when I got this new laptop, no, I did not set up my fingerprint. \u2014 I do it from my phone. I do it from my phone and I can't take my phone down. Um, so let me \u2014 just show you on my computer. I'm logged in. \u2014 Okay. \u2014 Shall I do that, \u2014 please? Yeah. While I'm while I'm doing this, you just share your screen, dude. \u2014 I just show you Astrad. Let me I'm going to sign in also with my highly secure pass key. Um, \u2014 what? It's true. But I I use the fingerprint."
+},
+{
+"start": 1674,
+"text": "Um, \u2014 I used to until you just reminded me that. Um, \u2014 hang on. I'm logging in. Uh, I should have access to this, right? Like on my IBM account, do I? Build with Bob. There we go. All right. Let me show you. I like that there's an upgrade because I it's it's not enough to work on Astra. So, okay. So, this is my screen. Data explorer. Are you seeing this? Are you seeing this? \u2014 I see it. Thank you. \u2014 Uh, this is Oh, dang. This is actually my This is not I need to go to your David Gelardi workspace."
+},
+{
+"start": 1707,
+"text": "Yes, that's right. Yeah. \u2014 Wallfly and data explorer. And so here are our \u2014 here are our recordings. Um can I sort but bro we should add like click on column to sort that's just table stakes at this point. \u2014 Well that's yeah that that's actually that gets into a whole fun discussion when you're dealing with an underlying NoSQL Cassander database compared to a traditional SQL thing. That's that's a different conversation pages. Different conversation. \u2014 Uh, can you tell me what's the name of the record? The title you have it right. \u2014 It is right now it's just live recording."
+},
+{
+"start": 1742,
+"text": "I don't know if it has a title because it wasn't finished. \u2014 So try live recording. Try October one. Yeah. 101 or something. \u2014 There we Okay. Well, it didn't match on title. Um. \u2014 Oh, because it's Yeah, because it's not just on title, right? It's vectorizing all the uh content itself. \u2014 What did we talk about today? Um dog food. \u2014 This energy drink review. What? \u2014 That that was me the other day. I was I wasn't actually doing a review of energy."
+},
+{
+"start": 1774,
+"text": "I was joking like I was I was just talking to it about stuff I had around \u2014 testing uh wall \u2014 live. I don't build with Bob website. \u2014 Let me look at some of the um \u2014 let's see. Wow, look at that. That's one of the transcripts. Wow, look at that. But you know, I guess \u2014 I we don't need the we don't need the exact record though. Like where's So the real question is where's the AK limitation that we're running into?"
+},
+{
+"start": 1807,
+"text": "The transcript, right? Like \u2014 the column. \u2014 The column. \u2014 Yeah. Where you know what I mean? Like cuz AK that can't be for like a row. That seems awfully small. \u2014 It's so the it's where we update the collection. Um so it's in the code. I'm looking at the code right here. \u2014 Oh, you are okay. \u2014 Yeah. Yes. It says document size limitation violated indexed string value. Uh the field transcript. This one. Exactly. So the transcript we generate we're sending 8326 bytes and we are allowed to send only 8,000 bytes."
+},
+{
+"start": 1846,
+"text": "So is that per column then in a collection? Is that what it's telling us? \u2014 Yeah. Well, per indexed column, right? And so transcript. \u2014 Ah, okay. \u2014 And so um we can only vectorize columns if they're 8,000 bytes or less. Um \u2014 oh oh oh. Okay. And so what we need to tell Bob is \u2014 what we Oh, I'm still sharing my screen. Excuse me. What what we need to tell Bob is um \u2014 is we need \u2014 chunk transcripts."
+},
+{
+"start": 1880,
+"text": "Yeah. \u2014 Be less than 8,000 bytes. \u2014 Right. Right. \u2014 To satisfy Astrab's storage. \u2014 Yes. \u2014 Okay. And then I would I would suggest adding to Bob, \u2014 right? \u2014 Uh I would suggest adding an imperative to Bob to search the web. Uh yeah, to search the web about Astra's limitations as well. \u2014 Yeah, let's do that actually. So I'm going to share my screen and we'll go here and this. And I probably need to blow this up a little bit. Okay."
+},
+{
+"start": 1912,
+"text": "Can you see it? Okay. \u2014 Yeah. \u2014 Yeah. Yeah. Good. Oh. Ah. Astra. Oh, that's what happened. Um on um vectorzed columns. I think I remember this now. That's right. Please check the web for um any information. Uh the web and docs for any information regarding this limitation."
+},
+{
+"start": 1951,
+"text": "Also, how might we modify our current chunking strategy to keep within this limit? \u2014 Okay. \u2014 Yeah. \u2014 Yeah. I think I I I think I vaguely remember now. And I believe that in the astrodocs, let's see if Bob finds them. I believe in the astrodocs there is in fact a whole section that talks about the types of limit, you know, the types of constraints and stuff that you have um per column and all that."
+},
+{
+"start": 1982,
+"text": "It's been years honestly since I've seen it or or looked at it, but I this is coming back to me. You just kind of like cleared out some cobwebs there. So, okay. So, soon web search. \u2014 Yeah, \u2014 because that seems like that was the only thing that was getting in the way when you're recording chunks, right? \u2014 Yep. Yeah, that that's the only thing. Exact. And so as soon as we push this fix, I'm going to start recording again. \u2014 Okay. Okay. \u2014 We have power, you know. \u2014 Got you. \u2014 Yes. \u2014 I'm excited to see what happens."
+},
+{
+"start": 2014,
+"text": "See what happens. What's good? This is the part where I need to have like a little um hold music button. \u2014 You need Jeopardy music. \u2014 Oh, please no. Let's go to Sunno and make some. \u2014 I don't know about you, Tis, but if someone were to actually play the Jeopardy music while I was trying to think about doing something, I would not be able to do a thing at all. That music stops all thought in my head the second it kicks."
+},
+{
+"start": 2047,
+"text": "Yeah. I've never I'm like, please, are they tell are they actually playing that in studio or is that just for the show? Okay, I'mma play some uh I'mma play some Oh, you can't I can't share music. That's so unfortunate. \u2014 No, you can, but you got to flip it on. Yeah. \u2014 Okay. \u2014 Oh, yeah. Never mind. Is it done? \u2014 It found the doc. \u2014 Hey, that's awesome. \u2014 Yeah, it found the doc. Oh. Oh, yep. Yep. Yep."
+},
+{
+"start": 2077,
+"text": "Yep. Yep. Yep. Okay. All right. All right. All right. All right. Yeah, it launched the browser and did that. Yeah. Okay. So, let's see. Yes, that's exactly what you're saying. Okay. My name is Dev. Okay. \u2014 Jev Jev says that. \u2014 Now, funny enough, we already slice it, but we slice by time and then we allow we have an allowance for well, if there's not a pause, we don't break up the transcript. We don't break up a sentence or something, right? But with this particular constraint, \u2014 um, we're gonna have to obviously modify that a little bit, \u2014 right?"
+},
+{
+"start": 2114,
+"text": "But you know, something I actually think is I, as I'm thinking about this out loud, right? \u2014 Yeah. \u2014 I have a hunch that worrying about splitting up sentences is actually a bit of overengineering. And I say that because \u2014 I don't think it matters because at the end of the day it's going to be processed as one big set of context, right? \u2014 Um and I yeah, I just don't think it matters. So maybe that constraint on its own um is incorrect."
+},
+{
+"start": 2145,
+"text": "You know what I mean? \u2014 I absolutely and unconditionally agree with \u2014 Okay. Okay. So we can let's see. Okay. This right here. So let me stop you right there. And I understand why it's doing that. Let's talk about this. The original uh timebased constraint doesn't really apply or need to be enforced."
+},
+{
+"start": 2179,
+"text": "Dang, bro. split based on bites alone. Okay. Okay. All right. Talk to me, Bob. Talk to me. Talk to me. Walk with me. I like it. Storage granularity. Oh, that's a good question."
+},
+{
+"start": 2210,
+"text": "That is a good question. H that is a very good question actually. Um I think for number one. Oh come on. Number two I think yes. We need \u2014 number two is just yes. And I would sorry I know you're typing. I would add to number two. Yes. and search the web for the ideal amount of overlap."
+},
+{
+"start": 2243,
+"text": "Okay. All right. Uh let's see. What were you saying? When overlap window Oh. Oh, I don't know if we need that because again, I don't think we need overlap at all. \u2014 But Go ahead. Go ahead. \u2014 We context overlap. I mean, I don't see any negatives for having context overlap. You know what I mean? Because worst like data is cheap. So what's what are we losing by having it \u2014 you know?"
+},
+{
+"start": 2273,
+"text": "Okay. Okay. If I I think part of that that's right I think part of that depends on number one if we store them as separate documents 100% I agree that want a little over context overlap right but if they are just stored inside of a single document as an array and you have all the components in that context then you don't need them I would think \u2014 yeah so why don't we tell it the answer to both questions is you search the web and you make the best decision So, let's here I'm going to do that."
+},
+{
+"start": 2306,
+"text": "I Yeah, because what I'm curious about now is I'm actually I would lean towards I want them all together, but is there any other constraint that would prevent us from doing that? And is it better to just store them as separate documents? And honestly, the vector search and such like that in Astra is solid and now with the new ranker and stuff, you know what I mean? Like I I'm not concerned at all if we se stored them as separate documents. Um, but I am curious now. Um, you know, if we're going to do this, we might as well do it right so we don't run into other constraints in the future, right? Let's see."
+},
+{
+"start": 2338,
+"text": "Yeah. \u2014 Okay. \u2014 Yes. Let me read. Okay. I at least do that. \u2014 There we go. So, here's a good thing to know right here, right? \u2014 Yeah. \u2014 Under four million. \u2014 I don't think any of our individual audio chunks will ever get to that. But a whole conversation like what we're doing right now, right?"
+},
+{
+"start": 2370,
+"text": "If we're going to store an hour and a half now, are we still going to get to that many characters? I I know I talk a lot, but I don't think I talk that much. Um, \u2014 what we can ask, we just let's ask would we characters in an hour and a half discussion? \u2014 Yeah. Um, sorry. Like we don't want to optimize for an hour and a half discussion. We want to optimize for all day usage, right? Like if I'm at a conference, \u2014 if I'm at a conference, I'm on the whole day. \u2014 So I think did we just answer our question then? \u2014 Yeah. \u2014 Because if that's the case, a single document is not going to do it."
+},
+{
+"start": 2403,
+"text": "We have to spread them out, right? \u2014 Yes. \u2014 Okay. \u2014 Yes. \u2014 Okay. Okay. \u2014 Yeah. I think it's coming to the same conclusion that we just did. Yeah. \u2014 Okay. \u2014 I guess you're AI. \u2014 Yeah. AI has gotten so realistic. Can't even tell. \u2014 Oh, yep. Okay. \u2014 Yeah, I see what it's doing. Going 7500 and leaving a little room for um for overlap."
+},
+{
+"start": 2437,
+"text": "Yeah. Yes. \u2014 Okay. So okay, we agree to um use the recommended approach and base chunking off of bite size, not duration."
+},
+{
+"start": 2478,
+"text": "Okay. \u2014 Yep. \u2014 I didn't really answer its questions, but I'm telling it to use a recommended approach. \u2014 We're not doing one long document. Right. \u2014 Yeah. Now, one thing that I think that might be useful in this particular case is when we build this up is have Xavier create a PRD. \u2014 Right. That way the agent is working off of like, you know, well constructed information because like right now we just have a bunch of stuff in our context, but I think it would be better better done. But let's see. Now it did just ask if we wanted to implement and I said okay to use the recommended approach."
+},
+{
+"start": 2510,
+"text": "So uh you're not okay. Nice. \u2014 Yeah. No, that's a good find. That's that's why we do these tests, right? That's exactly what that's about. \u2014 Eat our own dog food. It's still uploading chunks. \u2014 Oh, you start it up again. \u2014 No, it's just uploading all the chunks that were on Q locally in my computer and it's failing on every single one. \u2014 Oh, because they're all too big. \u2014 Yep. \u2014 Ah, okay. Okay. You Why don't you stop the process or something?"
+},
+{
+"start": 2543,
+"text": "Why? Let it run. \u2014 Okay. Let it run. Let it run. \u2014 I'll keep it until it's \u2014 until I can pull the fixes. \u2014 Let it run. Let it run. \u2014 Let's see. \u2014 Nice. \u2014 Yes. Okay. Oh, I see. Okay. \u2014 My name is Jeb. \u2014 Do you Do you know 21 Jump Street? You know where this meme is from? \u2014 Yeah. Like \u2014 Oh, okay. \u2014 Who who in my age group doesn't know 21 Jump Street pages?"
+},
+{
+"start": 2577,
+"text": "Come on, man. \u2014 I know anything. I \u2014 I mean, I knew the original show. Not that was it that movie that came out or something. \u2014 That's where it's from. Channing Tatum says, \"My name is Jeff.\" \u2014 Yeah, \u2014 my name is Jeff. \u2014 Oh, by the way, something else you can do really neat when you create the PRD with Xavier, it makes it virtually seamless to start up a new session. They even suggest this \u2014 that you create the PRD there and then you go to a new session and you say, \"Now create the tasks.\" \u2014 So you don't have it's a cleaner way of doing it. \u2014 That's awesome."
+},
+{
+"start": 2610,
+"text": "But we did tell it to just go and so it has is just going. \u2014 Yeah, \u2014 here I am. \u2014 Oh, here we go. That makes sense. I'm glad to see that. Actually, we have a new uh constants ts that is actually setting the constants based off the Astro documentation, right? So that we're adhering to those, which makes sense if we're going to chunk by that stuff. So, \u2014 yes, \u2014 that's cool. All right, let's see. Let's see here. Okay. Okay."
+},
+{
+"start": 2641,
+"text": "Heard by aware clamping. Okay. Okay. \u2014 Astro DB byte budget constant. \u2014 Okay. \u2014 Nice. Well, this approach store chunks as separate. Oopsie. SE. All right. Documents. Just want to make sure we're on the same page with that. That's good."
+},
+{
+"start": 2675,
+"text": "Okay. Okay. I see. Okay. But if we do this, couldn't we run into uh where did I see that? I saw that. Um where's that doc? Couldn't we run into um a constraint for conversations that last all day? Yeah, that's Yeah, that's right."
+},
+{
+"start": 2714,
+"text": "I'm glad to see. \u2014 Absolutely. I hope \u2014 Yes, it's very very confident about that, right? \u2014 Yeah. \u2014 Okay, \u2014 looks good. So, shall I pull? \u2014 No, not yet. We haven't I haven't We got to We're missing uh doing a separate document. So, okay. But it said yes absolutely men. \u2014 No, I said couldn't we run into a constraint if we took this approach and said yes."
+},
+{
+"start": 2744,
+"text": "So I'm going to say okay. \u2014 Sounds like we need to use separate documents to ensure we don't run into any constraints for longunning conversations. recordings collection."
+},
+{
+"start": 2779,
+"text": "Give it my vinyl. Uh I don't have any vinyl anymore. Used to have vinyl. All sorts of vinyl. \u2014 Vinyl. Are you Are you being funny? You're being funny. \u2014 I don't know what you're talking about. \u2014 Oh, whatever. cages. You I saw you I saw you smirk for just like a half second there, you know. It just dude vinyl had so come back. It is hilarious. Um we now have a bunch of like vinyl stores over where I live and my girls like it's so funny to see my girls like thumbing through like Metallica and I'm like you're kidding me."
+},
+{
+"start": 2809,
+"text": "This is great. \u2014 Yeah. You're like I didn't realize you kids were 200 years old. \u2014 Well, you know what's funny though is that the records they're all really expensive now. \u2014 Yeah. antiques. \u2014 Way more than what I would have paid. Yeah. \u2014 You think monitors, keyboards, mice, and chairs are going to be like this like antiques since we don't code? \u2014 I don't know, man. \u2014 What do you think? You think that the interfaces are all going to go away and it's just going to be uh I mean, we've seen that that's not really going to take place in like VR or something, right?"
+},
+{
+"start": 2840,
+"text": "You need something a bit more \u2014 just voice interface, you know? \u2014 Just voice interface like, \"Hey, build me this.\" I don't know. There are certain there are certain things that you just can't do by voice. Like for one, if you're going to play like a you know like a FPS shooter, you're not going to do that by voice. \u2014 That's true. Hey, speaking of um \u2014 do you have dots? \u2014 Dots? \u2014 Yeah, dots. \u2014 Dots like the ice cream things. Like what kind of dots are you talking about here? \u2014 Uh Open AI dots. \u2014 Dots."
+},
+{
+"start": 2873,
+"text": "DOTS dots. \u2014 Yeah. \u2014 I have no idea what you're talking about. What are you talking about? \u2014 Two days ago, OpenAI announced um something called DOT, which is \u2014 agents like Grockbot, uh that can take action on your behalf. Little like assistance, like human replacements. Um so you could have a dot, David's Dot, that you know, uh records uh or that gets your kiddos's like school booking or something like it's just they do work for you. Book me a vacation. Okay. Make me hotel room."
+},
+{
+"start": 2904,
+"text": "Like it's that type of stuff. Um, yeah, it's just a like an AI agent that's personal that can do stuff for you on your path. \u2014 Oh. Oh, this is like the little microAI agent thing. I've seen the news on it where they're um is it did they release like a a wearable or they had some partnership with or is that Meta Meta releases? \u2014 Okay. Um, and dots are OpenAI's response to this. So, right now there's four. There's there's there's there's Metam Muse, there's Dots, OpenAI."
+},
+{
+"start": 2937,
+"text": "Okay. \u2014 There's um Instinct. Have you heard of Instinct? That's that's just it's its own company. It's like a textbot and it does stuff for you. \u2014 Okay. \u2014 Um and there's Grockbot. Yeah. So, this is this is heating up now. Everybody's building these like agents that can do work on your behalf. \u2014 Interesting. I mean, so how are these different though from agent? Like I can have agents like I could use Hermes, I can use all sorts of things that do work on my behalf. So how are these different? \u2014 That's an awesome question. And the way they're different is they run on uh like the vendors infra and uh you have not as much privacy, but you have reliability."
+},
+{
+"start": 2973,
+"text": "They'll just work all the time. \u2014 Huh. Interesting. Okay. \u2014 Yeah, it looks like it's done. \u2014 Yeah. So all right. \u2014 Awesome. That's wonderful. Should I pull? \u2014 Oh, here. We don't need my Pixelverse one. Here we go. Uh, no, because I have not I haven't tried it yet. So, we should probably try it to make sure it works, right? \u2014 Like how cautious you are, man. That's \u2014 David's the kind of person David's the kind of person who would like walk before he runs."
+},
+{
+"start": 3006,
+"text": "Yeah. No Leroy Jenkins here, right? \u2014 Who's that? \u2014 Do you know who that is? \u2014 No. \u2014 All right. for the for for all the fellow nerds and stuff out there, right? I guess tell me you don't have to be a certain age now for that. But so there was a really famous famous live stream um a stream of like I think it was World of Warcraft or something like that back in the day. And there there there's this huge group. It's such a look this video up. It is it is hilarious. So there's this there's this huge group and they're planning on going against like this big boss, right?"
+},
+{
+"start": 3037,
+"text": "Really powerful one. They've got to work together and all that kind of deal. And you could tell the guy was just getting bored because the guy the the one lead guy's like giving all these instructions and you could tell you could see he's even like being like fidgety and stuff in the game, right? And he's like he's like, \"All right, all right guys, I'm I'm just going.\" And they're like, \"No, no.\" And he goes, \"Leroy Jenkins.\" And just takes off. And then everyone else is like, \"Oh god, oh god.\" They just follow him and they kill everybody. Everybody dies. They It was so good. So anyway, Leroy Jenkins, I guess now is the dated old way of being like yolo, \u2014 right?"
+},
+{
+"start": 3073,
+"text": "You just going like, I'm just gonna go for it, whatever, you know? So, all right, let's see. Let's see what happen. \u2014 You can't believe I'm getting dated now by these things. Seriously. \u2014 Seriously. \u2014 Yeah, you should date your wife, dude. \u2014 All right, let's see now. \u2014 Jenkins. Yeah. Did this actually work? Okay, so if this works then for one when we come in here we'll see that this is going. So that's wonderful. But the key thing \u2014 is now it's just going to go bytes. It's not going to wait on time."
+},
+{
+"start": 3104,
+"text": "So theoretically we should see chunks start to come out here in the transcription. Right. So \u2014 um I don't know I don't see the I don't see the sidecar kicking in yet. \u2014 So it's telling me that it's \u2014 it shouldn't maybe it's waiting for me to stop talking. I'll stop talking. Oh, okay. There's one. \u2014 Nice. And \u2014 size. Uh, wait a minute. Well, I hope that's not the size of our chunk. Oh, that's the file it's working on. Okay, so we'll see how well. And you see it's using MPS."
+},
+{
+"start": 3135,
+"text": "So, I'm using Uhoh. Uhoh. What happened? Oh, okay. We got a nice little error there. Let's fix that, shall we? This is why. This is why Tis I didn't just push. OMG, dude. But other ones are Oh, that's interesting actually. Okay. The error is the key space has the existing collections or tables recordings. Okay. \u2014 You get a collection and table recording Sean. Oh, did Oh."
+},
+{
+"start": 3166,
+"text": "Oh, there was a there must have been a data modeling step there that it did not actually create because if you think about it, we just changed the data model by doing it this way. It needs a new collection, which is what I think it's doing. So, that's kind of an interesting thing. We've just now introduced something where now we're going to have another collection, but we have the old collection. What are we going to do to reconcile those two, if anything? I should probably tell this to stop. Really? Okay. By the way, if anybody here does remember Lero Leroy Jenkins, please say something in the comments."
+},
+{
+"start": 3202,
+"text": "Please say something. \u2014 Validate me. Please validate me. Right. \u2014 I believe you. \u2014 Thank you, Tus. Thank you. Okay, \u2014 Leroy. \u2014 All right. What do we have here? I'm gonna go \u2014 cause of the error. \u2014 This is so good. \u2014 Yes, because Yeah, that's right. Yeah, we kind of uh should have done that, right? Uh, good. That's that's better. That's what should have happened. Okay."
+},
+{
+"start": 3232,
+"text": "So, you're theoretically going to tell me you're going to do it on your own. Okay. Um, so do me a favor, Mr. Tjas. Um, check your Astra. I'm going to run this again. You should see a new collection pop. \u2014 It'll take just a moment to create the collection. So, it might pause it on that first one, but it theoretically it should create IT DYNAMICALLY. POP POP POP like that or \u2014 possibly I it doesn't make any sounds like that to my knowledge, but \u2014 what? \u2014 Okay, let me check. Um, \u2014 all right."
+},
+{
+"start": 3263,
+"text": "So, I'm going to record and I'm gonna start recording and Oh, I got one like right away. Did I get that right away or was that a previous one? Um, wait. The tingle pop pop pop \u2014 recording and recording chunks. \u2014 That is different. Yeah. Yeah. Yeah. Yeah. That's different. Different different different. \u2014 The thing go pop, bro. Hey, why is this \u2014 I have a hunch that you're not uh Yeah, that was was that Oh, yeah."
+},
+{
+"start": 3300,
+"text": "No, I'm I have multiple. Okay. \u2014 I have multiple. Okay. I'm gonna stop. I don't Did you see it? I take it you didn't see a collection. \u2014 Hey. \u2014 Oh, you do have a collection. Okay. So, it created the collection properly, but \u2014 record and I'm going to start recording. And oh, I got like one right away. Did I get that right away or was that a previous one? I'm Wait, wait. And then it just stopped. \u2014 All right, let's see. \u2014 The thing pop. That's awesome. Oh, I see what."
+},
+{
+"start": 3331,
+"text": "Okay. \u2014 I guess my only problem with this is it doesn't really have a parent recording ID. So, I have no idea which actual conversation this chunk is from. \u2014 That's right. That's a very good point because then you're just relying pure purely on the rag portion of being able to find like things, but that's not going to be enough. Okay. \u2014 Yeah, we need a foreign key, brother. \u2014 There is. You can't do quite like that. \u2014 Yeah, you can. You can just get an ID from your parent and pass it to all your children. \u2014 Oh, yes."
+},
+{
+"start": 3362,
+"text": "Yeah. I'm sorry. I meant like a traditional foreign key. Let's see. Um \u2014 we need um a Oh my god. um foreign key like relationship to associate all conversation chunks uh with a single conversation parent conversation \u2014 it's you know I TIS have you started speaking differently to your agents."
+},
+{
+"start": 3404,
+"text": "Like for example, now when I say please, I don't take out the whole word anymore. I just do pls. Have you started doing anything like that? \u2014 Um I never say please to my agents. I'm a horrible taskmaster \u2014 when the singularity comes. \u2014 Yeah. \u2014 What's going to happen? Yeah. \u2014 I'm just like, do it. Do it now. Don't don't make any mistakes. \u2014 Don't make any mistakes. I I really hate it when it will do like two steps of a fivestep thing and be like, \"Here's what I did so far. Do you want me to keep going?\" \u2014 And I'm like, \"What? Who asked you to stop?\" I'm like, \"Bro, is the Pope in the woods?\" Like, I don't you know, \u2014 my god."
+},
+{
+"start": 3441,
+"text": "I don't get it, man. \u2014 Let's see. Okay. Um \u2014 Oh, sorry. I mean, there's a bear. Anyway, no. \u2014 Oh my god. contagious \u2014 mixed up mixed up my my Americans. Um, you're not sharing your screen. I hope you know that. It's just \u2014 just you and me. \u2014 Hey, so um, have you tried the new Skibbidity model? \u2014 You're you're not joking."
+},
+{
+"start": 3473,
+"text": "There's actually one called Skibbidity. \u2014 Dude, the pricing is uh 67 per million tokens. It's \u2014 Are you joking? You're joking. \u2014 Where did you get that? That's a good dad joke in a way. Honestly, \u2014 what what are you can I pull yet? \u2014 What's happening? I'm I'm a bit out of the loop here, brother. \u2014 Oh my god. All right, let's see. Uh here. I was correcting it because it was trying to take a relational approach here and I was like, dude, this is uh not the right database for that."
+},
+{
+"start": 3508,
+"text": "Okay, here. Oh, did I get your video back? Oh, I got your video back. Yay. Okay, let's see. Okay, I'm just reading here. \u2014 Yeah, duh. Just we just need It's not an actual foreign key, man. It's just a It's just \u2014 Yeah. \u2014 No, that's why I I was like, \"Wait a minute. No, no, no. It's not going to \u2014 That's good."
+},
+{
+"start": 3542,
+"text": "Now, while it's doing that, actually, um, \u2014 let me think. So, something we can actually do. Um, yeah, let's find continue \u2014 in another task. I'm just going to open that up real quick and bring this over here is, by the way, notice I have this Bob findings thing open here. Um, that will automatically detect things in and such at times. Um, I'm not worried about it at the moment. It doesn't have anything. Okay, let's see. \u2014 Everything has been implemented. Hey, \u2014 so it says, so say we all. All right, so um I'm just going to do this again."
+},
+{
+"start": 3574,
+"text": "I know I don't technically have to reload it, but I like to do it. Okay. \u2014 Gives you safety. \u2014 It does. It It does feel safe. Feels safe. \u2014 Safe. \u2014 Right. Right. Right. Right. Okay. We are going to record again. We are recording. contagious. \u2014 Why do you sound like a robot, dude? Embrace your humanity. \u2014 I mean, who says that I'm not a robot? \u2014 He is the touring. \u2014 Have you seen Foundation?"
+},
+{
+"start": 3606,
+"text": "Have you read the books? \u2014 Who is the man in my family who said I would fail? \u2014 All right. Now, I'm just I'm just waiting here for um Why am I not seeing any output while we were recording? \u2014 Finish eating. And if I come over here. Okay. Is that that that's that one. Okay. So why Oh, there we go. Okay. Okay. Okay. Okay. Okay. Let's see now. Tis check the check the um um the Oh my god."
+},
+{
+"start": 3638,
+"text": "The collection, not container. Check the collection on your end. Um \u2014 checking checking. \u2014 And let's see what you see. \u2014 Chucking checking it. And \u2014 so this time I'm not seeing the errors come through. I'm seeing a lot of chunks, bravo. \u2014 Yeah, \u2014 I'm a lot of chunks. And and and there's a column called recording ID. \u2014 Yeah, \u2014 now honestly, I I'll be I'll be honest. That's something that I would want to review, right? Um because that may work fine, but I think there are actually better ways to approach that."
+},
+{
+"start": 3672,
+"text": "But um \u2014 it's something I I just need to kind of sit down and and think more about because because you know Astra is built on Cassandra, right? And Patrick Cassandra handles um handling keys differently. There are like very efficient and fast ways you can do that and I just it's something I just want to review. Matter of fact, funny enough, by the way, this looks like it's doing it. Um see, are we getting any of these? Oh, here we go. \u2014 Can I be honest? That's awesome. \u2014 Oh, yeah."
+},
+{
+"start": 3702,
+"text": "I was just saying that. Okay. \u2014 They're very short though, huh? Are they are the chunks like \u2014 they're not they're nowhere near 8,000 bytes right there. \u2014 Well, it went under on purpose. And not only that, it's probably going off of when I stop, right? Like when we stop talking, it's probably going to grab that as a chunk. I don't know if it's waiting. \u2014 Nice. I mean, that's fine. That's what Astro was built for. Many, many, many small rows. \u2014 Okay. So, so far so good on that. \u2014 So Gucci. So gucky."
+},
+{
+"start": 3733,
+"text": "So here's here's here's the fun. Here's the fun. This is why I brought this up. I was going to do a new task. We'll let that go. We're going to keep that recording. Actually, why don't you go ahead. Oh, here. Let me let me say commit sync and push so you can have it. \u2014 Then pull it on your end so you can then run it. \u2014 Yeah. \u2014 And then while we're doing that, I'm going to come over here and I'm going to say um Xavier review. Um, \u2014 hey, \u2014 I can't pull."
+},
+{
+"start": 3771,
+"text": "It says already up to date. \u2014 It's still It hasn't pushed it yet. Ah, coding agents. Yeah, I'm actually um Yeah, what's going on? Go. I don't know why it paused. There it goes. Okay. Yeah, it's clearly doing it. Okay. So, let's see if I come back over here. Oh, yeah."
+},
+{
+"start": 3802,
+"text": "You know, you know something? I think this is actually because it's recording smaller chunks, it's going faster. Yeah, it's already You see it popped already. It had 59 just a moment ago. Let's see when it goes again when I like pause and stuff. Okay. So, you \u2014 Yeah, it's going a lot f It's a lot more real time now. \u2014 Yeah, \u2014 that's cool. Okay, I'm gonna stop recording there because it's spinning my box up."
+},
+{
+"start": 3834,
+"text": "Okay, let that finish. Okay, there we go. Now you should have the changes. \u2014 Time to pull. \u2014 Okay, and there we go. I got It's It did the work in a branch. What? Oh, we've been working out of a branch the whole time, I believe. \u2014 I'm gonna have this. \u2014 Yeah, there's Yeah, that's right. That's right. Yeah, I got a feature branch because that's part of the pipeline. So, \u2014 all right. review. \u2014 Okay. Changes to make commit and \u2014 um check our data stacks."
+},
+{
+"start": 3872,
+"text": "Ah data saxs Astra Apache Cassandra. All right. Check our new data model and indexing approach against the best practices of and um create an infographic explaining the details."
+},
+{
+"start": 3914,
+"text": "Okay, so Xavier review is really cool. Um, I do like it because now it's going to spin off, right? It's going to spin off its remoras, right? It's going to spin off those different personas and kind of review it from different perspectives. Um, what uh security, performance, and I believe UX is one of them. \u2014 Um, \u2014 yeah, \u2014 kind of does a check, but then, you know, you can add little things in there like, hey, I want you to create an infographic, you know, and such. And then Bob will take and do that part of it. Um, okay. Right. Okay. So, it's doing its thing. So, did you get the latest poll?"
+},
+{
+"start": 3945,
+"text": "I did. I'm trying to spin it up right here. \u2014 And it's working. \u2014 Working. \u2014 Yeah, it's exactly working like that. Um, yeah. Let me see. So, it's running. Let me go refresh. Oh, \u2014 so this one now. Oh, so by the way, while you're doing that, this is the one the one that we just recorded. Yep. It got the whole thing. \u2014 Cool. \u2014 All right, we hit record. Ready? One, two, three."
+},
+{
+"start": 3977,
+"text": "David is a boulder. Okay. I just I just started recording. \u2014 It's my new song. You like it? \u2014 It's great. It's wonderful. \u2014 It's David Johnson. Let me check the logs here. \u2014 Yeah, I don't see I don't see a chunk yet, so I don't see anything. \u2014 Hey, everything's working on my end, brother. It's just totally working. There's no errors here in my logs. Um, \u2014 now I'm not seeing a moment yet. So, we'll see. \u2014 If it maybe isn't hitting until the uh chunk, the first chunk goes, \u2014 but it should already had a record."
+},
+{
+"start": 4013,
+"text": "Hey, error. Network error uploading chunk. \u2014 Yeah. Okay. So, what's the network error about? \u2014 It just says network error uploading chunk zero. Failed to fetch. Bro, \u2014 what? Bro, \u2014 why? There's like no What's your problem? Is it cores? Let me Let me investigate here. \u2014 Okay. \u2014 Ah, it's because it's doing localhost 3000, but it's 3030. Bro, I hate this. Like, \u2014 who asked you, man? Who asked you? \u2014 T."
+},
+{
+"start": 4045,
+"text": "Yeah, that makes sense because I should have seen a record like instantly in moments for that. \u2014 Chay, that's what I always say, you know? That's what Chay like that. Um, okay. Okay, let me see. So 3030. Um, there's a cached base URL that's hardcoded because environment variable is not set, I guess. Um, \u2014 that's right. Yeah, that's another fix actually, isn't it? Yeah, \u2014 it is. It's kind of irritating. It's irritant. All right, let me restart. \u2014 Irriterent. Irriterent. \u2014 That's how you say irritating in German."
+},
+{
+"start": 4075,
+"text": "Do you know that? \u2014 Oh, is it really? \u2014 Yeah. \u2014 It's not. \u2014 Oh, yeah. It's actually it's it's actually \u2014 to all anyone who's listening from Germany or something like that. I love the German language. I do. But man, some of the words some of the words are a bit \u2014 of German. Anyway, okay, I'm gonna hit record. Ready? Three, two, one. \u2014 David is a German boulder. It's done. It's recording. That's that's actually activate word for like start. \u2014 Oh, here it is. Here it is. Now, now it's coming. \u2014 Good morning. Nice. I'm I'm gonna just keep an eye here on the logs."
+},
+{
+"start": 4107,
+"text": "Um I wonder what's the criteria criterion to send off a chunk you know is it like is it silence uh or is it is it not silence you know \u2014 we originally we it was originally based off of both time duration and or duration and silence so it had that 15 to 30 second piece but then it would wait there um I'm trying to remember uh the name of the of the library but then it would the library will detect silence and it waits."
+},
+{
+"start": 4138,
+"text": "And so once you've hit that first threshold, the duration threshold, then it would wait and say, \"Are you done talking yet?\" And once you're done talking, um, then it would go, right? And you could actually see that happen when it would build, like when the sidec car would kick in. Um, \u2014 I just sent your way, brother. \u2014 Did you? Yeah. Oh, yep. Here it comes. Here it goes. \u2014 Hey, look at that, bro. Um, \u2014 that's good. But these chunks are tiny. But I guess it's fine. I guess we better do chi tiny than large. Um, \u2014 well, that's Yeah. So that that's part of something and that I'm I'm starting that here um as I'm asking Xavier to do a review of the last commit and and kind of compare it to the best practices of like Ast and Cassandra because that is something I think we should probably take a look at."
+},
+{
+"start": 4180,
+"text": "I don't know if we're going to do it here on the show, but um let me see. All right. Yeah, see this I think there may be better ways with SAI but collections auto you know collections that's right vectorbased collections already have SAI in Astra \u2014 sorry what's SAI \u2014 um storage attach index \u2014 okay I don't know what what what is that \u2014 that is a so it's like a so so indexing in a database like Cassandra is kind of interesting right it's not the same as the the way you approach things in like a relational database, right?"
+},
+{
+"start": 4218,
+"text": "Um, and storage attach indexing is like was in in Cassandra over the years there were all sorts of like secondary indexing like uh paradigms and such but given a database like Cassandra one of its core tenants is you know not only is it distributed in nature but it's performance right and it must maintain like a base level performance um at any scale kind of thing. Um, and secondary indexes kind of work like that, but they had a lot of limitations. They could sometimes be a little slow, things like that. And SAI was like the evolution of a lot of a lot of engineering over a lot of years and it really landed well, right?"
+},
+{
+"start": 4256,
+"text": "So SA so when you create like a collection in Astra, you're already getting those SI indexes and what it does is it makes it seamless. So um, it's like super easy to just create an index on like a column, right? You could do that in a relational database. don't quite do that the same way in um a NoSQL database like Cassandra. Um so anyway, the point is is that you shouldn't need to know the underlying details. It just makes it so you can have a lot more flexible and fast indexing. Um okay, so it's creating our infographic now. And by the way, let's check this. You're still recording on your end."
+},
+{
+"start": 4287,
+"text": "Yeah. Oh, I see 52 lines. Yeah, it's going. \u2014 But I I'm concerned about the size of these chunks. But it's fine. I think it's \u2014 because they're really small and you're getting lots of records. Is that the concern? \u2014 Yeah. Can we ask Bob what is the criteria for cutting a chunk? \u2014 8K. Remember it. It actually does it 7500K. But are you saying the chunks are even smaller? \u2014 They're they're like 20k, bro. They they're like not 20k 20 bytes. They're tiny. That's what And I'm like, why are we so many bytes, you know? \u2014 I got you. I got you. I got you. Okay, let's see that."
+},
+{
+"start": 4318,
+"text": "We ask like what's the what's the criteria for? And and is it silence? Is it duration? Or is it bite size? And I think we should tell it it must be a combination of silence and duration and byte size if it's not already because that's what I would expect. Do you know what I'm saying? Um yeah. No, you said how how big what are you seeing?"
+},
+{
+"start": 4358,
+"text": "What is the criteria for getting audio chunks? We are seeing Yeah, like I have it here. Wait. Uh 324. \u2014 324. What? Oh, \u2014 yeah. Between 200 and 400. Yeah, it's between 200 and 400. And I'm like, we have 8,000 as headroom. \u2014 Yeah, I got you. Okay. So, let's check this out here real quick. So, by the way, it's still going, right? You're still seeing this go. \u2014 I should see. Yep. Okay. Yeah, it's still going. It's just that the chunks are \u2014 see that last go back. Can you go back for a sec? Look at that last like 81st 83rd chunk."
+},
+{
+"start": 4390,
+"text": "That's Bro, that's like what is that? That's like Man, that's really bad. \u2014 I I hear what you're saying. Are you seeing individual then what you're saying is in the collection you're seeing individual rows for each of these? \u2014 Yes. And it's also like uploading it's it's such a waste. It's the most wasteful thing. \u2014 Yeah. Heard. Heard. Okay. Let's see. Wait, wait, wait, wait, wait. Hang on a second. Let me just fact check myself here. \u2014 Okay. \u2014 Jesus Christ. Yeah, bro."
+},
+{
+"start": 4420,
+"text": "This is bad. There's \u2014 Ah, wait. No, actually, \u2014 you're killing me, dude. \u2014 Wait, wait, wait. Tis, are you are you a AI coding agent? \u2014 This is the answer. Wait, actually, this is the See, it's the same thing we do as humans. Bob, um, I need to check something because Astra's UI \u2014 Yeah, \u2014 look, man. I work at IBM. I'm gonna say this. Astra's web UI needs some help."
+},
+{
+"start": 4452,
+"text": "Okay. Yeah. \u2014 Um, because I'm I can't see how many characters are in this Uh, \u2014 David is a German boulder. Let me just copy this and check. Um, \u2014 and while you're doing that, I'm I'm just taking a look at this here. I'm gonna I'll do a little bit deeper dive on this later because we have 15 minutes left, right? So, \u2014 so fast. Yeah, bro. No, chunks are all 200 200 to 300 200 to 400. I just confirmed. \u2014 Yeah, it's \u2014 okay."
+},
+{
+"start": 4483,
+"text": "Yeah, bet. It's pretty bad. \u2014 Hey, let's see. \u2014 So, \u2014 can we see the answer? \u2014 Yeah, I was just taking a look at that. All right, let's see what's going on here. Yeah, \u2014 that's not Can you go Can you go higher? There's like a lot more answer. Higher. Higher. \u2014 Well, I was I was kind of looking at its TLDDR \u2014 because it's doing a lot of discussion here. Let me let me stop and start at the bottom and work up \u2014 because it's it's answering it with all that context, right? \u2014 15-second temporal."
+},
+{
+"start": 4514,
+"text": "Who said anything about a 15-second temporal chunk window? Man, \u2014 that was the default. So, I wonder if because we already had that in there, then maybe we need to just take that out completely and tell it. No, no, no, no, no. Let's see. Okay. Oh. Oh, okay. So, so each \u2014 it just sent another 8k a chunk. By the way, \u2014 200 bytes isn't very efficient."
+},
+{
+"start": 4549,
+"text": "We can easily store up to a k as we talked about before. instead of using the original duration constraint of 15 seconds. Let's remove that entirely and make the split based off of bite amount."
+},
+{
+"start": 4583,
+"text": "Yeah, exactly. Yeah, I hear you on that. \u2014 Yeah. \u2014 Yeah. Because then we're also like at that we're we're making the database and everything do more work, right, by storing these little tiny guys and individual rows and then when we do the rag portion of it trying to, you know, bring those together. Yeah. Let's see. Nice. That's good. I think we're Oh, dude. More chunks are failing. \u2014 Okay. Why? \u2014 I actually don't know. Um, let me look at the logs here. Transcription complete 245 characters."
+},
+{
+"start": 4617,
+"text": "Okay. Did it \u2014 It said com. \u2014 Oh, is that like one of the chunks that \u2014 Wait, wait, wait. It it it's it transcribes to 245 characters. Chunks API error processing chunk size limitation violated. Transcript length is 8,617 bytes. Why \u2014 did that did that did you finish a recording per chance? \u2014 I did not. No, it's still going. \u2014 Interesting. Is there something that is um like \u2014 it's just dropping chunk now?"
+},
+{
+"start": 4650,
+"text": "It's dropping all the chunks. Everything is \u2014 because all of them are past AK now. \u2014 How can that be, man? \u2014 Is there Well, I wonder if something as we're talking is is there something that is just um adding on like you know appending on to the transcription or something? \u2014 Actually more and more. \u2014 Wait a second. One second. So So chunk 25 failed. Chunk 26 failed. And now chunk 27 is failing. So \u2014 is the look at the bite size. Is the bite size continuously to go going up? \u2014 Well, that's the interesting thing."
+},
+{
+"start": 4681,
+"text": "It transcribes them to 300 characters. \u2014 Okay. \u2014 But for the column transcript, it's now 8,921 bytes and it's going up like every \u2014 I think something is appending them. I think they're being appended and added. \u2014 Oh. Um, you're absolutely right. So there's some So I think we're storing the full transcript somewhere. \u2014 I think so too. \u2014 Yeah. \u2014 So let's ask Bob. Uh where are \u2014 you? This is actually kind of this is I think this is kind of funny and I think this is where I you know I I I see this sometimes online and such like that."
+},
+{
+"start": 4717,
+"text": "I know we've talked about it here before. Um you know both of us have been coding for a long time. I've been you know coding for decades. I'm used to I'm used to sitting down in the code, right? And so it's funny. I find it not so unnerving anymore, but I do find it funny that we're asking a question of the app that if we had written the code, we would absolutely know the answer to you know but but now it's this different interaction uh here you know it's \u2014 or even if we read the code you know \u2014 yeah but even reading it the speed at which it's created \u2014 I don't know about you but it is so hard \u2014 to sit I mean I when when a lot of the geni stuff especially AI coding agents started to to first kick in right?"
+},
+{
+"start": 4757,
+"text": "Like I was absolutely reading every line and things like that, but then \u2014 they got better and better and better. They can produce more and more and more in an instant and you just can't keep up, \u2014 right? Yeah. \u2014 And and it's like and not only that, I I'm an avid reader. I read all sorts of like non-fiction and fiction and code and things like that. And \u2014 by the end of the day, I have such reading fatigue. I am like mentally spent from that standpoint. So it becomes this thing of like trying to balance that but also being able to create and produce and do things at the same time, right?"
+},
+{
+"start": 4789,
+"text": "Like \u2014 I mean so I don't know like that is that is one of those things that is um I think always an interesting conversation right now. Um \u2014 all right let's see. Okay. Oh wow. You're going wow Bob you okay buddy? \u2014 That's a lot. \u2014 Uhhuh. We did you know by doing this we are changing the um architecture pretty \u2014 yeah okay well it seems very excited let's see with 100% success no errors \u2014 did you ask it where I love it I love it no this is spectacular oh my god that's funny Okay."
+},
+{
+"start": 4840,
+"text": "Oh, you're updating the infographic, too. Great. Okay. Okay. \u2014 So, did you ask it where it's accumulating a transcript? \u2014 No, not yet. It was It was It was having a big long conversation with itself, and I didn't want to get in its way. \u2014 It's still doing it. So, let's see. \u2014 Okay. Now, what was your question? Where are we accumulating one large transcript? \u2014 Okay."
+},
+{
+"start": 4872,
+"text": "All right. Here I'm going to do two things. Okay. Because the context in this is starting to grow. Um, but I'm going to record on my end with this interesting with this updated code. Okay. Okay."
+},
+{
+"start": 4905,
+"text": "Okay. Okay. So now it it is doing the thing that we did ask it to do. And it says it's very excited about it. It's very excited about it. All right. So I've restarted here. I'm going to go ahead and start recording here. Right now I'm going to start recording a thing. Now while we do that we are asked um we are noticing that byte size. What what uh column are you seeing that in? Tiscripts. Say it again. \u2014 Transcript \u2014 for the transcripts column."
+},
+{
+"start": 4940,
+"text": "Transcript column. Yes. \u2014 Okay. \u2014 Is it just like accumulating enormously? \u2014 I think it is. So I think it's writing to like individual chunks but also to the recording, you know. \u2014 That's right. Oh. Oh, I have a hunch. Okay. It seems that for each processed chunk, the recent Yeah. the previous transcript, if I could only spell transcript, \u2014 plus the current chunk are being concatenated."
+},
+{
+"start": 4987,
+"text": "Please check this. Okay. And then while that's doing that, I'm recording over here. It's still recording. Um, if I refresh real quick, I see that is happening. Okay. And is this us? Yes. Okay, that's us talking. Now the question now you were seeing on the Astra end or did you see something in the uh the log output \u2014 was in the application logs because Astra was rejecting the upload? \u2014 Oh, okay. And so you were seeing at the ICIC. Okay. Okay. Yes."
+},
+{
+"start": 5021,
+"text": "Well, then we should probably be explicitly verbose about that in the logging as well. Um to double \u2014 that's how I found \u2014 No, I mean even more explicit like you saw in an error, right? Is it happening in in in regular processing? \u2014 Yeah. I mean it's it it tried to upload the transcript but then failed because the transcript grew so much. Okay. Wow, man. It's really verbose, huh, Bob? It's after I kicked it off doing that whole um comparison."
+},
+{
+"start": 5052,
+"text": "Wait, wait. It keeps saying wait. You see that? Wait. \u2014 It's Yeah, it's doing that to itself. \u2014 That's \u2014 Oh, yeah. Wait. Yeah. Since Wait, wait, wait. \u2014 That's Wow. It's obsessed with weight. Hey, have you seen the new announcement from your the US government yesterday on uh how it's using AI? \u2014 Uh, okay. Do I \u2014 No. Have you seen it? It's \u2014 I don't know which one. Which one? It's really kind of awesome. If you go to if you go to um america.gov, um it's it's actually \u2014 Tell me about it."
+},
+{
+"start": 5085,
+"text": "Tell me about it. \u2014 It's a chatbot. It's like it's like Chad GBT but for you. Like you're like, \"Hey, I need to change my legal name.\" And it's like, \"Oh.\" \u2014 Oh. \u2014 You know, it's it's really wonderful. \u2014 I'm glad you like it. \u2014 I'm staying away from that tagious. \u2014 It's so wonderful. \u2014 All right. I'm trying to see. Yeah, I think I would actually rather it have more explicit verbose logs specifically about that, but let's see. Okay, wait a minute, dude. Hey. Hey, Bob."
+},
+{
+"start": 5118,
+"text": "You are circling. Let's sum up your findings. \u2014 Wait, wait, \u2014 what? \u2014 No, it's \u2014 Oh, you're joking. Yeah, so far. But okay, I'm not having any issues on my end yet, right? Um, what are you seeing on your end in the database? \u2014 Um, nothing like I'm I'm seeing the So, look, your your sidecar is doing work now."
+},
+{
+"start": 5150,
+"text": "If you keep it recording long enough, \u2014 yeah, \u2014 you will see that your transcript is growing by 200 characters past 8,000. So you you would upload a few good chunks of 200 characters until it starts getting too big and then you have mass. \u2014 Okay. And then here here it did find it apparently. So \u2014 right. \u2014 Yeah. \u2014 No. Why are you doing that? Right. That's what I thought was happening. Yep. Yep. Yep. Yep. Yep. It's stitching it together. Okay. \u2014 But who asked you to do that, Bob?"
+},
+{
+"start": 5181,
+"text": "Jeez. We got three minutes. All right. Um, if we don't need that. Okay. Right. We shouldn't be stitching together previously processed chunks. Yeah, it's \u2014 also the 15sec duration should now be gone and only based on \u2014 David."
+},
+{
+"start": 5221,
+"text": "Yeah. Yeah. What's up? \u2014 We should be switch stitching together chunks but not in the database. We should do it in the application when we read back a recording. \u2014 That's right. Yeah. Yeah. But that's what I'm telling it is like when we're processing these I'm saying we shouldn't be stitching together previously processed chunks. when we process each audio when we process the \u2014 current audio chunk. Go ahead. \u2014 Yeah, I we shouldn't be storing stitched chunks."
+},
+{
+"start": 5252,
+"text": "We should only be reading stitched chunks. \u2014 Yeah. Um I \u2014 think that's what we want. \u2014 We should only be Good, good clarification. Stitch chunks. Yeah, exactly. Okay. Okay. Okay. So far, I'm not running into that same issue. But see, this is where this is actually it it's it just pro it's Whisper transcribing the audio."
+},
+{
+"start": 5288,
+"text": "That's not what's going into the database. So, I'm Yeah, that's the file size of that. \u2014 Give it time. It'll grow. It'll keep growing. just I think with enough time you'll see it. Um, it's got to be 8,000 divided by 200, right? Let me pull up my calculator. 8,000 divided by 200. So, in about 40 chunks, how many do you have? \u2014 81. \u2014 What? \u2014 I would just still give it more time."
+},
+{
+"start": 5318,
+"text": "I can I can actually check the database \u2014 and see how big \u2014 you know something Bob is acting very weird right now. I gotta wonder if something odd is in its context um given I asked it to do that infographic. So I'm gonna say um condensed. Don't you have I could swear \u2014 what's the name of your recording? Let me take a \u2014 compact. Yes. Yes. I'm gonna do this real quick because yeah, because it's acting very weird."
+},
+{
+"start": 5356,
+"text": "Uh, actually, and I've seen this I've seen this happen and and not just Bob, but I've actually seen this in AI coding assistants before. Uh, sometimes they get something interesting in their context and then go off the rails a little bit. And it's great that it's having this conversation with itself. Um, but it's I don't think it's helpful. \u2014 Yeah. \u2014 Okay. Let's see. And that's right because I kicked in the review, but I we kind of like continued the conversation and didn't really finish what we were doing with that. \u2014 Yeah. \u2014 Okay. Let's see."
+},
+{
+"start": 5395,
+"text": "Okay. Great. I wonder, let me go check my previous recording. I would love to see how many um chunks I had."
+},
+{
+"start": 5431,
+"text": "Oh yeah. And yeah, mine is going strong now. We did make some changes. Yeah, we're at 100 lines now. It's like now they were really small though, right? And so it seems like at least that part of it's working, but I hear you. Are you recording as well? I see I see one from you over here. \u2014 Wow. Um yeah. So 81 chunks was fine on my side. \u2014 Okay. Um 133. Yeah. Yeah. 13. So my record was 133. \u2014 Okay. \u2014 And so that's kind of So you're at 101, right?"
+},
+{
+"start": 5466,
+"text": "And so we'll see. Um \u2014 um 10 108 now. \u2014 Yeah. Yeah. I think when you get to like \u2014 Well, did you stop? \u2014 I did. \u2014 That's that's unfortunate. I think if you got to 150, you would have seen the the issue. Um, but I mean I will say this is this is short progress from where we were and being able to record long conversations because we couldn't have done this before, right? We couldn't have done what we're doing here before. But we just need to get those chunks back into more manageable sizes and really optimize the amount that we can store in each of the columns for each document that we have, right?"
+},
+{
+"start": 5502,
+"text": "Instead of doing like these 200 byt sections. \u2014 Um, yes. \u2014 Okay, let's see. Okay. Uhhuh. Uhhuh. Uhhuh. Right. Okay. All right. Let's see. Okay."
+},
+{
+"start": 5550,
+"text": "Oh, he made me another infographic that I'll take a look at a little bit later actually because we are at time actually. So, I want to get to a place. Yeah, we're at So, hey, let's recap what happened today. Well, we ate our own dog food. We tried to use it and it actually works and it works really well. Um, we found like an upper limit with the transcript growing and we are repairing that. So, I think the next stream we should be able to record the entire thing with Wallfly and then get takeaways, get a recap, get get the Jev based um grouping."
+},
+{
+"start": 5592,
+"text": "It's going to be fun. I'm excited about it. \u2014 Yes, agreed. Yeah. No, that was that was actually cool. The fact that you're able to record, I'm able to record. We can both see that in the app happening at the same time. We Yes. The chunk size is not efficient, \u2014 right? But we should not be accumulating them any longer in, you know, transcript shouldn't just keep growing and growing and growing because I have a hunch that if you look at the database and you look at the column, you'll see \u2014 a couple words and you look at the next one, you'll see a couple words and then more and then more and it just keeps getting bigger and bigger, right? So, so I believe we've solved for that, but we need to optimize now for the actual amount of bytes we can store in each of those instead of having like a million documents."
+},
+{
+"start": 5630,
+"text": "It makes no sense that way. \u2014 Yeah, totally. \u2014 Yeah. Cool. So, I feel like I feel like that is um actually something good um uh to work on for the next week to kind of shore that up and then and then come back and then um I've already got some of the um the basic research. I'm going to take another look at more efficient and better ways to do that with Astra, \u2014 right? Yeah. And and see if there are uh kind of data modeling issues with the way we're doing it. Might work, but I I \u2014 I didn't get it."
+},
+{
+"start": 5662,
+"text": "I didn't get \u2014 I didn't have a feeling that it was the best approach. And so I wanna I want to take a look at that a little bit deeper and uh I can come back with some info for next week. \u2014 Yeah. Awesome. Sounds good. I can't wait. It's going to be fun. \u2014 All righty. Well, with that, thank you, Tis. \u2014 Thank you, David. \u2014 And thank you everybody watching. And uh we will reconvene next week. And your blog better like already have it, right? It's already done, right? \u2014 It's already there. \u2014 It's already show. \u2014 All right. See y'all."
+}
+]
