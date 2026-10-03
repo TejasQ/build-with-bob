@@ -1,14 +1,22 @@
 You are running unattended in GitHub Actions on a fresh checkout of `main`. Nobody will answer
 questions, so make every decision yourself and finish the job.
 
-These registered episodes have no post in `content/episodes/` yet (`<videoId> <YouTube title>`):
+These registered episodes have no post in `content/episodes/` yet (`<videoId> <YouTube title>`;
+may be empty):
 
 ```
 $MISSING
 ```
 
+These guides have an `updated` date more than 30 days old (`<slug> <updated>`; may be empty):
+
+```
+$STALE
+```
+
 Read `AGENTS.md`, `content/SCHEMA.md` and `content/SCHEMA-guides.md` first, then run steps 2-8 of
-the **Living site loop** in `AGENTS.md` for each episode above, in chronological order:
+the **Living site loop** in `AGENTS.md` for each episode above, in chronological order (skip
+steps 1-4 when there are none):
 
 1. **Assign** `project` (an existing `content/projects/<slug>.md`, or create one for a genuinely
    new project) and a keyword-led `slug` in `data/episodes.json`, then run `pnpm sync` to
@@ -19,7 +27,8 @@ the **Living site loop** in `AGENTS.md` for each episode above, in chronological
    `data/transcripts/<videoId>.txt` first. Write your own title, not the YouTube title.
 4. **Grow the graph:** update the relevant guides in `content/topics/` (bump `updated`), the
    project page, and add cross-links from the previous episode's post to the new one.
-5. **Refresh** any guide whose `updated` date is more than 30 days old.
+5. **Refresh** every stale guide listed above: re-check its claims against the web and the
+   newest episodes, make real updates (not just a date bump), then set `updated` to today.
 6. **Verify:** `pnpm lint && pnpm typecheck && pnpm build`, then start the site in the background
    (`pnpm start &`), wait for it to answer, run `pnpm audit:seo http://localhost:3000` and fix every
    problem until it passes with zero problems. Stop the server afterwards.
@@ -29,6 +38,9 @@ Hard rules:
 
 - Ground every claim in the transcript (with `?t=` timestamps) or a source you actually fetched.
   Never invent facts, quotes or numbers.
+- Auto-captions mark speaker changes only with `—` and often get them wrong. Attribute a quote
+  to Tejas or David only when the surrounding turns make the speaker unambiguous; otherwise
+  paraphrase it as "the hosts".
 - Never mention AI assistance, Claude, or automation anywhere in the content.
 - Keep every file at or under 100 lines where ESLint enforces it.
 - Do **not** run `git commit` or `git push`; the workflow verifies and commits your changes.

@@ -80,11 +80,21 @@ jobs:
         with:
           ref: main
           fetch-depth: 0
-      - name: Find episodes without a post
+      - name: Find episodes without a post and guides older than 30 days
         id: missing
         run: |
           python3 scripts/streams/missing_posts.py | tee missing.txt
-          echo "any=$([ -s missing.txt ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          python3 scripts/streams/stale_guides.py | tee stale.txt
+          echo "any=$([ -s missing.txt ] || [ -s stale.txt ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+      - name: Check for an Anthropic credential
+        if: steps.missing.outputs.any == 'true'
+        env:
+          HAS_KEY: ${{ secrets.ANTHROPIC_API_KEY != '' || secrets.CLAUDE_CODE_OAUTH_TOKEN != '' }}
+        run: |
+          if [ "$HAS_KEY" != "true" ]; then
+            echo "::error title=Missing secret::Add ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN in Settings → Secrets and variables → Actions so new episodes publish automatically."
+            exit 1
+          fi
       - if: steps.missing.outputs.any == 'true'
         uses: astral-sh/setup-uv@v6
       - if: steps.missing.outputs.any == 'true'
@@ -104,7 +114,7 @@ jobs:
         run: |
           {
             echo "text<<PROMPT_EOF"
-            MISSING="$(cat missing.txt)" envsubst '$MISSING' < .github/prompts/publish-episodes.md
+            MISSING="$(cat missing.txt)" STALE="$(cat stale.txt)" envsubst '$MISSING $STALE' < .github/prompts/publish-episodes.md
             echo "PROMPT_EOF"
           } >> "$GITHUB_OUTPUT"
       - name: Write posts, grow the graph, refresh guides
@@ -130,7 +140,8 @@ jobs:
           for i in $(seq 1 60); do curl -sf http://localhost:3000 > /dev/null && break; sleep 1; done
           pnpm audit:seo http://localhost:3000
           python3 scripts/streams/missing_posts.py | tee still-missing.txt
-          [ ! -s still-missing.txt ]
+          python3 scripts/streams/stale_guides.py | tee still-stale.txt
+          [ ! -s still-missing.txt ] && [ ! -s still-stale.txt ]
       - name: Commit and push to main
         if: steps.missing.outputs.any == 'true'
         run: |
@@ -143,7 +154,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           titles=$(git diff --cached --name-only --diff-filter=A -- content/episodes \
             | xargs -I{} sed -n 's/^title: *"\(.*\)"$/\1/p' {} | paste -sd ';' - | sed 's/;/, /g')
-          git commit --no-verify -m "Publish episode: ${titles:-new episode}"
+          if [ -n "$titles" ]; then msg="Publish episode: ${titles}"; else msg="Refresh guides: $(cut -d' ' -f1 stale.txt | paste -sd ',' - | sed 's/,/, /g')"; fi
+          git commit --no-verify -m "$msg"
           pushed=0
           for attempt in 1 2 3; do
             git pull --rebase --autostash origin main && git push origin HEAD:main && { pushed=1; break; }

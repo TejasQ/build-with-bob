@@ -47,7 +47,8 @@ Claude, Perplexity, Gemini, Google AI Mode / AI Overviews, Copilot).
    CI runs it every 6 hours (`.github/workflows/sync-streams.yml`): the `sync` job pushes new
    streams to `main`, then the `publish` job runs Claude Code with
    `.github/prompts/publish-episodes.md` to do steps 2-8 for every episode without a post
-   (`scripts/streams/missing_posts.py`), verifies and pushes to `main`. Needs the
+   (`scripts/streams/missing_posts.py`) and every guide older than 30 days
+   (`scripts/streams/stale_guides.py`), verifies and pushes to `main`. Needs the
    `ANTHROPIC_API_KEY` (or `CLAUDE_CODE_OAUTH_TOKEN`) repo secret; `YT_COOKIES` is optional.
 2. **Assign each new entry** in `data/episodes.json`: set `project` (existing slug, or create
    `content/projects/<slug>.md` for a new project) and a keyword-led `slug`. Re-run `pnpm sync` to
