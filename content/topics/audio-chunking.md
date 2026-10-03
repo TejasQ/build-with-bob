@@ -4,7 +4,7 @@ title: "Audio Chunking for Speech-to-Text: 30s Chunks + VAD"
 h1: "How to chunk audio for speech-to-text"
 description: "How to chunk long recordings for Whisper-style ASR: chunk length, voice activity detection, ordering chunks that arrive out of order, and stateless hosting."
 answer: "Split long recordings into chunks of about 30 seconds, and use voice activity detection to close each chunk at the next pause so nobody is cut off mid-sentence. Give every chunk a sequence index so the server can reorder them, and send them to a stateless ASR service that transcribes each chunk, returns the text and deletes the audio."
-updated: "2026-09-30"
+updated: "2026-10-03"
 about:
   [
     "audio chunking",
@@ -14,13 +14,17 @@ about:
     "ephemeral ASR service",
     "Xavier",
     "Walfly",
+    "Astra DB",
   ]
 episodes:
   - walfly-record-button-redesign-and-astra-db-setup
   - local-first-transcription-python-sidecar-and-coordinating-agents
   - ai-code-review-and-expo-mobile-layout-fixes
   - designing-audio-chunking-and-ephemeral-asr
+  - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
 faq:
+  - q: "Should you chunk transcripts by time or by bytes?"
+    a: "Chunk by the limit that actually constrains you. Walfly started with about 30 seconds plus a pause, but Astra DB caps an indexed string at 8,000 bytes, so in episode 11 the hosts switched to byte-based chunks of about 7,500 bytes, each stored as its own document with a recording ID."
   - q: "How long should audio chunks be for Whisper transcription?"
     a: "Around 30 seconds is a good baseline, because Whisper was trained on 30-second inputs and the WhisperX paper found merging speech segments up to that length gave the best speed and accuracy. Walfly uses 30 seconds plus a pause detected by voice activity detection, so a chunk never ends mid-phrase."
   - q: "How do you handle audio chunks that arrive out of order?"
@@ -39,7 +43,7 @@ faq:
     a: "That depends on where you are and who is in the room, and this isn't legal advice. On stream, the hosts pointed out that you can get consent from the person you're talking to but rarely from everyone around you. They chose an open-source, stateless design with no speaker diarization and planned end-to-end encryption."
 ---
 
-Walfly records meetings on a phone or wearable and turns them into transcripts, summaries and action items. The first version recorded one long file and transcribed it at the end, and that broke down as soon as recordings got long. This guide covers how we got audio off the device in the first place, then redesigned it around chunks across episodes 6 to 10 of Building with Bob (parts 2 to 6 of the Walfly build): the reasoning, the numbers we picked, and what failed in the first test. For the transcription side itself, see our [Docling audio transcription guide](/topics/docling-audio-transcription).
+Walfly records meetings on a phone or wearable and turns them into transcripts, summaries and action items. The first version recorded one long file and transcribed it at the end, and that broke down as soon as recordings got long. This guide covers how we got audio off the device in the first place, then redesigned it around chunks across episodes 6 to 11 of Building with Bob (parts 2 to 7 of the Walfly build): the reasoning, the numbers we picked, what failed in the first test, and why storage limits later forced chunks to be cut by bytes instead of seconds. For the transcription side itself, see our [Docling audio transcription guide](/topics/docling-audio-transcription).
 
 ## Why chunk audio at all?
 
@@ -146,5 +150,21 @@ Lessons for your own pipeline:
 - Log chunk index and recording ID on every line, so you can tell chunks from whole files.
 - Make retries visible. The hosts couldn't tell whether failed chunks had been retried ([1:30:34](/episodes/designing-audio-chunking-and-ephemeral-asr?t=5434)).
 - Test with a real long call, which was the hosts' homework for the next episode.
+
+## Chunking by bytes: Astra DB's 8,000-byte limit
+
+When chunks go into a database, the database's size limits decide where to cut, not the clock. In [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly) (episode 11, part 7 of the Walfly build), the hosts recorded the entire livestream with Walfly. Within minutes it was dropping chunks ([10:10](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=610)). The error was "document size limitation violated" on the indexed `transcript` field: 8,326 bytes sent, 8,000 allowed ([30:07](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=1807)). Astra DB's [Data API limits](https://docs.datastax.com/en/astra-db-serverless/api-reference/dataapi-limits.html) cap an indexed string at 8,000 UTF-8 bytes and a whole document at 4 million characters.
+
+What changed in the design:
+
+- **Split by bytes, not seconds.** The time-based rule "doesn't really apply or need to be enforced" ([35:45](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2145)). Bob targeted about 7,500 bytes, leaving room for overlap ([40:03](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2403)).
+- **One document per chunk.** An all-day conference recording could pass the 4-million-character document limit, so chunks became separate documents rather than an array in one document ([39:30](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2370)).
+- **A recording ID on every chunk**, so a conversation's chunks can be found again ([55:31](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=3331)).
+- **Stitch on read, never on write.** A bug concatenated each new chunk onto the previous transcript, so the stored text grew about 200 characters per chunk until it passed 8,000 bytes again ([1:25:50](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5150)).
+
+> We shouldn't be storing stitched chunks. We should only be reading stitched chunks.
+> — Tejas, [1:27:32](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5252)
+
+Removing the old 15-second window mattered too: until it was gone, chunks were only 200 to 400 bytes, which meant thousands of tiny rows ([1:12:38](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=4358)).
 
 Follow the rest of the build on the [Walfly project page](/projects/walfly).

@@ -775,3 +775,44 @@ Not recommended as new pages:
 - [Bob custom modes](https://bob.ibm.com/docs/ide/configuration/custom-modes)
 - [heidloff.net: spec-driven development with IBM Bob](https://heidloff.net/article/spec-driven-development-ibm-bob/)
 - [InfoWorld: vibe coding or spec-driven development](https://www.infoworld.com/article/4166817/vibe-coding-or-spec-driven-development-how-to-choose.html)
+
+## 9. Episode 11: `astra-db-8000-byte-limit-and-jev-clustering-in-walfly` (added 2026-10-03)
+
+Video `1H_H9Sx9-FI`, YouTube title "Building with Bob: Walfly Wearables App". Global episode 11, Walfly part 7.
+
+### 9.1 Demand data (Google autocomplete, `suggestqueries.google.com`, 2026-10-03)
+
+| Seed                                                               | Suggestions                                                           | Read                                                                      |
+| ------------------------------------------------------------------ | --------------------------------------------------------------------- | ------------------------------------------------------------------------- |
+| `jev typesafe`                                                     | "jev typesafe ai", "jev typesafe"                                     | New entity with branded demand; use "Jev from TypeSafe AI"                |
+| `jev openrouter`                                                   | "jev openrouter"                                                      | Access route people search for; FAQ "Can you use Jev through OpenRouter?" |
+| `llm clustering`                                                   | "llm text clustering", "llm topic clustering", "llm clustering model" | Jev grouping moments by intent is a first-hand example                    |
+| `astra db limit`, `astra db document size`, `indexed string value` | none                                                                  | Low autocomplete volume; target the exact error string instead            |
+| `dogfooding`                                                       | "dogfooding meaning tech", "dogfooding software"                      | Use as a section angle, not a title keyword                               |
+
+### 9.2 Primary keywords and placement
+
+- **Title (56 chars):** "Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly".
+- **Exact error string as H3:** "Document size limitation violated: indexed string value" (Astra DB Data API, 8,326 of 8,000 bytes, [t=1807](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=1807)).
+- **Entity FAQs:** "What is Jev from TypeSafe AI?", "Can you use Jev through OpenRouter?", "What is the Astra DB size limit for an indexed string?"
+- **Design FAQs:** "Should you chunk transcripts by time or by bytes?", "Should transcript chunks be separate documents or one array?"
+
+### 9.3 Graph updates made
+
+- `/topics/audio-chunking`: new H2 "Chunking by bytes: Astra DB's 8,000-byte limit" + FAQ.
+- `/topics/coordinating-coding-agents`: Xavier memory and "PRD, then a fresh session for tasks".
+- `/projects/walfly`: episode 11 in the timeline, Jev in the stack and architecture, new What's next.
+- Episode 10 now links forward to episode 11.
+
+### 9.4 GEO prompts → target URL
+
+- "What is the Astra DB indexed string size limit?" → `/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly`
+- "How do I fix 'document size limitation violated' in Astra DB?" → same
+- "What is Jev by TypeSafe AI used for?" → same
+- "Should I chunk audio transcripts by time or by bytes?" → `/topics/audio-chunking`
+
+### 9.5 Sources consulted
+
+- [Astra DB Data API limits](https://docs.datastax.com/en/astra-db-serverless/api-reference/dataapi-limits.html)
+- [TypeSafe AI: Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
+- [OpenRouter: What is Jev?](https://openrouter.ai/blog/insights/what-is-jev/)

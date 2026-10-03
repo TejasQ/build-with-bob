@@ -398,8 +398,8 @@
   },
   {
     "videoId": "1H_H9Sx9-FI",
-    "slug": "building-with-bob-walfly-wearables-app",
-    "project": "unassigned",
+    "slug": "astra-db-8000-byte-limit-and-jev-clustering-in-walfly",
+    "project": "walfly",
     "youtubeTitle": "Building with Bob: Walfly Wearables App",
     "date": "2026-10-02",
     "duration": 5690,
@@ -407,6 +407,6 @@
     "youtubeDescription": "Last episode, we used Bob and Xavier to plan and build a separate, ephemeral ASR service for wallfly. We got most of the way there, but didn't quite finish on the stream.\n\nThis week, David gets to surprise Tejas with his progress from the previous week and we introduce using JEV as an amazing, fast, and cheap way to quickly organize \"moments\".",
     "chapters": [],
     "number": 11,
-    "part": 1
+    "part": 7
   }
 ]

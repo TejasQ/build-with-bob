@@ -171,3 +171,5 @@ Even so, the backend now runs as its own service, separate from the app, and pro
 ## What's next
 
 Next time, the hosts plan to fix the chunk processing bugs, starting with the audio container format that Docling rejects, then get chunking solid on web and make sure mobile does it too. They'll also add better debugging and logging so it's clear when a recording has been chunked. As homework, they want to record a real long call, such as a Zoom meeting, to see whether Walfly processes the whole thing reliably. After that come deploying the ephemeral ASR service to a host like Fly.io and the end-to-end encryption tasks already on the board.
+
+The chunking test continues in [episode 11](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly), where Walfly records the whole livestream and runs into Astra DB's 8,000-byte indexed string limit.

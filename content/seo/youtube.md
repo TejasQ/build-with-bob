@@ -246,3 +246,28 @@ Tejas and David finally start on audio chunking for Walfly. They debate privacy 
 
 Building with Bob: Tejas Kumar and David Jones-Gilardi build open-source apps live with IBM Bob. https://build-with-bob.vercel.app
 ```
+
+## Episode 11: https://www.youtube.com/watch?v=1H_H9Sx9-FI
+
+- **Current title:** Building with Bob: Walfly Wearables App
+- **New title:** Building with Bob #11: Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly
+
+```text
+Tejas and David record the whole livestream with Walfly to test their new audio chunking. David shows moments grouped by intent with Jev, TypeSafe AI's System One model. The test then hits Astra DB's 8,000-byte limit on indexed strings, so they switch to byte-based chunks stored as separate documents and track down a transcript that kept growing.
+
+📖 Full write-up, key takeaways, FAQ and searchable transcript: https://build-with-bob.vercel.app/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly
+🧰 Project: https://build-with-bob.vercel.app/projects/walfly
+
+0:00 Dogfooding Walfly: recording the stream live
+6:28 A website that turns streams into guides
+11:44 Jev as an AI slop detector
+17:30 Grouping moments by intent with Jev
+25:13 Astra DB's 8,000-byte indexed string limit
+35:45 Chunking transcripts by bytes, not time
+52:15 Chunk documents and a recording ID
+1:04:32 Xavier review and storage-attached indexes
+1:11:27 Tiny chunks and a transcript that keeps growing
+1:32:30 Recap and what's next
+
+Building with Bob: Tejas Kumar and David Jones-Gilardi build open-source apps live with IBM Bob. https://build-with-bob.vercel.app
+```

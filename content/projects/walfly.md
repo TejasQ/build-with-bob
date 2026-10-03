@@ -16,6 +16,8 @@ stack:
   - Docling
   - Whisper
   - Astra DB
+  - Jev
+  - OpenRouter
   - Beads
   - MCP Agent Mail
   - Xavier
@@ -54,6 +56,7 @@ The trade-off is real: Walfly has no dedicated hardware and is still a work in p
 4. **Local-first and a new brand** ([episode 8](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents)): a Python sidecar runs Docling with Whisper Turbo, Beads and MCP Agent Mail coordinate several coding agents, and Walfly gets a dark, amber-toned identity.
 5. **Reviews and mobile polish** ([episode 9](/episodes/ai-code-review-and-expo-mobile-layout-fixes)): Bob Review and [Xavier](https://xavier.team)'s `/x-review` run side by side, and safe-area and keyboard layout bugs are fixed on mobile.
 6. **Chunked, ephemeral ASR** ([episode 10](/episodes/designing-audio-chunking-and-ephemeral-asr)): a PRD for 30-second, pause-aware audio chunks becomes a stateless ASR service in Docker, and testing exposes the next round of bugs.
+7. **Dogfooding, byte-based chunks and Jev** ([episode 11](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly)): Walfly records the whole livestream, hits Astra DB's 8,000-byte limit on indexed strings, and moves to byte-sized chunk documents linked by a recording ID. Recorded moments are grouped by intent with Jev, TypeSafe AI's System One model.
 
 ## Architecture at a glance
 
@@ -63,8 +66,9 @@ The trade-off is real: Walfly has no dedicated hardware and is still a work in p
 | API              | Next.js backend in a monorepo                               |
 | Speech-to-text   | Docling ASR with Whisper, run as a stateless Docker service |
 | Storage & search | Astra DB (hybrid keyword and vector search)                 |
+| Grouping moments | Jev via OpenRouter (classification, not text generation)    |
 | Agent workflow   | IBM Bob, Xavier, Beads, MCP Agent Mail, GitHub Projects     |
 
 ## What's next
 
-The team is finishing reliable chunked recording for long sessions, fixing the audio container issues found in episode 10, and hosting the ASR service so Walfly works end to end outside a laptop.
+As of episode 11 (October 2026), Walfly records long conversations in byte-sized chunks. Next, the team wants each chunk to use the bytes Astra DB allows instead of hundreds of tiny documents, to stitch transcripts together only when a recording is read, and to review the chunk data model against Astra DB and Cassandra best practices ([episode 11](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5550)).
