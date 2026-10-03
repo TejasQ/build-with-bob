@@ -8,6 +8,18 @@ on:
   schedule:
     - cron: "17 */6 * * *"
   workflow_dispatch:
+    inputs:
+      refresh_oldest:
+        description: "Also refresh the least recently updated guide (end-to-end test of publishing)"
+        type: boolean
+        default: false
+  # Self-test: when the automation itself changes, run it end to end on the oldest guide.
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/sync-streams.yml"
+      - ".github/prompts/**"
+      - "scripts/streams/**"
 
 permissions:
   contents: write
@@ -85,6 +97,9 @@ jobs:
         run: |
           python3 scripts/streams/missing_posts.py | tee missing.txt
           python3 scripts/streams/stale_guides.py | tee stale.txt
+          if [ "${{ github.event_name }}" = "push" ] || [ "${{ inputs.refresh_oldest }}" = "true" ]; then
+            [ -s stale.txt ] || python3 scripts/streams/stale_guides.py --oldest | tee stale.txt
+          fi
           echo "any=$([ -s missing.txt ] || [ -s stale.txt ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
       - name: Check for an Anthropic credential
         if: steps.missing.outputs.any == 'true'
