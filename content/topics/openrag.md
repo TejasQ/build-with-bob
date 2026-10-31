@@ -4,7 +4,7 @@ title: "What Is OpenRAG? Langflow, Docling and OpenSearch in One"
 h1: "What is OpenRAG?"
 description: "OpenRAG explained from a real build: how Langflow, Docling and OpenSearch fit, the TypeScript SDK, agentic RAG, notebook filters and common errors."
 answer: "OpenRAG is an open-source, Apache-2.0 retrieval-augmented generation platform from the Langflow team at IBM. One install bundles Docling for document parsing, Langflow for the ingestion and agent flows, and OpenSearch for vector storage, then exposes it all through an API, Python and TypeScript SDKs and an MCP server. We built KillrCtx, a NotebookLM clone, on it."
-updated: "2026-09-30"
+updated: "2026-10-31"
 about:
   ["OpenRAG", "Langflow", "Docling", "OpenSearch", "KillrCtx", "DataStax AI Workbench"]
 episodes:
@@ -16,7 +16,7 @@ faq:
   - q: "OpenRAG vs OpenSearch: what's the difference?"
     a: "OpenSearch is one component inside OpenRAG. It is the search engine that stores the vectors and runs similarity search. OpenRAG wraps it together with Docling for parsing and Langflow for the ingestion and agent flows, and adds an API, SDKs and a UI, so you get a whole RAG pipeline rather than just a vector store."
   - q: "Does OpenRAG have an MCP server?"
-    a: "Yes. As of September 2026 the OpenRAG README says every instance ships a built-in MCP server over streamable HTTP at /mcp, authenticated with the same API key as the REST API. It exposes tools for chat, semantic search, ingestion, knowledge filters and settings. The older standalone openrag-mcp package is deprecated."
+    a: "Yes. As of October 2026 the OpenRAG README says every instance ships a built-in MCP server over streamable HTTP at /mcp, authenticated with the same API key as the REST API. It exposes tools for chat, semantic search, ingestion, knowledge filters and settings. The older standalone openrag-mcp package is deprecated."
   - q: "Is OpenRAG open source?"
     a: "Yes. The langflow-ai/openrag repository is licensed Apache-2.0, and its three main components are open source too: Langflow, Docling (MIT, started at IBM Research) and OpenSearch (Apache-2.0, a Linux Foundation project). You run the whole stack yourself, locally or on your own servers."
   - q: "How do I install OpenRAG?"
@@ -41,7 +41,16 @@ In episode 1, David explained why the bundle matters. A real RAG pipeline has to
 
 > "It wraps them, but it's a bit more than that. It is not just a wrapper... There's an SDK." (David Jones-Gilardi, [10:44](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=644))
 
-In September 2026, the [`openrag` package on PyPI](https://pypi.org/project/openrag/) was at version 0.7.1 (released 31 August 2026) and required Python 3.13 or newer. The repo had about 4,600 GitHub stars.
+In late October 2026, the [`openrag` package on PyPI](https://pypi.org/project/openrag/) was at version 0.8.1 (released 29 October 2026) and still required Python 3.13 or newer. The repo had about 4,700 GitHub stars.
+
+### What changed in OpenRAG 0.8 (October 2026)
+
+The two October releases, per the [GitHub release notes](https://github.com/langflow-ai/openrag/releases), widen the model and operations story more than the core pipeline:
+
+- **v0.8.0 (1 October 2026):** an ingestion tab with a cancel-ingestion button, model providers routed through LiteLLM with configurable models, Azure AI Foundry, Azure OpenAI and an on-prem watsonx.ai provider, plus Prometheus HTTP metrics and IBM Instana APM.
+- **v0.8.1 (29 October 2026):** multi-language OCR, Langfuse tracing, a retrieval evaluation harness, watsonx vision models in the VLM settings and model discovery for Red Hat OpenShift.
+
+The docs moved too: v0.8.0 merged the docs into the marketing site, though [docs.openr.ag](https://docs.openr.ag/) still loaded when we checked on 31 October 2026.
 
 ## How Langflow, Docling and OpenSearch divide the work
 
@@ -74,11 +83,11 @@ OpenRAG lets you change the embedding model at runtime and keep vectors from sev
 
 KillrCtx talks to OpenRAG only through the official `openrag-sdk` package, which calls the OpenRAG API for it. On the diagram, the SDK sits between the app and the API ([16:14](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=974)). When Tejas asked whether it was TypeScript, David answered: "TypeScript, Python. Yeah, there's MCP as well" ([16:45](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=1005)).
 
-In September 2026, the [TypeScript SDK](https://github.com/langflow-ai/openrag/tree/main/sdks/typescript) installs with `npm install openrag-sdk`. It reads `OPENRAG_API_KEY` and `OPENRAG_URL` (default `http://localhost:3000`), and exposes `chat.create()`/`chat.stream()`, `search.query()`, `documents.ingest()`/`documents.delete()`, `knowledgeFilters.create()`/`delete()` and `settings`. KillrCtx's [`src/lib/openrag.ts`](https://github.com/TejasQ/killrctx/blob/main/src/lib/openrag.ts) uses most of these. Three patterns are worth copying:
+In October 2026, the [TypeScript SDK](https://github.com/langflow-ai/openrag/tree/main/sdks/typescript) installs with `npm install openrag-sdk`. It reads `OPENRAG_API_KEY` and `OPENRAG_URL` (default `http://localhost:3000`), and exposes `chat.create()`/`chat.stream()`, `search.query()`, `documents.ingest()`/`documents.delete()`, `knowledgeFilters.create()`/`delete()` and `settings`. KillrCtx's [`src/lib/openrag.ts`](https://github.com/TejasQ/killrctx/blob/main/src/lib/openrag.ts) uses most of these. Three patterns are worth copying:
 
 - **One knowledge filter per notebook.** Creating a notebook automatically creates an OpenRAG [knowledge filter](https://docs.openr.ag/knowledge-filters/), so chat and generated notes only see that notebook's documents ([21:39](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=1299), [3:47](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=227)). The docs describe a filter as capturing "a specific subset of documents" by data source, document type, owner, connector, result limit and score threshold.
 - **Cascade deletes.** Deleting a document or notebook in the app removes the matching data in OpenRAG "to keep OpenRAG nice and clean" ([5:59](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=359)).
-- **Runtime model lists.** The model picker reads the available models from OpenRAG, so users can switch models without opening the OpenRAG UI ([36:14](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=2174)). The code comment notes that the SDK has no models endpoint yet, so this call uses a raw fetch.
+- **Runtime model lists.** The model picker reads the available models from OpenRAG, so users can switch models without opening the OpenRAG UI ([36:14](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=2174)). The code comment notes that the SDK has no models endpoint yet, so this call uses a raw fetch. That was still true on 31 October 2026: the latest [`openrag-sdk` on npm](https://www.npmjs.com/package/openrag-sdk) was 0.3.1, with no models client, while the Python SDK does ship a `ModelsClient` for listing models per provider.
 
 ### Give your coding agent an OpenRAG SDK skill
 
@@ -86,7 +95,7 @@ David gave IBM Bob a skill describing the OpenRAG SDK and where it lives. Then h
 
 ## Running OpenRAG: uvx vs make
 
-Run OpenRAG with `uvx` unless you're changing OpenRAG itself. The [quickstart](https://docs.openr.ag/quickstart/) (September 2026) needs Python 3.13, `uv` and an OpenAI API key for onboarding. You make an empty workspace folder and run `uvx --python 3.13 openrag`, which opens a terminal UI, asks for OpenSearch and Langflow admin passwords, and starts the services. Per the [install docs](https://docs.openr.ag/install-options/), `uvx` installs Docker or Podman if neither is present.
+Run OpenRAG with `uvx` unless you're changing OpenRAG itself. The [quickstart](https://docs.openr.ag/quickstart/) (re-checked October 2026) needs Python 3.13, `uv` and an OpenAI API key for onboarding. You make an empty workspace folder and run `uvx --python 3.13 openrag`, which opens a terminal UI, asks for OpenSearch and Langflow admin passwords, and starts the services. Per the [install docs](https://docs.openr.ag/install-options/), `uvx` installs Docker or Podman if neither is present.
 
 The hosts run it differently. At the end of episode 2, Tejas restarted his source checkout with the Makefile, and David said: "If I'm doing dev, I use make, but if I'm not deving on it, I'll just use uvx" ([1:13:10](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=4390)). Running from `main` pulled a new Docker image that "kind of broke my thing", which Tejas took as a reason to prefer `uvx` ([1:13:42](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=4422)).
 
@@ -101,7 +110,7 @@ Most OpenRAG errors we hit came from a supporting service that wasn't running, n
 
 ### Every ingest failed: docling-serve wasn't running
 
-In [Debugging KillrCtx RAG Backends: OpenRAG vs AI Workbench](/episodes/debugging-rag-backends-openrag-vs-ai-workbench), every source failed to ingest. The cause was that "OpenRAG decided to not start docling-serve", so "it wouldn't be able to ingest anything" ([1:06:05](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=3965)). David noted that running `uvx openrag` gives you an option to start docling-serve ([1:08:23](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=4103)). Once it was up, retries indexed and "the whole problem was docling-serve" ([1:09:25](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=4165)). They also had Bob surface the upstream error in the app in a friendlier way ([1:06:37](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=3997)). The official [troubleshooting page](https://docs.openr.ag/support/troubleshoot/) adds two causes: a docling-serve version that doesn't match your OpenRAG version, and containers with less than 8 GB of RAM.
+In [Debugging KillrCtx RAG Backends: OpenRAG vs AI Workbench](/episodes/debugging-rag-backends-openrag-vs-ai-workbench), every source failed to ingest. The cause was that "OpenRAG decided to not start docling-serve", so "it wouldn't be able to ingest anything" ([1:06:05](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=3965)). David noted that running `uvx openrag` gives you an option to start docling-serve ([1:08:23](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=4103)). Once it was up, retries indexed and "the whole problem was docling-serve" ([1:09:25](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=4165)). They also had Bob surface the upstream error in the app in a friendlier way ([1:06:37](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=3997)). The official [troubleshooting page](https://docs.openr.ag/support/troubleshoot/) adds two causes: a docling-serve version that doesn't match your OpenRAG version, and too little memory: in October 2026 it recommended at least 8 GB of RAM and 50 GB of free disk space.
 
 ### No API key, no SDK calls
 

@@ -4,7 +4,7 @@ title: "Docling Audio Transcription: ASR, Whisper and Fixes"
 h1: "How to transcribe audio with Docling"
 description: "Transcribe audio with open-source Docling's ASR pipeline and Whisper: hosted vs local, docling-serve, MLX Whisper on Mac, VTT output and common errors."
 answer: 'Install open-source Docling with the ASR extra (pip install "docling[asr]"), make sure ffmpeg is on your PATH, and convert the file with Docling''s AsrPipeline in Python. Docling runs Whisper for you, using MLX Whisper on Apple silicon. In August 2026 the hosted deployment we used had no ASR pipeline, so we ran Docling locally.'
-updated: "2026-09-30"
+updated: "2026-10-31"
 about:
   [
     "Docling",
@@ -22,11 +22,12 @@ episodes:
   - debugging-expo-audio-and-local-docling-transcription
   - local-first-transcription-python-sidecar-and-coordinating-agents
   - designing-audio-chunking-and-ephemeral-asr
+  - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
 faq:
   - q: "Can Docling transcribe audio?"
     a: 'Yes. Open-source Docling has an ASR (automatic speech recognition) pipeline that transcribes WAV, MP3, M4A, AAC, OGG and FLAC files with Whisper and returns a DoclingDocument with timestamped segments. You install it with pip install "docling[asr]" and need ffmpeg on your PATH.'
   - q: "Does hosted Docling (Docling for IBM watsonx) support audio?"
-    a: "IBM's product page mentions audio files among the inputs it processes, but its FAQ list of supported formats doesn't include audio as of September 2026. In August 2026, the hosted deployment we used accepted Walfly's audio upload and then failed with an ASR capability gap error. Check the current docs for your own deployment before relying on it."
+    a: "IBM's product page mentions audio files among the inputs it processes, but its FAQ list of supported formats didn't include audio when we checked in September 2026. In August 2026, the hosted deployment we used accepted Walfly's audio upload and then failed with an ASR capability gap error. Check the current docs for your own deployment before relying on it."
   - q: "Why did hosted Docling transcription keep failing?"
     a: "In our first attempt, in August 2026, several things went wrong in a row: IBM Bob called a transcribe endpoint that doesn't exist, the service couldn't fetch a file from localhost, the API key had expired on its default time-to-live, and the browser recorded WebM, which conversion rejected. Check your key and the real API reference before debugging anything else."
   - q: "Does docling-serve transcribe audio?"
@@ -36,20 +37,20 @@ faq:
   - q: "Does Docling use Whisper, and does it use MLX on a Mac?"
     a: "Yes to both. Docling's ASR pipeline transcribes with OpenAI Whisper and picks a backend for your hardware: mlx-whisper on Apple silicon and native Whisper everywhere else. The WHISPER_TURBO model spec does this selection for you."
   - q: "Does Docling output SRT or VTT?"
-    a: "Docling can export a DoclingDocument to WebVTT, but it has no SRT exporter as of September 2026; its docs suggest the openai-whisper CLI if you need SRT. For Walfly that was fine: the app only needed a transcript with timestamps, which Docling's default Markdown output and its VTT export both provide."
+    a: "Docling can export a DoclingDocument to WebVTT, but it still had no SRT exporter in October 2026 (v2.145); its docs suggest the openai-whisper CLI if you need SRT. For Walfly that was fine: the app only needed a transcript with timestamps, which Docling's default Markdown output and its VTT export both provide."
   - q: "Which audio formats does Docling accept?"
     a: "Docling's docs list WAV, MP3, M4A, AAC, OGG and FLAC for the audio pipeline. WebM is listed under video, not audio. An M4A MIME-type bug was reported and closed in September 2026, so keep docling-core up to date if you record M4A on phones."
   - q: "Do I need a GPU to transcribe audio with Docling?"
     a: "No. On stream, David explained that Docling can fall back to the CPU and uses better hardware when it's there. It ran quickly on his Apple silicon Mac, but a CPU-only cloud server will be slower."
 ---
 
-[Walfly](/projects/walfly), the open-source meeting recorder we build on Building with Bob, sends every recording through [Docling](https://github.com/docling-project/docling)'s speech recognition pipeline. We didn't get there on the first try. Across four episodes of the Walfly build we tried hosted Docling twice, then docling-serve, and ended up importing Docling in a small Python service. Before that, Docling was already part of our earlier project, KillrCtx, as the parser inside OpenRAG. This guide collects what worked, what failed, and the exact errors we hit, so you can skip the detours.
+[Walfly](/projects/walfly), the open-source meeting recorder we build on Building with Bob, sends every recording through [Docling](https://github.com/docling-project/docling)'s speech recognition pipeline. We didn't get there on the first try. Across the Walfly build we tried hosted Docling twice, then docling-serve, and ended up importing Docling in a small Python service. Before that, Docling was already part of our earlier project, KillrCtx, as the parser inside OpenRAG. This guide collects what worked, what failed, and the exact errors we hit, so you can skip the detours.
 
 ## Can Docling transcribe audio?
 
 Yes: open-source Docling ships an ASR pipeline that runs Whisper and returns a timestamped transcript as a `DoclingDocument`. According to Docling's [audio and video processing guide](https://docling-project.github.io/docling/usage/processing_audio_media/), audio files go through the ASR pipeline, while video files use a separate video pipeline that can also sample frames.
 
-Setup, per the official docs (checked September 2026, Docling v2.131):
+Setup, per the official docs (re-checked October 2026, Docling v2.145.0):
 
 - Install the extra: `pip install "docling[asr]"` (or `uv add "docling[asr]"`).
 - Install ffmpeg and make sure it's on your `PATH`. The docs say Whisper's audio decoding requires it.
@@ -82,6 +83,19 @@ print(result.document.export_to_markdown())
 ```
 
 The Markdown output has one line per segment with a time range, such as `[time: 0.0-4.0]`, followed by the text.
+
+### What's new in Docling ASR (September-October 2026)
+
+Docling's speech pipeline changed more in October 2026 than in the months before, per the [release notes](https://github.com/docling-project/docling/releases):
+
+| Release         | ASR change                                                                          |
+| --------------- | ----------------------------------------------------------------------------------- |
+| v2.139 (14 Oct) | `docling-tools` can download Whisper artifacts, and ASR can run from that directory |
+| v2.140 (16 Oct) | Transcribe with a remote OpenAI-compatible server                                   |
+| v2.143 (26 Oct) | Transformers and MLX presets for the ASR pipelines, plus offline WhisperS2T presets |
+| v2.144 (28 Oct) | Temperature and anti-hallucination options for mlx-whisper                          |
+
+The [audio guide](https://docling-project.github.io/docling/usage/processing_audio_media/) now also covers transcribing with a remote Whisper server (it needs `enable_remote_services=True`), non-Whisper presets such as `granite_speech_5_0_2b` and `parakeet_ctc_1_1b`, and speaker attribution with Resemblyzer. Offline artifacts matter for a service like Walfly's, which otherwise downloads the model on first run.
 
 ## Hosted Docling vs local Docling for audio
 
@@ -121,7 +135,7 @@ Running [docling-serve](https://github.com/docling-project/docling-serve) locall
 > So we have to actually write code. We can't use a server.
 > — Tejas, [28:54](/episodes/debugging-expo-audio-and-local-docling-transcription?t=1734)
 
-As of September 2026 (docling-serve v1.35), the [API reference](https://github.com/docling-project/docling-serve/blob/main/docs/usage.md) lists `audio` as an input format and `vtt` as an output format, but documents no ASR options, and the README doesn't mention ASR. An open issue, [ASR doesn't work with URLs](https://github.com/docling-project/docling-serve/issues/397), reports that the default image errors on missing `openai-whisper` and ffmpeg. If you try docling-serve for audio, build an image with both.
+As of October 2026 (docling-serve v1.38.2, released 27 October), the [API reference](https://github.com/docling-project/docling-serve/blob/main/docs/usage.md) lists `audio` as an input format and `vtt` as an output format, but documents no ASR options, and the README doesn't mention ASR. An issue that was still open at the end of October 2026, [ASR doesn't work with URLs](https://github.com/docling-project/docling-serve/issues/397), reports that the default image errors on missing `openai-whisper` and ffmpeg. If you try docling-serve for audio, build an image with both.
 
 ## Docling inside OpenRAG: nothing ingests without docling-serve
 
@@ -157,7 +171,7 @@ If your app only needs to know what was said and when, any timestamped output wi
 > We don't need SRT or VTT. We just need timestamps.
 > — Tejas, [1:04:11](/episodes/debugging-expo-audio-and-local-docling-transcription?t=3851)
 
-docling-core has a [WebVTT serializer](https://github.com/docling-project/docling-core/blob/main/docling_core/transforms/serializer/webvtt.py) behind `export_to_vtt()` and `save_as_vtt()`. As of September 2026 there's no SRT serializer, and Docling's [media guide](https://docling-project.github.io/docling/usage/processing_audio_media/) points you to the openai-whisper CLI for SRT.
+docling-core has a [WebVTT serializer](https://github.com/docling-project/docling-core/blob/main/docling_core/transforms/serializer/webvtt.py) behind `export_to_vtt()` and `save_as_vtt()`. As of October 2026 there's still no SRT serializer, and Docling's [media guide](https://docling-project.github.io/docling/usage/processing_audio_media/) points you to the openai-whisper CLI for SRT.
 
 ## Audio formats and the errors we hit
 
@@ -173,11 +187,15 @@ With a fresh key, hosted conversion failed on the browser's WebM recording ([1:2
 
 ### "Unrecognized audio container, expected wav/mp3"
 
-In [Audio Chunking and a Stateless Docling ASR Service in Docker](/episodes/designing-audio-chunking-and-ephemeral-asr) (episode 10), chunks from the web app failed with "Error processing chunk", then this Docling error ([1:31:07](/episodes/designing-audio-chunking-and-ephemeral-asr?t=5467)). The string doesn't appear in Docling's own repositories as of September 2026, so it most likely comes from the service's format check. Record, or convert, each chunk to WAV or MP3 before upload.
+In [Audio Chunking and a Stateless Docling ASR Service in Docker](/episodes/designing-audio-chunking-and-ephemeral-asr) (episode 10), chunks from the web app failed with "Error processing chunk", then this Docling error ([1:31:07](/episodes/designing-audio-chunking-and-ephemeral-asr?t=5467)). The string didn't appear in Docling's own repositories when we checked in September 2026, so it most likely comes from the service's format check. Record, or convert, each chunk to WAV or MP3 before upload.
 
 ### "Transient sidecar request failed"
 
 In episode 8 a recording failed with this message ([1:27:57](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents?t=5277)). The sidecar had died because something already held its port ([1:28:30](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents?t=5310)); killing the stale process fixed it.
+
+### "Network error uploading chunk 0. Failed to fetch"
+
+In [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly) (episode 11, October 2026), the first chunk of a recording never reached the service on Tejas's machine ([1:06:53](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=4013)). It wasn't Docling at all: a cached base URL pointed at port 3000 instead of 3030 because an environment variable wasn't set. When an upload fails before transcription starts, check the URL the client is actually calling.
 
 ### Known Docling issues
 
@@ -187,3 +205,5 @@ In episode 8 a recording failed with this message ([1:27:57](/episodes/local-fir
 ## Hosting Docling ASR as a stateless service
 
 Once transcription works locally, the next problem is hosting. Tejas didn't want developers stuck with "a huge hosting burden" before they can run Walfly ([1:04:44](/episodes/debugging-expo-audio-and-local-docling-transcription?t=3884)). In episode 10 (part 6 of the Walfly build) the sidecar became a separate, containerized ASR service that stores no audio and no transcripts. The design is covered in our [audio chunking guide](/topics/audio-chunking).
+
+The first real load test came in episode 11, when Walfly recorded the whole 90-minute livestream ([2:09](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=129)). Transcription itself worked: the first text arrived about a minute and a half after recording started ([3:44](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=224)), and each short chunk came back as roughly 300 characters ([1:18:01](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=4681)). The failures were downstream, in storage: Astra DB rejected transcripts over its 8,000-byte indexed string limit, so chunks are now sized by bytes and stored as separate documents. By the end, Walfly could record a long conversation, which "we couldn't have done before" ([1:31:06](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5466)). The lesson for any Docling ASR service: the transcript is often the smaller problem; plan where its text lands.

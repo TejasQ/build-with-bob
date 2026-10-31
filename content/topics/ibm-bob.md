@@ -2,9 +2,9 @@
 slug: ibm-bob
 title: "What Is IBM Bob? A Hands-On Guide From Real Builds"
 h1: "What is IBM Bob?"
-description: "What IBM Bob is, how its plan mode, spec coding, Bob Review, Bob Shell and skills behave on real projects, and where it struggled, from ten livestreams."
-answer: "IBM Bob is IBM's AI coding agent, available as an IDE and a terminal tool called Bob Shell, generally available since April 2026. We have used it across ten livestreamed episodes to build two open-source apps, KillrCtx and Walfly. Bob is strongest at planning, spec-driven features and web work, and weaker on mobile Expo code and current library versions."
-updated: "2026-09-30"
+description: "What IBM Bob is, how its plan mode, spec coding, Bob Review, Bob Shell and skills behave on real projects, and where it struggled, from eleven livestreams."
+answer: "IBM Bob is IBM's AI coding agent, available as an IDE and a terminal tool called Bob Shell, generally available since April 2026. We have used it across eleven livestreamed episodes to build two open-source apps, KillrCtx and Walfly. Bob is strongest at planning, spec-driven features and web work, and weaker on mobile Expo code and current library versions."
+updated: "2026-10-31"
 about: ["IBM Bob", "Bob Shell", "Bob Review", "KillrCtx", "Walfly"]
 episodes:
   - killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob
@@ -17,6 +17,7 @@ episodes:
   - local-first-transcription-python-sidecar-and-coordinating-agents
   - ai-code-review-and-expo-mobile-layout-fixes
   - designing-audio-chunking-and-ephemeral-asr
+  - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
 faq:
   - q: "Is IBM Bob an IDE or an agent?"
     a: "Both. IBM Bob is an AI coding agent that ships as its own IDE, which the hosts found is a VS Code fork, and as a terminal tool, Bob Shell. The agent plans, edits files, runs commands and reviews code, and since the August 2026 release the IDE and Bob Shell share task history, so you can start in one and continue in the other."
@@ -27,20 +28,22 @@ faq:
   - q: "Why does IBM Bob ask for permission so often?"
     a: "Because it starts from a restrictive security model on purpose. Bob is aimed at enterprise, production-quality software, so it asks before running commands or touching files outside your workspace. You can approve a command type for the current task or project, loosen the global settings, configure auto-approve per action type, or run Bob Shell in YOLO mode."
   - q: "Has anyone built a real app with IBM Bob?"
-    a: "Yes. On the Building with Bob livestream, Tejas Kumar and David Jones-Gilardi built KillrCtx, an open-source NotebookLM clone on OpenRAG, over four episodes, entirely with Bob. They are now building Walfly, an open-source, local-first conversation recorder with an Expo app, a Next.js backend, local Docling transcription and Astra DB search. All ten episodes, failures included, are recorded."
+    a: "Yes. On the Building with Bob livestream, Tejas Kumar and David Jones-Gilardi built KillrCtx, an open-source NotebookLM clone on OpenRAG, over four episodes, entirely with Bob. They are now building Walfly, an open-source, local-first conversation recorder with an Expo app, a Next.js backend, local Docling transcription and Astra DB storage. All eleven episodes, failures included, are recorded."
   - q: "Is IBM Bob as good as Claude Code?"
     a: "David, who uses Claude Code, GitHub Copilot and Bob, said in July 2026 that with Bob V2 the experience is 'pretty much on par' with Claude Code for building apps. He also flagged that he works for IBM and is biased. We haven't run the same task in both tools; our cited comparison is at /topics/ibm-bob-vs-claude-code-cursor-codex."
   - q: "Can IBM Bob search the web?"
-    a: "Yes, though it doesn't always do so unprompted. In our builds Bob used a Tavily search tool, drove Chrome to read the React Native and IBM docs, and drew on its IBM product knowledge, but it also answered from stale knowledge until told to search. We saved a memory rule telling it to search the web for current version information."
+    a: "Yes, though it doesn't always do so unprompted. In our builds Bob used a Tavily search tool, drove Chrome to read the React Native and IBM docs, and drew on its IBM product knowledge, but it also answered from stale knowledge until told to search. We saved a memory rule telling it to search the web for current version information. In October 2026, asked to check the web and docs, it opened a browser and found Astra DB's limits page, and IDE 2.3.0 added experimental built-in web search."
 ---
 
-Most of what's written about IBM Bob comes from IBM itself or from short first impressions. This guide is different: it collects what we've seen across ten livestreamed episodes of Building with Bob, where Tejas Kumar and David Jones-Gilardi build two open-source apps with Bob: [KillrCtx](/projects/killrctx), a NotebookLM clone, and [Walfly](/projects/walfly), a conversation recorder. Every claim about how Bob behaved links to the exact moment in an episode, so you can watch it happen. Both hosts work at IBM, so weigh their opinions accordingly; the timestamps let you judge the behaviour yourself.
+Most of what's written about IBM Bob comes from IBM itself or from short first impressions. This guide is different: it collects what we've seen across eleven livestreamed episodes of Building with Bob, where Tejas Kumar and David Jones-Gilardi build two open-source apps with Bob: [KillrCtx](/projects/killrctx), a NotebookLM clone, and [Walfly](/projects/walfly), a conversation recorder. Every claim about how Bob behaved links to the exact moment in an episode, so you can watch it happen. Both hosts work at IBM, so weigh their opinions accordingly; the timestamps let you judge the behaviour yourself.
 
 ## What is IBM Bob?
 
 IBM Bob is an AI coding agent from IBM that plans, writes, runs and reviews code from inside its own IDE or from the terminal through Bob Shell. IBM made it [generally available on 28 April 2026](https://newsroom.ibm.com/2026-04-28-introducing-ibm-bob-ai-development-partner-that-takes-enterprises-from-ai-assisted-coding-to-production-ready-software) as a SaaS offering with individual and enterprise plans, and positions it across the whole software lifecycle, "from planning and coding to testing, deployment, and modernization." The [official docs](https://bob.ibm.com/docs) cover both the IDE and Bob Shell.
 
 The show's first episode opens with the plainest description we have: "Bob is IBM's coding agent. You may think of things like Codex, Claude Code, Cursor… Bob is that" ([0:00](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=0)). It works in three built-in [modes](https://bob.ibm.com/docs/ide/features/modes), Plan, Agent and Ask, and you can add [custom modes](https://bob.ibm.com/docs/ide/configuration/custom-modes) and [skills](https://bob.ibm.com/docs/ide/tutorials/use-skills). The IDE is, as the hosts put it on stream, "very clearly VS Code" underneath ([30:39](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=1839)). IBM shipped a major update between our projects: the [IDE changelog](https://bob.ibm.com/docs/ide/changelog) lists version 2.0.0 in June 2026, with subagents, a Skills tab and a Modes tab, and the [Bob Shell changelog](https://bob.ibm.com/docs/shell/changelog) lists Shell 2.0.0 in August 2026.
+
+Releases have kept coming since. In October 2026 the IDE changelog reached 2.3.0, which adds experimental web search, attaching external files and images to chat, and new permission hook events; Bob Shell reached 2.0.9, after moving to the public `@ibm/bob` npm package in 2.0.7. IBM's [1 October 2026 release post](https://bob.ibm.com/blog/september-2026-release) made Bob generally available for self-hosted deployment on Red Hat OpenShift and moved long-running commands such as dev servers into background processes.
 
 ## What we built with IBM Bob: KillrCtx and Walfly
 
@@ -53,7 +56,7 @@ We built both apps with Bob in the driver's seat. KillrCtx was "done with Bob" e
 3. [Spec Coding a Setup Wizard for an Open-Source NotebookLM Clone](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend): a DataStax AI Workbench backend and an `npm run init` wizard, specced before any code.
 4. [Debugging KillrCtx RAG Backends: OpenRAG vs AI Workbench](/episodes/debugging-rag-backends-openrag-vs-ai-workbench): four Bob Shell agents in parallel and a docling-serve outage behind failed ingests.
 
-**Walfly, a local-first conversation recorder (August-September 2026)**
+**Walfly, a local-first conversation recorder (August-October 2026)**
 
 5. [IBM Bob Plan Mode: Scoping a Real App MVP, Live](/episodes/planning-walfly-wearable-app-mvp-with-ibm-bob): a whiteboard diagram becomes an MVP plan, then a running Expo web UI.
 6. [Astra DB Setup and a Better Record Button with IBM Bob](/episodes/walfly-record-button-redesign-and-astra-db-setup): a pulsing record button and an Astra DB collection created through the Data API.
@@ -61,6 +64,7 @@ We built both apps with Bob in the driver's seat. KillrCtx was "done with Bob" e
 8. [Local Docling + Whisper Sidecar and Beads for Agent Teams](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents): local Docling, a brand built by Bob, Beads and MCP Agent Mail, and a painful Expo SDK upgrade.
 9. [Bob Review vs Xavier and a KeyboardAvoidingView Fix in Expo](/episodes/ai-code-review-and-expo-mobile-layout-fixes): Bob Review against [Xavier](https://xavier.team), an AI agent orchestrator by Atila, and a keyboard bug fixed by reading the code.
 10. [Audio Chunking and a Stateless Docling ASR Service in Docker](/episodes/designing-audio-chunking-and-ephemeral-asr): a stateless ASR service in Docker, planned with Bob and Xavier together.
+11. [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly): Walfly records the whole stream, hits an Astra DB size limit, and Bob reworks transcripts into byte-sized chunk documents.
 
 ## What IBM Bob did well
 
@@ -73,6 +77,8 @@ Bob was at its best when the work started with thinking: planning, specs, resear
 - **It batched parallel work sensibly.** Asked to do all the mind-map tasks in parallel, Bob grouped what could run together instead of starting everything at once ([34:14](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=2054)).
 - **It knew IBM's own products.** Bob created Walfly's Astra DB collection through the Data API with no instructions on how ([1:32:57](/episodes/walfly-record-button-redesign-and-astra-db-setup?t=5577)), consulting IBM product docs and driving Chrome DevTools to check the embedding model ([29:50](/episodes/walfly-record-button-redesign-and-astra-db-setup?t=1790), [30:55](/episodes/walfly-record-button-redesign-and-astra-db-setup?t=1855)).
 - **Bob Review found real issues.** On the same three commits, Bob Review flagged viewport and keyboard visibility problems and a magic number, while Xavier's review found nothing actionable ([37:12](/episodes/ai-code-review-and-expo-mobile-layout-fixes?t=2232)).
+- **It read the docs when told to.** When Walfly hit Astra DB's 8,000-byte limit, the hosts asked Bob to "check the web and docs" first ([31:52](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=1912)). It launched a browser, found the limits page ([34:37](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2077)) and later wrote a constants file "based off the Astra documentation" ([43:30](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2610)).
+- **It asked before redesigning storage.** Mid-task, Bob stopped to ask whether chunks should overlap and whether to store them as separate documents or one array ([36:50](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2210)), and reached the same answer as the hosts ([40:03](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2403)).
 - **V2 is terser.** In July 2026 David said Bob V2's replies are "much more concise and exacting" ([10:11](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=611)).
 
 The practical side of each is covered in [IBM Bob features in practice](/topics/ibm-bob-features-in-practice).
@@ -92,7 +98,8 @@ Bob's weak spots were stale knowledge, vague prompts, native mobile layout and c
 > Number three is the exact thing that we removed to fix the issue, and so it's saying reintroduce that problematic prop. This then makes me question all the other review points.
 > — Tejas, [1:20:49](/episodes/ai-code-review-and-expo-mobile-layout-fixes?t=4849)
 
-- **Long sessions hit a ceiling.** Bob stops at a default of 100 turns ([52:06](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents?t=3126), [1:10:53](/episodes/walfly-record-button-redesign-and-astra-db-setup?t=4253)).
+- **Long sessions hit a ceiling.** Bob stops at a default of 100 turns ([52:06](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents?t=3126), [1:10:53](/episodes/walfly-record-button-redesign-and-astra-db-setup?t=4253)). In October 2026, after a long review and an infographic request, Bob started "acting very weird" until David compacted its context ([1:28:38](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5318)).
+- **Relational habits in a NoSQL store.** Asked to link chunk documents to their recording, Bob reached for a foreign-key design, and David stopped it: "this is not the right database for that" ([58:28](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=3508)). The same session left code that appended every chunk to the stored transcript until it broke Astra DB's limit, which Bob confirmed once asked ([1:25:50](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5150)).
 
 Tooling had rough edges too. In July 2026, Bob Shell printed raw thinking syntax ([12:59](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=779)); auto-upgrading from 1.0.4 to 1.0.6 was "a crazy jump" better ([16:50](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=1010)), though Tejas still called the leftover syntax "kind of unacceptable" for a 1.0 release ([16:16](/episodes/debugging-rag-backends-openrag-vs-ai-workbench?t=976)). Bob Shell's frequent re-login was "the bane of my existence" for Tejas ([10:57](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=657), [37:53](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=2273)); the IDE lacked VS Code's Live Share ([30:39](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=1839)); and in August 2026 Tejas hit an "unexpected critical error" and a "budget exceeded" message ([16:28](/episodes/debugging-expo-audio-and-local-docling-transcription?t=988), [22:51](/episodes/debugging-expo-audio-and-local-docling-transcription?t=1371)).
 
@@ -115,7 +122,7 @@ Loosening has a cost. After David opened permissions up, an API key ended up in 
 
 ## Is IBM Bob good? Our verdict so far
 
-As of September 2026, after ten episodes, our verdict is that IBM Bob is a strong planning and spec-coding partner and a solid web developer that needs a human reading along. It took two developers from a whiteboard to a working NotebookLM clone and a multi-service recording app.
+As of October 2026, after eleven episodes, our verdict is that IBM Bob is a strong planning and spec-coding partner and a solid web developer that needs a human reading along. It took two developers from a whiteboard to a working NotebookLM clone and a multi-service recording app.
 
 David's July 2026 view, with his own caveat:
 
@@ -131,6 +138,7 @@ What we'd tell a team considering it:
 - **Assume its version knowledge is stale.** Tell it to search the web, and save that to memory on day one.
 - **Treat Bob Review as a second opinion.** It caught real issues, and it also recommended reintroducing a bug.
 - **Budget extra time for native mobile.** Web work went smoothly; Expo on iOS did not.
+- **Tell it where the limits are.** Asking Bob to read the vendor docs before a storage change turned Astra DB's documented limits into code constants.
 - **Keep Bob Shell updated.** Versions changed the experience noticeably within weeks.
 
-As David put it, the agent "does most the toil" and he handles "the precision part" ([43:13](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents?t=2593)). He has since paired Bob with Xavier, saying "it makes a nice companion with Bob" ([39:42](/episodes/designing-audio-chunking-and-ephemeral-asr?t=2382)). How that fits with other agents is in [coordinating coding agents](/topics/coordinating-coding-agents), and Bob next to other tools is in [IBM Bob vs Claude Code, Cursor and Codex](/topics/ibm-bob-vs-claude-code-cursor-codex).
+As David put it, the agent "does most the toil" and he handles "the precision part" ([43:13](/episodes/local-first-transcription-python-sidecar-and-coordinating-agents?t=2593)). He has since paired Bob with Xavier, saying "it makes a nice companion with Bob" ([39:42](/episodes/designing-audio-chunking-and-ephemeral-asr?t=2382)), and in October 2026 suggested writing a PRD with Xavier, then starting a fresh session to create the tasks ([42:57](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2577)). How that fits with other agents is in [coordinating coding agents](/topics/coordinating-coding-agents), and Bob next to other tools is in [IBM Bob vs Claude Code, Cursor and Codex](/topics/ibm-bob-vs-claude-code-cursor-codex).

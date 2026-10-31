@@ -4,13 +4,14 @@ title: "AI Mind Map From Your Sources: React Flow + LLM Guide"
 h1: "How do you build an AI mind map from your sources with React Flow?"
 description: "Turn RAG output into a real mind map with React Flow: prompting for hierarchy, stripping LLM leakage, node weighting, drill-down chats and styling."
 answer: "Ask your RAG backend for a strict hierarchy, not prose: a prompt that demands more than one level of nesting, weights important nodes and strips citations, JSON fragments and search queries. Render that tree with React Flow custom nodes styled with your design tokens. Then make nodes collapsible and link each one to its own drill-down conversation."
-updated: "2026-09-30"
+updated: "2026-10-31"
 about: ["React Flow", "KillrCtx", "NotebookLM", "OpenRAG", "IBM Bob", "D3"]
 episodes:
   - killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob
   - adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob
   - notebooklm-clone-setup-wizard-and-ai-workbench-backend
   - debugging-rag-backends-openrag-vs-ai-workbench
+  - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
 faq:
   - q: "Can I edit an AI-generated mind map?"
     a: "Not in NotebookLM itself: Google's help page lets you expand, collapse and download the map, and in August 2025 XDA noted there were no customization options and only PNG downloads. If you build your own with React Flow, nodes are ordinary React components, so editing, collapsing and drill-down conversations are yours to add, as KillrCtx did."
@@ -30,11 +31,11 @@ Most "AI mind map" features start life as an outline with a nicer name. This gui
 
 A mind map feature is often only a Markdown outline, because the LLM returns text and nothing turns it into a graph. In episode 1, [KillrCtx: An Open-Source NotebookLM Clone on OpenRAG and IBM Bob](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob), David Jones-Gilardi pointed out that the mind map note type was "just text" and "not graphically a mind map at all" ([17:53](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=1073)). By episode 2 the diagnosis was blunter: "it's literally just markdown, man" ([9:47](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=587)).
 
-The commercial reference point has limits too. Google's [mind map help page](https://support.google.com/notebooklm/answer/16212283?hl=en) (the product was [renamed Gemini Notebook](https://workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html) on July 16, 2026) describes zooming, expanding and collapsing branches, selecting nodes to ask questions, and downloading. What it doesn't offer is editing: in August 2025, [XDA](https://www.xda-developers.com/notebooklm-mindmap-extractor-extension/) wrote that NotebookLM "offers absolutely no customization options for its Mind Maps" and only downloads PNGs. Owning the renderer is what lets you fix that.
+The commercial reference point has limits too. Google's [mind map help page](https://support.google.com/notebooklm/answer/16212283?hl=en) (the product was [renamed Gemini Notebook](https://workspaceupdates.googleblog.com/2026/07/notebooklm-now-gemini-notebook.html) on July 16, 2026) describes zooming, expanding and collapsing branches, selecting nodes to ask questions, and downloading. What it doesn't offer is editing: in August 2025, [XDA](https://www.xda-developers.com/notebooklm-mindmap-extractor-extension/) wrote that NotebookLM "offers absolutely no customization options for its Mind Maps" and only downloads PNGs. When we re-checked in October 2026, Google's update posts since the rename had added interactive learning overviews that include mind maps (September 2026), but none announced mind map editing ([Workspace Updates](https://workspaceupdates.googleblog.com/2026/09/new-back-to-school-features-and-learning-tools-available-in-Gemini-Notebook.html)). Owning the renderer is what lets you fix that.
 
 ## Choosing a library: React Flow vs D3 vs mind-map renderers
 
-React Flow is the pragmatic default for an interactive AI mind map in a React or Next.js app. When David asked Bob which tools to use for "a graphical and visual mind map" in Next.js ([13:16](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=796)), Bob recommended React Flow first and D3 second ([16:35](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=995)), with a dedicated mind-map renderer as the third option ([17:06](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=1026)). The tiebreaker was Langflow: Tejas Kumar checked that Langflow's canvas "100% is built with React Flow" (same timestamp), and David added, "we also know what its capabilities are then too." As of September 2026, Langflow's [frontend package.json](https://github.com/langflow-ai/langflow/blob/main/src/frontend/package.json) does depend on `@xyflow/react`.
+React Flow is the pragmatic default for an interactive AI mind map in a React or Next.js app. When David asked Bob which tools to use for "a graphical and visual mind map" in Next.js ([13:16](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=796)), Bob recommended React Flow first and D3 second ([16:35](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=995)), with a dedicated mind-map renderer as the third option ([17:06](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=1026)). The tiebreaker was Langflow: Tejas Kumar checked that Langflow's canvas "100% is built with React Flow" (same timestamp), and David added, "we also know what its capabilities are then too." As of October 2026, Langflow's [frontend package.json](https://github.com/langflow-ai/langflow/blob/main/src/frontend/package.json) still depends on `@xyflow/react` (`^12.3.6`), and the latest `@xyflow/react` on [npm](https://www.npmjs.com/package/@xyflow/react) was 12.12.0, published 24 September 2026.
 
 | Option                       | What it gives you                                                                                                              | What you still build                                                                              |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------- |
@@ -42,7 +43,7 @@ React Flow is the pragmatic default for an interactive AI mind map in a React or
 | D3 (`d3-hierarchy`)          | [Tree and cluster layouts](https://d3js.org/d3-hierarchy) that compute positions for hierarchical data                         | Rendering, interaction, React integration                                                         |
 | Dedicated mind-map library   | A mind-map look out of the box                                                                                                 | Whatever the library doesn't expose                                                               |
 
-Two details from the React Flow docs matter for mind maps. First, the [layouting guide](https://reactflow.dev/learn/layouting/layouting) says "We have not implemented our own layouting solution yet", and it notes that d3-hierarchy "assigns the same width and height to _all_ nodes", which fights against weighted nodes. Second, React Flow's own [mind map tutorial](https://reactflow.dev/learn/tutorials/mind-map-app-with-react-flow) builds a hand-edited map with Zustand; it's a good base, but it isn't LLM-driven.
+Two details from the React Flow docs matter for mind maps, both unchanged when we re-checked in October 2026. First, the [layouting guide](https://reactflow.dev/learn/layouting/layouting) says "We have not implemented our own layouting solution yet", and it notes that d3-hierarchy "assigns the same width and height to _all_ nodes", which fights against weighted nodes. Second, React Flow's own [mind map tutorial](https://reactflow.dev/learn/tutorials/mind-map-app-with-react-flow) builds a hand-edited map with Zustand; it's a good base, but it isn't LLM-driven.
 
 ## The map is only as good as the LLM's hierarchy
 
@@ -84,7 +85,11 @@ A mind map earns its place when you can act on a node, not just look at it. Betw
 - **Any level.** Drill down from a parent, not just a leaf; deleting a conversation unlinks it so no orphans hang around ([13:28](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=808)).
 - **Layouts.** A basic horizontal/vertical toggle (same timestamp).
 
-If you want expand and collapse out of the box, React Flow has an [expand-and-collapse example](https://reactflow.dev/examples/layout/expand-collapse) using dagre, but in September 2026 it's a Pro example behind a subscription.
+If you want expand and collapse out of the box, React Flow has an [expand-and-collapse example](https://reactflow.dev/examples/layout/expand-collapse) using dagre, but in October 2026 it was still a Pro example behind a subscription.
+
+### Grouping by classification instead of generation
+
+A later Walfly episode suggests another way to get top-level branches, which we haven't tried in KillrCtx: classify instead of generate. In [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly) (October 2026), David grouped recorded moments by intent, by work and life, or into "smart clusters", using Jev, a decision model from TypeSafe AI, over the full transcripts, and cached the result for 10 minutes ([18:50](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=1130), [20:05](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=1205)). His reason for not asking an LLM: "think of what I'm gonna pay in those tokens", and LLMs are "not as good at classification in this way" ([20:40](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=1240)). For a map, that would mean fixed or clustered branches from a classifier, with the LLM only writing the labels underneath.
 
 ## Grounding the map in your sources, per notebook
 

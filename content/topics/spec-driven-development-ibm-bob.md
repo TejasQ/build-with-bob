@@ -4,7 +4,7 @@ title: "Spec-Driven Development With IBM Bob: A Real Workflow"
 h1: "How do you do spec-driven development with IBM Bob?"
 description: "Spec coding in IBM Bob on a live build: a custom mode and skill for requirements, design and tasks, numbered IDs, validation, and when to just vibe."
 answer: "Give IBM Bob a written spec-coding process and have it turn that into a custom mode and skill. For each new feature, Bob writes requirements with numbered IDs and acceptance criteria, then a design, then a task list, validating each against the requirements and pausing for your review. You implement only after the spec is right."
-updated: "2026-09-30"
+updated: "2026-10-31"
 about: ["IBM Bob", "spec-driven development", "custom modes", "skills", "KillrCtx"]
 episodes:
   - killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob
@@ -13,6 +13,8 @@ episodes:
   - debugging-rag-backends-openrag-vs-ai-workbench
   - planning-walfly-wearable-app-mvp-with-ibm-bob
   - walfly-record-button-redesign-and-astra-db-setup
+  - designing-audio-chunking-and-ephemeral-asr
+  - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
 faq:
   - q: "Does IBM Bob support spec-driven development?"
     a: "Yes, through its extension points rather than a single spec button. Bob's custom modes and skills let you encode a requirements, design and tasks process, and David Jones-Gilardi did exactly that by pointing Bob at his spec-coding process repo. Bob's built-in plan mode is also spec-like: it asks questions and returns subtasks with IDs."
@@ -21,7 +23,7 @@ faq:
   - q: "What is the difference between spec coding and vibe coding?"
     a: "Vibe coding goes prompt to prompt and is great for demos and small fixes. Spec coding agrees requirements, a design and a task list with the agent first, with every task traced to a numbered requirement, so the agent stays on the rails for full features. The hosts use both, depending on the size of the change."
   - q: "How do I create a custom mode in IBM Bob?"
-    a: "Use Settings, then the Modes tab, or define it in YAML: `.bob/custom_modes.yaml` in the project root for a project mode, or `~/.bob/settings/custom_modes.yaml` for a global one. A mode has a slug, name and role definition, plus optional instructions and tool groups. You can also ask Bob to create one from a written process."
+    a: "Use Settings, then the Modes tab, or define it in YAML: `.bob/custom_modes.yaml` in the project root for a project mode, or `~/.bob/settings/custom_modes.yaml` for a global one. A mode has a slug, name and role definition, plus tool groups and optional fields such as whenToUse, custom instructions and allowed subagents. You can also ask Bob to create one from a written process."
   - q: "Where do IBM Bob skills live?"
     a: "In a folder containing a `SKILL.md` file, under `.bob/skills/` in your project or `~/.bob/skills/` globally; the project copy wins on a name clash. The file's front matter needs a name and a description, and Bob uses the description to decide when to activate the skill."
 ---
@@ -32,19 +34,19 @@ Spec-driven development is the most-discussed way to keep coding agents on track
 
 Spec coding means agreeing a written spec with the agent (requirements, design, tasks) before it writes code, instead of steering it prompt by prompt. David's definition in episode 3: vibe coding goes "from prompt to prompt to prompt" and is "really great for demos", but if you want an app that works and an agent that stays "on the rails", the spec process is "the way to go" ([39:29](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=2369)). In episode 2 he pitched it as a way to "significantly level up your game" ([13:57](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=837)) and to take "an LLM that by nature is non-deterministic and make it deterministic" ([14:28](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=868)).
 
-The shape matches the wider field. [GitHub Spec Kit](https://github.com/github/spec-kit) says to "define what and why before deciding how to build it", and [Kiro specs](https://kiro.dev/docs/specs/) generate `requirements.md`, `design.md` and `tasks.md`. In Birgitta Böckeler's [October 2025 taxonomy](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html), David's approach is "spec-anchored": "the spec is kept even after the task is complete". IBM's Niklas Heidloff describes a Bob-based variant in [Spec-driven Development with IBM Bob](https://heidloff.net/article/spec-driven-development-ibm-bob/) (May 2026).
+The shape matches the wider field. [GitHub Spec Kit](https://github.com/github/spec-kit) says to "define what and why before deciding how to build it", and [Kiro specs](https://kiro.dev/docs/specs/) generate `requirements.md`, `design.md` and `tasks.md`. Both tools kept moving in autumn 2026: Spec Kit shipped [v1.2.5](https://github.com/github/spec-kit/releases) on 28 October, and by October Kiro offered Feature, Bugfix and Quick Spec types, with a `bugfix.md` in place of requirements for bug fixes. In Birgitta Böckeler's [October 2025 taxonomy](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html), David's approach is "spec-anchored": "the spec is kept even after the task is complete". IBM's Niklas Heidloff describes a Bob-based variant in [Spec-driven Development with IBM Bob](https://heidloff.net/article/spec-driven-development-ibm-bob/) (May 2026).
 
 ## Setting it up in Bob: a custom mode and a skill from a process repo
 
 The fastest setup is to point Bob at a written process and ask it to build the mode for you. David keeps his spec-coding process in a repo he uses for workshops: "you can literally point to the repo and you can tell it, hey, I want to create a custom mode. I want you to follow this process" ([14:28](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=868)). Bob read it and "created its skill" ([21:05](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=1265)). In episode 1 he explained that he has "those skills set at the project" level, and that he told Bob to use the process "anytime I'm talking about creating new feature" ([27:29](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=1649), [28:01](/episodes/killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob?t=1681)).
 
-Where those pieces live, per IBM's docs in September 2026:
+Where those pieces live, per IBM's docs re-checked in October 2026:
 
-| Piece       | Project scope                                 | Global scope                        | What decides when it's used                                                         |
-| ----------- | --------------------------------------------- | ----------------------------------- | ----------------------------------------------------------------------------------- |
-| Custom mode | `.bob/custom_modes.yaml` (takes precedence)   | `~/.bob/settings/custom_modes.yaml` | You pick it; optional `whenToUse` guides task coordination                          |
-| Skill       | `.bob/skills/<name>/SKILL.md` (wins on clash) | `~/.bob/skills/<name>/SKILL.md`     | The skill's `description` ("skills without descriptions are automatically ignored") |
-| Mode rules  | `.bob/rules-{mode-slug}/`                     | n/a                                 | Loaded with that mode                                                               |
+| Piece       | Project scope                                 | Global scope                        | What decides when it's used                                           |
+| ----------- | --------------------------------------------- | ----------------------------------- | --------------------------------------------------------------------- |
+| Custom mode | `.bob/custom_modes.yaml` (takes precedence)   | `~/.bob/settings/custom_modes.yaml` | You pick it; optional `whenToUse` guides task coordination            |
+| Skill       | `.bob/skills/<name>/SKILL.md` (wins on clash) | `~/.bob/skills/<name>/SKILL.md`     | The skill's `description` ("skills without descriptions are ignored") |
+| Mode rules  | `.bob/rules-{mode-slug}/`                     | n/a                                 | Loaded with that mode                                                 |
 
 Sources: [custom modes](https://bob.ibm.com/docs/ide/configuration/custom-modes), [skills](https://bob.ibm.com/docs/ide/features/skills). Committing the project-level files means everyone on the repo gets the same process.
 
@@ -84,6 +86,18 @@ Keep your own task file in the spec folder, and tell the agent to update it, bec
 ## Does it pay off?
 
 On KillrCtx, the payoff showed up as near one-shot features and a searchable history. David added DataStax AI Workbench support between streams through the same process, and Bob "pretty much one-shot the capability"; the remaining bugs were mostly UX ([6:03](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=363), [6:40](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=400)). The `specs/` folder is now "essentially a database" of every feature's requirements and design ([5:27](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=327)). He also finds it keeps him out of "downward model spirals" where agents loop on themselves ([50:34](/episodes/adding-a-mind-map-to-a-notebooklm-clone-with-ibm-bob?t=3034)). A next step he recommends: have Bob maintain a context wiki and update it when a spec changes the architecture ([1:29:18](/episodes/notebooklm-clone-setup-wizard-and-ai-workbench-backend?t=5358)).
+
+## Data-model changes: what skipping the spec cost on Walfly
+
+A storage change is the kind of work where a short spec saves the most, and the Walfly build showed what happens without one. In [Audio Chunking and a Stateless Docling ASR Service in Docker](/episodes/designing-audio-chunking-and-ephemeral-asr) (episode 10), David planned with Bob and Xavier together, where Xavier's PRD step includes a "Grill Me" round of questions ([39:09](/episodes/designing-audio-chunking-and-ephemeral-asr?t=2349), [39:42](/episodes/designing-audio-chunking-and-ephemeral-asr?t=2382)).
+
+A week later, in [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly) (episode 11, October 2026), an Astra DB size limit forced a redesign mid-stream. The design questions did get asked: Bob paused to ask about chunk overlap and separate documents versus one array ([36:50](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2210)), and the hosts settled it by designing for the longest real session, an all-day conference ([39:30](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2370)). But the hosts then "did tell it to just go" ([43:30](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2610)), and the gaps showed up later:
+
+- **A missing data-modeling step.** The first run failed because the new design needed another collection, and the hosts concluded there "must have been a data modeling step there that it did not actually create" ([52:46](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=3166)).
+- **No link from chunk to recording.** The chunks didn't say which conversation they belonged to until a recording ID was added ([55:31](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=3331), [1:00:38](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=3638)).
+- **A rule nobody wrote down.** Each chunk was stitched onto the stored transcript until it broke the limit again; the rule the hosts settled on, "we should only be reading stitched chunks", is exactly the kind of line a design doc would hold ([1:27:32](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5252)).
+
+David's suggestion for the next change of this size was a lighter version of the spec loop: write the PRD with Xavier, then open a new session and say "now create the tasks" ([42:57](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2577)). It keeps the planning context out of the build session and still leaves a written record.
 
 ## When vibe coding is fine
 
