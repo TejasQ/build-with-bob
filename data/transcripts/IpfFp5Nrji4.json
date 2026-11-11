@@ -1,0 +1,618 @@
+[
+{
+"start": 0,
+"text": "We we have a coding agent called Bob that that we that we build and that we enjoy and and my colleague David and I we just build stuff uh with with vibes and specs to create software the name of the show and and get a feel for the experience. So today again I'm joined with my dear friend David. What's up David? \u2014 Hello Tous. I like I like your vibes and specs man. That sounds like the name of a a new show. Vibes and specs right vibes and specs \u2014 because I feel like it is always a combination. I start with specs, right? I always start with specs, but then at some point you do vibe a little bit."
+},
+{
+"start": 32,
+"text": "Uh, and then you go back to specking and stuff. But anyway, anyway, how's it going, Tis? What you been \u2014 doing? So, what have I been doing, dude? I \u2014 What have you been doing? What have you been doing, Tis? \u2014 I've been writing vibes and specs. No, this uh this is a B pioneer and it's searching it's searching for a Bluetooth device. \u2014 Um, and I've been taking our app that we've been working on. So, for context, we've been working on an app called Wallfly, and it's a little fly that sits on the wall. It's it's it connects to something, your phone or wearable, and it records everything passively and then gives you AI based summaries about what you've experienced."
+},
+{
+"start": 68,
+"text": "I I think it's quite useful at conferences, at meetings, and things. Of course, get consent from the people around you. We talked about that last week. \u2014 Um, that's what we've been building with Bob. Um, and so, and so that's what I've been working on is, is making it real by having it actually connect to this thing and, uh, give me ASMR. And the reason for that is this thing has 24-hour battery life, David. This can minimum, right? \u2014 Yeah. Right. Right. \u2014 It can record for 24 hours straight. So, if it's in standby, the battery lasts like weeks, months because it's nothing. There's there's no heart rate sensor."
+},
+{
+"start": 99,
+"text": "There's no nothing. It's just, \u2014 right? \u2014 So, so it's really ideal for something like Wildfly. So, this device actually um ships with its own companion app called B. Um okay. And I I did some reverse engineering and I'm like, what are they doing? \u2014 And how can we hijack the Bluetooth frequency from this and use it? \u2014 So, it's it's quite fun. What have you been up to? \u2014 Oh, let's see. So, if you remember last week, right, um we made some really crazy progress, but we got stuck on something. thing. I'd say we hit a little bit of a a friction wall there where as we were doing long recordings."
+},
+{
+"start": 135,
+"text": "Actually, speaking of that, what am I thinking? Let me start off the recording right now. Duh. All right. Now, we have a recording going so we can do that. But if you remember when we started doing kind of like \u2014 That's That's messing up your microphone on the stream. \u2014 Is it really? How about now? \u2014 No, it's bad, man. You got interference. \u2014 All right. \u2014 It's better now. That was \u2014 Maybe that's what switched my mic the last the one week. [gasps] What the heck? That That was so unexpected. \u2014 Okay."
+},
+{
+"start": 167,
+"text": "Well, let's try that again. I'm going to do it on the web app instead of the um uh the mobile app and see if that makes any difference at all. So, I'm going to go ahead and do it again. \u2014 All right. How about now? Still mess it up or is it okay? \u2014 You're good. \u2014 Oh, how strange was that? Okay. Anyway, anyway, so if you remember though, last week, um, we had attempted to do some of the longer duration recordings, right? And we wanted to just see, hey, is this working? Let's test it out. Let's dog food this thing real time while we're doing it. And it worked for a bit and then we got to a certain point and then all of a sudden, like, we started getting these uh these errors that were overrunning AK and things like that, right?"
+},
+{
+"start": 204,
+"text": "Well, \u2014 yeah. You know, I don't I don't know about you, but like on a live stream when you're trying to troubleshoot things, um you know, we were at the end of the at the uh the end of the session and it's it's not very interesting for people on a live stream to watch somebody just stare at their screen with their mouth open as they're like thinking about like uh you know, you're like working on a problem and just staring, right? Um so, so we had decided to hey, let's let's table it for now because we'd already made really great progress and then I was going to take a look at what was going on, right? Uh, so I did that and this ended up being something super fun."
+},
+{
+"start": 237,
+"text": "Uh, and I'm really happy with the result. Let's see if my result proves true on the stream today. Um, as a matter of fact, just to just to kind of show this, I'm going to share my screen real quick. \u2014 I love the sounds. There we go. Right. So, you should see down here, you can see the sidecar has kicked off. I've got the web app going. So, it's just recording what we're doing. A matter of fact, I'll cheat and I'll use the mobile app over here. And you can see that it is just like before, it's actually recording everything we're talking about right now, right? And it's doing it in real time."
+},
+{
+"start": 268,
+"text": "Um, so as as these chunks come through, um, you'll see that this is going to grow. Just grew again from 23 to 31 lines, right? So you can actually see that that is happening. So wonderful. So we're going to let that um, um, continue on. Um, hold on real quick. I forgot to disable my notifications. There we go. So um so what I dug into ended up being this really interesting problem that I think was a really great example of a case where yes we have all this wonderful AI agentic coding ability but humans have a part to play \u2014 right yeah if because you can guide the agents down a certain path right but without certain details and without the ability to kind of like introspect and really look at like a data model really understand what's going on with it the AI may go down a path."
+},
+{
+"start": 318,
+"text": "That path might work, but it might not be the right path until you really really sit down and take a look. So, I actually got a chance um to dig in. You know, I kind of pulled out my old Cassandra uh Cassandra Astro hat uh that I hadn't gone into as much. It was it was a lot of fun. And here's here's what I found out, right? Um the original data model that we had had a flaw in it, right? \u2014 Matter of fact, I have Aster up right here. Let's see. Let's see if I can actually expose that real quick. I wasn't actually going to do this, but let me think about this real quick. Yes, if we go to recordings, and I'm just going to pick one, so it doesn't really matter."
+},
+{
+"start": 352,
+"text": "Let's see, and open one of these up. I need one that actually has some data. Um, let me see here. Let's go back. Let me see which one. Ah, this one's probably a better one. So, right, right, right, right, right, right. Okay, let's see. Do I have one? There you are. Yes. All right. So, here's kind of what was happening. Right now, there was a post-processing cleanup step that was actually cleaning up these chunks. But what was happening and where our error was was as you're So, so remember we we record we we get chunks every 15 seconds."
+},
+{
+"start": 389,
+"text": "And why do we do that? We do that for resiliency, right? Because if we're doing a long form recording and anything happens during that time, you don't want to lose the whole thing. You also don't want to be processing this gigabytes worth of data or anything like that. It just it takes too much work. So, it's better to as we're talking, like you see right now while we're going through the conversation, you can see the sidecar is taking these 15-second chunks. And that is exactly how when I come back in here, now we're at 75 lines. Look at that. Um, that's exactly how that is happening in real time. So, we take these 15-second [clears throat] snapshots. But here is what happened."
+},
+{
+"start": 421,
+"text": "So we had a chunks array within our um our recordings collection and that was being used really for posterity because then what happens is at the end when you have your whole array then the final act is to then go through and summarize all the data and everything like that and pull out all the useful stuff. Um but so you need all the chunks. However, this array was not only ever expanding, right? But there was a flaw in it, which is what was happening is as it was being recorded, it was always appending on the previous chunk, the previous chunk."
+},
+{
+"start": 458,
+"text": "So, what would happen is you'd get a chunk, you'd get your transcript, then Hey, am I still here? \u2014 Oh, your microphone went to the bad one. \u2014 Yeah, hold on. I got it. All right. \u2014 Oh, \u2014 now I see exactly what happened. Just please hold. \u2014 Sure. \u2014 My system. There it goes. Okay, here we go. Let me uh fix that. \u2014 David's music. \u2014 David's music. \u2014 Oh, it won't let me change the microphone while I'm recording. \u2014 I guess we're just stuck with that audio now."
+},
+{
+"start": 490,
+"text": "No, you know what I'm going to do? Let me um \u2014 let \u2014 I'm gonna leave and come right back. \u2014 Cool. \u2014 Because Yeah. So, don't go anywhere. I'm gonna leave and come right back. This advertisement, this video is sponsored by IBM Bob. Have you heard of Bob? Bob has heard of you. It hasn't, but any It's a coding agent. It's a very good coding It's a nice coding agent. It's a coding agent that saves people time, money, and tokens. Uh, and it's it's, you know, it's got modes."
+},
+{
+"start": 521,
+"text": "You can plan Oh, hey, he's back. \u2014 Okay. Am I here? \u2014 I'm here. \u2014 Thank you for interrupting. \u2014 So, yeah. Right. I wanted I just I did that on purpose. I just wanted to interrupt what you were doing. \u2014 That's No, I need it. I need the I believe me, I needed the interruption. \u2014 Yeah, my all of a sudden all of my devices decided to uh just power off and so I lost everything there for a second. All right, let's see. We're on the correct We're on the correct mic. All right, so let me continue. Let continue. Um let me share my screen again. \u2014 So we were pending Yeah, we were pending things. \u2014 Yes. So then what that what what that meant was that you know as our array was increasing in size we weren't just putting on the transcript for that chunk we were actually depending on the whole transcript from before that and it kept getting bigger and bigger and bigger and growing."
+},
+{
+"start": 565,
+"text": "Now here's the challenge. It happened to be that in our data model here um that the particular column the chunks array was actually an indexed column. Uh and that was done by default because this was set up as a vectorzed collection. And so by default, all of your columns are automatically indexed. But that index when you're doing it that way has an 8K \u2014 ceiling. \u2014 So that was the 8K issue we ran into. \u2014 But looking at it, \u2014 was growing like over time. \u2014 Yes. And honestly, \u2014 the fact that we were storing the chunks in the um uh in the recordings table or the the collection at all was really incorrect."
+},
+{
+"start": 601,
+"text": "And if you remember, we had then for your suggestion, we're like, well, wait a minute. Maybe we need a different recording chunks collection to put that in there. And the second we did that, we should have just taken the chunks right out of the recordings collection and then just referenced them, right? Um, so there were a couple things that were going on there. So what I have done, you'll notice this recordings v2 and recording chunks v2. And you'll notice one different a little subtle thing. If you're not familiar with Astra, you might not know what this is saying, but notice it's a table. It's a, you know, it looks as a table, not this. It's not a vector enabled collection."
+},
+{
+"start": 633,
+"text": "Why? Because at no point were we actually storing any vectorzed data in the chunks themselves. We do that at the summary. So the chunks are just the raw audio. And here here's a key thing. You're like, \"No, man. I want to vectorize that.\" No, you don't. And here's why. Most of the conversation, right, is is not good for vectorization. Um, we have lots of like ums and hey and blah. And so if you don't want that as part of the data that you're going to vectorize because semantically it's not going to give you good results."
+},
+{
+"start": 664,
+"text": "It's going to be very noisy. So what ends up what we're doing anyway is we are actually we taking all this summarizing it then vectorizing that and that is a result that comes into the recordings collection. \u2014 Um so and then one final thing is that it came up yesterday. You know, I remember I I felt I I'll admit I felt a little um stupid about needing to even look this up uh given as long as I've been doing things with like Cassandra and Aster and everything like that, but you know, you had some original concern about like, well, if we have all of these chunks in separate individual rows for each chunk, um is that like a bad data model?"
+},
+{
+"start": 700,
+"text": "Well, in Astra, it's not at all because Astra is built on Apache Cassandra, which is a database that can handle billions of rows in a table. we're not going to get them anywhere near that, right? So scale is just not an issue here. Um, so what it really came down to was \u2014 one, we don't need that column to be indexed, so we don't have an AK limitation. Two, um, there was a mistake in the way that data was being appended, but that is no longer needed at all because now, as you can see, if you take a look here, you'll see each chunk is just stored in its own row with its own data, right?"
+},
+{
+"start": 733,
+"text": "And then what happens is at process time, it just takes all the chunks for a given key. It just puts them together, does the summarization, and then that is what's actually stored here in the recordings v2 collection. So, it has worked beautifully since that point, since making that change. And if you see now, if you remember by this time, I don't think well, no, we got to like maybe a hundred, but it's just chucking away, right? Recording away. Um, and and works really well. \u2014 Yeah. Um, so so there's that."
+},
+{
+"start": 764,
+"text": "Yeah. Go ahead, Tesious. \u2014 No, I think that's amazing. Um, can we I was just going to ask about this exactly. Can we look at the logs because I remember last time the logs were failing on like um how many you know it would say this thing has grown too big. Can you can you go back and show us the logs? \u2014 Now we do have an error. That's from when my microphone went out right. So I'm restarting the convers I'm restarting the recording. That's probably what happened right there. Yeah, that's exactly. Let's see. Here we go. Here's where we were good. But if I scroll up, \u2014 that is so cool."
+},
+{
+"start": 797,
+"text": "That from today. Where is it? \u2014 There's no errors. \u2014 Yeah, I saw something up here, but I don't think that that is from now. \u2014 Yeah, \u2014 that's wonderful. \u2014 Yeah. So, so far it's been clean. It's been clean, right? So, we got these because I lost my my uh my USB like powered down or something like that and I lost all my connection. Um, so so far it's been clean. So, I I restarted it. Hopefully, uh my USB decides not to do that again. Yeah. \u2014 And uh and we see that. Let's see what's the latest here. \u2014 That's so good."
+},
+{
+"start": 828,
+"text": "Okay. So, the one that we just recorded, that's the 15th. Yeah, this is the one we just did. So, it processed it, handled it. Um, one other thing I did uh last week was Let's see if I have it in here. One of these has it. Um Oh, yeah. and and I did it and then I moved away from it was I was looking for a way to maybe detect music have like a Shazam capability in here. \u2014 Um yeah and I there is actually a free service um that I signed up for."
+},
+{
+"start": 859,
+"text": "I registered the app. I did all that and what I learned about it is \u2014 this is you know like the sweet spot of something like Shazam. Uh Shazam has uh you know pretty advanced algorithms that its whole point is to be able to like sing a song or put it up to the radio or something like that uh and be able to that's part that's what you're paying for. \u2014 What's what's the radio? \u2014 What's the what? \u2014 The radio. \u2014 Oh my god. Tis you're not that young. \u2014 You know we still have them today, right? You know. Um so like in that that's like the that's what Shazam is really good at."
+},
+{
+"start": 895,
+"text": "And what I learned is yes, the free service that I used to do something similar technically would work, but you needed to have a clean like MP3 file, like a song file that you uploaded to it, and if it was in their library, then it would match. Um, I also then uh attempted to use like Gemini Flash. It's it's multimodal. It can actually It did a pretty good job, funny enough. Notice these two wrong ones and then the last one is the right one. This is what I kept running into. This is when the full recorded audio off of like my microphone was given to Gemini Flash."
+},
+{
+"start": 931,
+"text": "It actually gets it, \u2014 but the amount of work there was too much error, too much, you know, just too much swing and whether or not it would get it right. Um, but usually once it had all the data, it would it would get it at the end. But then as I thought about it, I'm like, I don't know if this is really all that useful, right? Because I thought it would just, you know, given the nature of this device, um, I thought, oh, how cool would it be as like, oh, I'm thinking of a song, blah, blah, blah. or you know something like that. But um there there are other ways we could do it but it would be like a paid uh service and I didn't want to go down that road. So you know if we really thought that oh this would be awesome maybe that's worth it but I I didn't think it was worth it."
+},
+{
+"start": 965,
+"text": "Um so I moved on. But anyway \u2014 um those were the major things that I had worked on last week. Uh and like I said I'm super stoked with so far um where uh the recording stability has gotten to. \u2014 Hold up. I have a question. So, if you and I are having a conversation in a bar and I'm using Wallfly, \u2014 it will transcribe our conversation and give me like summaries, but will it also detect the music in the background while we're talking? \u2014 No. I mean, right now it it might try. I have not ripped that stuff out."
+},
+{
+"start": 997,
+"text": "Um, one of the other things I had to add in, um, was, uh, VAD, which is the, um, like the voice activity stuff, because if you think about it, if you're in a noisy room, you you want to record the voices that are close to you, the ones that you're actually intending to record. You don't want all the noise. And so, there's some trickiness you have to do there as well. Um, that is something where the device that you have very well may do that already, right, with like beam forming and all sorts of things. But, yeah, right now, um, if it heard a song, it will attempt, right? I left I left all that stuff there."
+},
+{
+"start": 1028,
+"text": "I did not rip it out yet. Um so it will attempt if it picks up. And you actually I don't know if you're going to see it now because I don't have any music playing. But um matter of fact, if I go back to one of my previous ones, maybe ah \u2014 scroll, let's go see if I I don't know if I have any from earlier in the week. But you'll see you'll see a little music detected thing going. \u2014 I don't know if I've got anything useful there. Oh, what was that? No, no."
+},
+{
+"start": 1059,
+"text": "Yeah, I actually have You'll see like little notes and stuff and it says music detected when it goes to process, right? But it needs to have picked up on a song or something like that for it to trigger. \u2014 Yeah. Cool. That's very cool. \u2014 So, so we'll see. We'll see if this uh I'm going to keep it recording. Hopefully my my USB doesn't decide to uh lose its mind. And uh we'll see how this goes. You're going to keep it recording on the whole screen. The whole stream, I mean."
+},
+{
+"start": 1090,
+"text": "Yeah, that's my goal. \u2014 Damn. \u2014 Yeah. Yeah, it's the Yeah, for sure. 100%. \u2014 It's awesome. \u2014 All right, though. So So that was me last week. So you also did some stuff, too, right? \u2014 Did I? Yeah. No, I did. \u2014 Did you? \u2014 Leaving so soon. Um, no. I I dude I had so much fun last week. I I also I think there's a discussion to be had. Roy, sorry, Davis. \u2014 What? \u2014 Tagious. I mean, that's okay."
+},
+{
+"start": 1121,
+"text": "I'll take that as a compliment. I'll take it as \u2014 I'm to be honest with you, I'm kind of sick and I'm I'm running on like one hour sleep. But but no, it is a compliment. Dude, Roy ran a marathon recently. Have you run a marathon recently? \u2014 No, man. \u2014 Yeah. Well, it's a compliment, you see. Anyway, um I I uh we have to have a discussion about reading the code because we should we should include people in this conversation. So audience, last week David and I talked about Wallfly."
+},
+{
+"start": 1153,
+"text": "Um, and we talked about an architectural question about how the audio is segmented and chunked. And \u2014 we struggle to find an answer for this because we've been building with bot. We've been going by vibe, right? And so we had a question of where exactly does the chunking of audio happen and should it happen there? and and we we've had to think about this for some time because we didn't read we have not been reading the code and I think this invites a really good discussion around reading the code uh because a lot of people are talking about like should developers read the code should we not should we write the code \u2014 and when when do you right when you have an agent that can spit out thousands of lines of code is it really feasible for you to read every single one or are there good break points where it makes sense and that actually ties right back in to the troubleshooting I did was actually really satisfying and gratifying to go into the data modeling issue, really look at the code and figure it out and go, \"Oh, oh, and by the way, to finish, I should have mentioned this."
+},
+{
+"start": 1212,
+"text": "Sorry to interrupt you, Tesious. I totally forgot like my whole punch line, right?\" Um, was that \u2014 with the right guidance, the AI agent did an excellent job of modifying the data model, but it needed like I had to dig in. I had to figure out what was going on and then I could guide it properly. So that now ties right into what you were just saying this conversation here about like when is the right time, right? When as developers for us as software engineers have been doing this, you know, when is the right time to actually dig in. Yeah, Sarah, go ahead. \u2014 No, and also like we're often dropped into code bases um where we have to read someone else's code, right?"
+},
+{
+"start": 1251,
+"text": "Like like I think previously before AI, we would still be dropped into code bases and we wouldn't know like what to what we're getting into per se. And that's kind of where David and I found ourselves as we were using Wallfly. Um, and so we we wrestled with this and then I had to go investigate because where so this device the B that I have here \u2014 in building my feature I had to think about um I had to think about I I durability. That's what I need to think about. I need to think about what if because if if it's actually running on a phone then your phone's probably going to go to sleep, dude."
+},
+{
+"start": 1282,
+"text": "It's gonna like you're gonna turn off the screen, you know, but but you somehow still want the Bluetooth device to talk to it and send it data. And if the screen's off, then can the phone like process chunks? Probably not. It shouldn't. It'll consume, \u2014 right? Right. Because then you got to move all that processing all of that code needs to be moved into the app on the phone or whatever. Yeah. \u2014 But that's the thing service, right? \u2014 Exactly. Does it? because because then you're going to ruin the phone's battery life and then people are going to be like, \"Oh, this app consumes way too much battery."
+},
+{
+"start": 1313,
+"text": "I hate it.\" \u2014 And so and so, you know, the question came up, where should we be doing the chunking and where are we doing the chunking? And are we doing it where we should be doing it already? Right? And this was like pretty hard to answer. This was really hard to answer. And so I I went and investigated uh again reading the code. Um and unfortunately I found out we're we're not really doing it in the right place. Uh so so right now \u2014 as you showed us just now actually David that um the the chunking happens in the UI. So the UI the UI just knows way too much."
+},
+{
+"start": 1344,
+"text": "The UI knows more than it should. So what happens now \u2014 what happen and this is so cool. I think this is this is the best part of this podcast. If you're if you're tuning into the live stream, pay attention. Um what what what we're doing is the UI as you said. Um, it it it first of all, it knows that it's listening to speech and and it shouldn't. Uh, I I think so. I think the UI right now what it does is it records 15-second chunks. \u2014 Yeah. \u2014 Um, did your screen just change? Something just happened on your screen."
+},
+{
+"start": 1376,
+"text": "Anyway, \u2014 um, \u2014 it records 15-second chunks and it uses a very naive silence gate as well. I don't know if you Yeah. And that's it's it's really naive. And then what it does is when it finishes a 15-second chunk, it will send a post a network request to slashchunks. Um the problem is um when we send this to the API and you can see this in your logs actually when we when we send this to the API this the sidecar then kicks in and starts transcribing this with whisper, right?"
+},
+{
+"start": 1406,
+"text": "Yeah, that's right. \u2014 That that request is blocking. \u2014 So all the chunks depend on the chunk that goes before it. Um and this takes obviously an enormous amount of time. It's just right. Why does that \u2014 should not be blocking? Yeah, for sure. \u2014 We can just chunk and pair. So, that's one thing. The other thing is \u2014 audio is never stored and this is a good thing. It's a privacy thing. But what happens if the network dies? Then audio is never stored. You just kind of lose it forever. And this happened last week on the stream, \u2014 right? \u2014 Um so, so one um the the the UI is is the UI is doing work where it's listening for audio."
+},
+{
+"start": 1442,
+"text": "First of all, it's listening for like 15-second chunks of audio and it's and it's it has this like gate, this silence. That's problem number one. Problem number two, it sends posts with blocking chunks for transcription that just waits for transcription, which can take forever. Um, problem number three is um the audio is just it's never stored anywhere. So, if if a chunk fails to upload, you'll never see it ever again, \u2014 right? We never Yeah, we never did put it up to any kind of service like S3 or something, right? But then it's also that gets in that whole discussion about like should we store the audio right you need to process it and get rid of it right or read it but yeah \u2014 and and then fourth is um we did have this queue right so so in fact in the code you can see in your logs you queue up a bunch of chunks and so so they do happen after the previous chunk is transcribed \u2014 right \u2014 um but that Q is held in memory \u2014 so if your application closes if your phone goes to sleep then the whole queue is gone \u2014 that's Right."
+},
+{
+"start": 1499,
+"text": "Uh and so that's really not healthy. Also, we have a retry we have a retry limit of five retries. \u2014 Uh and if you if you fail five times, you're just going to And this this happened also last week where it was like more than 8,000 fail once, fail two. \u2014 That's right. That's right. \u2014 And we just dropped a bunch of chunks. And so these are the limit. From reading the code, I was like, whoa. Okay. Bob really created some some mess here. \u2014 Well, you know, here's the thing though. Let's let's be fair though. Let's be fair. Like this is a I think that's a great comment that you just made because you think about it."
+},
+{
+"start": 1532,
+"text": "This is this gets into this whole discussion about like us as software engineers, software makers, whatever we are now, right? Relying on the AI. Again, as I I said it earlier, you know, you can so easily just whip out like thousands of lines of code, \u2014 right? Um you can even spec code things and you can like go through it but usually through the process when you're having a like when you're building an application like this at some point you are presented with you don't have a choice in it usually with these very types of questions like oh where are we going to store this where but with the AI to when especially like when you're spec coding you almost have to think of everything up front but you're not going to right so then you go down a path and this is like one of those things from an architectural standpoint that and kind of getting back to your question of like well when do you go back when do you go back and stop and really take a look at what's going on like I don't know about you you you had a problem to solve you were trying to solve a problem same thing with me when the data modeling issue came up"
+},
+{
+"start": 1592,
+"text": "I had a problem to solve which was a wholly different experience than just reading every line of code that comes through every line of code that comes through and trying to keep up with what's being generated right and I I'm I'm seeing a pattern here from that same standpoint. But yeah, this I think this raises a really important question is when is the right time to then re-evaluate the architecture like what essentially what you did and then take a look for holes and flaws like that. \u2014 Yeah. And I guess the answer is whenever you're using the product and you're thinking about constraints or maybe you even come up against one."
+},
+{
+"start": 1627,
+"text": "I'll give you an example. Last week we came up against the 8,000 byte thing and that's why you did what you did. Uh for me, I didn't I didn't experience anything wrong actually. Um but I just I was thinking I was thinking about the product as I was using it. I was thinking about users. How do users use this? They're probably going to turn their phone like into standby mode, for example, right? How do I use it? If I go to a conference and and I leave my phone on a desk, but I walk around and talk to people, I want the wristband to capture it and send it to my phone, \u2014 right? But then I was also thinking, dude, I never have any battery life and I hate this."
+},
+{
+"start": 1658,
+"text": "So I definitely don't want an app like doing processing on device. And so I had all these thoughts and I was like now let me investigate the architecture. You know what I mean? So it's it's two cases. One where it actually breaks and we're like oh I need to understand this or two where we use it and think a bit more of like hm what is the experience right? What what do what experience do I want and are users going to want? Why did your thing stop? \u2014 I don't know but that it did that on its own. I didn't touch a thing. I don't know. But you know what's crazy about it though? If you take a look at the amount of stuff that was pulled in here, uh, that's the biggest one we've done."
+},
+{
+"start": 1694,
+"text": "Hey, let's go. \u2014 Oh, it actually detect it. That's funny. Yeah. See that? That's not very accurate. It just went off the \u2014 experience perfect. \u2014 Yeah. So, that's something else. There might be an arbitrary limit that's there, right, that we need to because I didn't stop it myself. Um, the good thing to see though is that it actually processed it extreme. And this is exactly what I wanted. \u2014 There's a 15-minute limit. I guess that's what it is. That's a 15-minute clip. So, \u2014 oh, it's exactly Oh, look at that."
+},
+{
+"start": 1726,
+"text": "Good eye. \u2014 I guess we have some some type of timeout somewhere. \u2014 It seems like it. It seems like it. Okay. \u2014 Can we ask Bob actually just as a segue because I don't \u2014 Yeah. Yeah. No, let's let's do that. Let's have that conversation. \u2014 Yeah. \u2014 You keep talking and I'll type. Yeah. \u2014 As in you want me to tell you the prompter? \u2014 No, no, no, no. I meant like go on with your the discussion. \u2014 \u2014 Yeah. Yeah. And so it's it's twofold. One, when something breaks, ideally we don't ideally that's just the like the the edge case, but two, we must use the product. We must use it. We must understand where it's likely to break and we must fix it and and then investigate the architecture."
+},
+{
+"start": 1761,
+"text": "And I think this is where, you know, a lot of people are wondering like, hey, do engineers still matter? Do software engineers still matter? Lose my job? Because because we we wrongfully think that, oh, it's it's it's about writing code. Uh it's not about writing code. It's about understanding architecture now, right? And it's it's understanding like I don't want to kill someone's battery. Um and and how can I hand off things to a sidec car for example. Yeah. And that's not going to go away for for a while. In fact, I don't think it's going to go away ever because machines are great at advising you."
+},
+{
+"start": 1792,
+"text": "But ultimately, you've got to make the call. \u2014 Yeah. And I think I think that's exactly right. I think that's where the relationship is complimentary and humans are very good at the creative part and very good at guiding right the AI is wonderful at executing right you if you give the spec you know you you spell it all out this is yes this is what we want to build go right go and now build that and guess what it's going to build what you ask for \u2014 so if we miss certain pieces in the architecture which we did right at certain and and now but here's the thing though I'm going to push back a little bit not on what you're saying but this whole discussion because you know we see this a lot on the socials these days, you know, and you're seeing the religious wars, right?"
+},
+{
+"start": 1829,
+"text": "I think I talked about that a little bit last week starting now with you should write read every line of code. You're irresponsible if you don't for those who are just like what's the point, you know, that I can, you know, and that kind of deal, you know, and it kind of obviously it's somewhere in between. But what's interesting to me um is that have you ever in your life developed a software application especially a complex one with a team where you had every single architectural decision correct right out of the gate perfectly \u2014 that did not need modification along the way \u2014 yeah go ahead and how long did those modifications take \u2014 yes and how many of them are just technical data or how many of them have been in an application for years that you can you know so this is not new right none of this is new it's I think happening in a different order \u2014 in some ways right I think we're just it's the approach is different but none of this is new you always have this thing where you're like oh man I really missed this like I didn't think about this thing over here because the software gets it's complex enough it's"
+},
+{
+"start": 1889,
+"text": "impossible honestly to get it all right so I when I see this kind of thing and the conversation we're having it doesn't scare me I'm like no this is this is kind of what we've always done it just it just in a different order now. And you can go a lot faster. So you can make if you make a bad decision, you can go a lot faster in that bad direction, right? But you can also fix it a lot faster, too. \u2014 Yeah. So exactly. \u2014 I don't know, man. 6F1 the other a little bit. \u2014 Yeah. And I guess it's just important more than ever now to really gate your launches. I think this is the big like imagine if we shipped Wallfly last week and we're like, \"Yeah, it works."
+},
+{
+"start": 1924,
+"text": "Use it.\" Right. \u2014 Sure. It's a low stakes open source project. What if it was a for-profit company? What if it was a business? \u2014 Oh, yeah. For sure. Um and and and unfortunately I'm seeing things go the other way where a lot of like AI startups are just shipping things way too early and then they break and there's all kinds of issues uh because they just they think we can move so fast so we can also ship so fast. I don't think so. I think I think I here I think this is the recipe for success with with coding with AI especially as we've done with building with Bob is you you can build faster but I think we should ship at the same speed to customers."
+},
+{
+"start": 1959,
+"text": "I would agree with that. Yeah. \u2014 Yeah. That shift slowly because because then you have enough time to test, you have enough time to use, you know, you have enough time to break it if you need. \u2014 Exactly. \u2014 And and to that point, I think, you know, uh I I another religious war you can get into, you know, with u test [clears throat] driven development that that kind of stuff. Um there's always been folks that are absolutely TDD all the way and some are like, \"No, man.\" Like, you know, and there's there's all sorts of various types of testing and all that kind of deal. I actually I would very opinionated right here. I feel like we have no excuse now, \u2014 right?"
+},
+{
+"start": 1992,
+"text": "Whether it's unit test, whether it's integration tests, whatever, \u2014 right? And you you could argue that if you don't know how to do that properly, you can just create an AI that just creates invalid tests that give you false positives there. You know, you got to you we also could have done that before, but now like if there was ever before a reason to say, well, it's too much effort, it's too much this, you can literally just spin these things up now. \u2014 Yeah. \u2014 Right. And then again, bring in Jev. Jev is a game changer as far as I'm concerned when it comes to testing."
+},
+{
+"start": 2023,
+"text": "Um, and you can do some amazing things for like very fast, very cheap, uh, with with Jev. And and so I feel like given we have that extra power, I feel like we have no excuse not to test our apps. Funny enough, we have not put a test harness in this app. \u2014 I don't not yet. Not yet. \u2014 Not yet. Not yet. Yeah. Yeah. Yeah. But still, it's kind of funny \u2014 about engineering. Well, two things I'll add. Number one is um \u2014 you ever notice how at big AI labs like Anthropic and OpenAI, um people's job titles nowadays is just member of technical staff."
+},
+{
+"start": 2055,
+"text": "people have \u2014 and that's that's because they actually believe software engineers don't exist those that's that's a title for machines now you know \u2014 which fair \u2014 fair member of technical staff I'm talking about architecture \u2014 that's why I changed my moniker to software maker actually \u2014 right \u2014 yeah that's that's good I think that's kind of the the thing to embrace however I think engineer means engineer whatever I don't really care that \u2014 um the second thing I wanted to to mention was uh now that we have rethought and and you know now that I've identified these kind of four or five issues with with the previous architecture what does it mean for the new like how should we change it so let's do a \u2014 if you're up for it if you're up for it \u2014 what you got \u2014 I would like to do an engineering pop quiz \u2014 uh with you and and and I don't like I'm not going to shame you if if you you know \u2014 but I'm I'm sensitive I'll be gentle here this Anyway, [clears throat]"
+},
+{
+"start": 2118,
+"text": "so little pop quiz and and please feel free to play along in the YouTube comments. It's going to be fun. So the previous architecture \u2014 the previous architecture right was we listen the UI the literally the UI the client um listens for audio and coming listens for silence in a naive way and at a 15-second mark sends a post request and it sends the audio chunk in the post request then what happens in the audio chunk is um a backend job starts starts transcribing and blocking all the chunks that come after."
+},
+{
+"start": 2156,
+"text": "Okay. \u2014 Uh the the audio file is not stored anywhere. \u2014 Um \u2014 I mean it's stored locally, right? But it's not right. It's not persisted. \u2014 Exact. It's not persisted. And the entire queue of chunks that that rack up over time. Um those are in memory. So if the application closes, they go. \u2014 That's right. \u2014 And finally finally [clears throat] um there's only five retries. Okay. So that's the old architecture. Okay. \u2014 Um, what would you change to get it to be what we want? \u2014 Well, right out of the gate, um, those trans those the processing uh, um, operations should not be blocking, right?"
+},
+{
+"start": 2189,
+"text": "I'd make those a synchronous, especially since we're already we already know which chunk a particular chunk of audio belongs to, right? We we have that recorded in logs. So, those would be asynchronous for sure. Um, as far as like the the the VAD and like the detection and stuff like that, yeah, it sounds like there is too much processing being done in the web app or in the app itself from an audio standpoint. \u2014 UI. \u2014 Yeah. Um, however, however, um, I that one I think could be arguable with I I totally get to your point."
+},
+{
+"start": 2224,
+"text": "If this thing is going to run on a wearable, you need to use as absolutely minimal power and and processing as as as possible, right? So you don't run down the battery and everything like that. Um, but there is a lot of potential waste in if you don't do some type of filtering. For example, from the, you know, voice detection part. Um, if the device says, well, voice is just always on. It's completely dumb. It records the whole time. Now you're going to be wasting processing time and network bandwidth and stuff sending chunks that have essentially nothing in them."
+},
+{
+"start": 2257,
+"text": "Right. And as I've learned, whisper uh will hallucinate the complete crap out of silence. \u2014 Um yes, it needs something to anchor to. If it has silence, um it will just put out gibberish, right? So there is a balance there on how much do you do. I think a little bit of VAD on the device makes sense to then save efficiency in the amount like how you're recording because I would rather have no chunk and silence \u2014 and let the back end deal with that than than just be recording nothing, right?"
+},
+{
+"start": 2291,
+"text": "Recording useless gibberish, right? Um so definitely moving to to asynchronous processing and such like that. Um as far as like the files um like where are we storing those? I mean obviously we've never really stored anything. Um I hear you on if it's just in memory you could lose it. I think those would need to be something we would persist persist to the device or disk or something. Um at least that way if to your point if a network connection is lost or whatever those can always be reincted right and that can be like a background process or something. What what am I what else am I missing here? Um \u2014 I think you got it."
+},
+{
+"start": 2323,
+"text": "Okay. No \u2014 I think for me the the most \u2014 urgent So okay let's let's enhance the pop quiz a little bit. Yeah. \u2014 And again, it's not you're an incredible engineer. You have nothing to prove. \u2014 Absolutely not. But I think it's cool like the Q&A because I want I want our audience to also think about it like this. Um, of all those issues, right? What is the most urgent one in your mind to fix? \u2014 Well, the blocking one really bothers me. That that really bothers me actually."
+},
+{
+"start": 2355,
+"text": "Um, that should not be the case at all. Um, \u2014 so, so you would you would then take all the so, so after like the first set of fixes from David, you have the app, the UI is still listening for audio and sending 15-second chunks with some gate for silence, but every chunk that's sent is processed immediately in parallel. \u2014 Yeah. \u2014 And stitched together and sent to Astra. \u2014 Yeah. \u2014 Good. I like that. Yeah. Okay. Second second thing. \u2014 Uh, the second thing would be the um file persistence. Yeah."
+},
+{
+"start": 2386,
+"text": "Because from a from a resilience standpoint, right, to your point, you're right. If if the app went like or if or if the back end or you know, if you had certain types of failures, you would just lose everything, \u2014 right? And so if the goal is this is for this to be resilient, right? Then yes, I would want to make sure um that files are being \u2014 uh stored locally until they are processed, until we have a confirmation they are processed and then you get rid of them. \u2014 Right. That's awesome. Um that and then the last one I'm not like I said the last one I'm kind of on the fence about the VAD stuff because I feel like there's a balance there."
+},
+{
+"start": 2420,
+"text": "Um \u2014 and and I feel like you could I feel like a case could be made for not wasting device processing and yeah uh you know \u2014 energy and stuff like that but but that that would come last. \u2014 Okay. Awesome. Thank you. This is so good. And and you know I love this because it reminds me of how we used to do coding back in the day. you just you just get in a room, you draw some stuff on a whiteboard, you're like, \"Okay, what what are we doing?\" You know? Um awesome. I agree with you. Um I have a slightly different order of things, but this is because I come from a front-end engineering background."
+},
+{
+"start": 2455,
+"text": "And \u2014 Oh, interesting. \u2014 Yeah. Yeah. And I I I've just I've been so plagued by bulky front-end clients that do too much. \u2014 Many of these, dude, and and I I hate them. I and I've spent most of my career like making them leaner and moving that logic somewhere. You know what I mean? So, so what I would do like the first thing I would do the thing that really really bothers me about this architecture \u2014 is the fact that the UI is listening for audio specifically like it has opinions about audio not audio but voice specifically and it has opinions about voice and it has like 15 seconds and some type of gate for silence and I don't want that."
+},
+{
+"start": 2495,
+"text": "Uh what I want \u2014 is I want the the client to just be a proxy meaning you connect to a Bluetooth microphone \u2014 uh or you use the devices microphone \u2014 and it literally just like receives an input stream of audio bytes \u2014 and sends the streams. That's that's all I don't do nothing else. \u2014 It makes it super simple and dumb from that standpoint. It just send in the stream. Totally hurt. \u2014 Yeah. as dumb as possible. And but to your point, the second point you had about the file persistence, um it doesn't just send the stream somewhere, it it in a with a rolling buffer, you know how like the dash cams, you can just hit record and they record."
+},
+{
+"start": 2536,
+"text": "So with a rolling buffer, it it persists chunks also on the disk. So it's so cool because it like consumes the stream and then sends it somewhere but also saves it to disk. It's doing this in parallel and that's I think that's all the UI should do. It just that's it. And this is cool because it doesn't really consume any battery. Um, and it does everything else. Okay. So, \u2014 I'd be curious like if if if that was the finding if if you could hook up like whether it was Bluetooth signal or whatever, but if you could hook up and just send this the audio stream without any processing, you just send it, you know, to the back end."
+},
+{
+"start": 2569,
+"text": "Um, and if that ended up being a low energy process, right, something that you're like, \"Oh man, we're, you know, we were able to record for 20 hours and this thing used like, you know, five minutes worth of battery time or then it would probably be moot, right? I I would need to measure that to feel comfortable.\" \u2014 Yes. \u2014 With not doing any VAD at all, if that makes sense. \u2014 Yeah. Yeah. Yeah. Yeah. That does make a lot of sense. Um, the question then becomes where do you send the stream to? the stream of audio bytes. Um, and that's where we have to beef up the either the you know we we have our back end is kind of complex actually I looked at it because like we have the sidecar which is like what is it whisper dockling um \u2014 yeah it's doc it's it's python it's a python sidecar because of dockling support in in whisper and all that kind of stuff like you can do some whisper I believe um in like typescript and everything but dockling itself and some of the processing we were doing needs python."
+},
+{
+"start": 2627,
+"text": "Yeah. Okay. So exactly. So we have that and then we also deploy to versel uh to upload the chunks. \u2014 Well, we haven't done that yet, right? \u2014 Haven't we? \u2014 I don't think we've built that in. \u2014 Right. To store the chunks. Right. Right. Yeah. Um \u2014 so what I want to do is I want to make the sidecar service a little bit more intelligent. \u2014 Okay. \u2014 That that's what I want to do. Um in fact talking about deploying to versell we we do use the nextjs back end locally we haven't deployed it but \u2014 yeah exactly like you have so so I I guess I misspoke instead of versel I meant nextjs \u2014 okay \u2014 so so we have sidecar we have nexjs and nexjs then talks to Astra as well uh so this is what I want to do differently I want the UI to just forward the stream of bytes um to the nextjs server the nextjs server says hey give me sidecar give me transcripts stores it in Astra and does all the work."
+},
+{
+"start": 2686,
+"text": "So the cool thing is all the pain here, all the working load uh is Nex.js. It's on Next moved off. Yep. Yep. Yep. \u2014 And that's and so then if your device goes to sleep, I don't care. We we keep working in Next.js and Nex.js hydrates Astradb. So then you just open the app and it's like, \"Oh, cool. My transcript is ready.\" \u2014 Yeah. Yeah. Heard. Yeah, that makes that makes a ton of sense, actually. So did you build it all? \u2014 I did. I build it all. \u2014 Did you already do it, Tus? Come on. um kind of uh Okay. Yes. But but I it's not it's not um it's not I can't prove it."
+},
+{
+"start": 2722,
+"text": "I can't prove it because for me the proof is in the pudding and by pudding I mean the actual working application. So what what I have and you can see it here. Uh let me show you. \u2014 No. \u2014 This is Wallfly. \u2014 Oh okay. \u2014 On your phone \u2014 and this it says stream from B Pioneer. You see? \u2014 I see that. Okay. Okay. \u2014 So, so I added this um \u2014 and I'm wearing the B Pioneer. \u2014 Okay. \u2014 And so in theory it should work. Um but in practice \u2014 say again, \u2014 have you been running it?"
+},
+{
+"start": 2757,
+"text": "No. No. That would be awesome. \u2014 I that that would be some Steve Jobs level, you know. \u2014 Uh no, but so I have the B pioneer. I have the app. The big problem is the app can't find the Bluetooth device. \u2014 Oh, okay. \u2014 And so if I wanted to cheat and test my pipeline, I could just use the phone's microphone, you know. Um, but \u2014 that is I mean that is a step, right? It is a step. \u2014 This is \u2014 um could not connect to the server."
+},
+{
+"start": 2787,
+"text": "Well, there you go. So, there's there's more issues here. Um, but it's and to be fair, I didn't test that. I didn't test the the phone microphone myself because I'm like, \"Bro, I don't \u2014 I want it to work fully.\" \u2014 Yeah. Yeah. I got you. \u2014 So, anyway, I'm convinced that if I can connect this to my phone and you can, bro, it's like it's in pairing mode. You see that blue light? \u2014 I'm searching for a phone, but my phone refuses to find it. And so, \u2014 have you um have have you ever found it on your phone at all? \u2014 Yes."
+},
+{
+"start": 2818,
+"text": "Yes. \u2014 And is it in there, but not pairing? \u2014 Yeah, exactly. try to remove it and then restart Bluetooth on your phone. \u2014 Let me Yeah, it's interest. I can show you something here. Let me show you something. Um if I So B comes with a B app. This is the B app. \u2014 Okay. \u2014 Um and \u2014 you can connect to it. It says disconnect. \u2014 Okay. \u2014 Um but \u2014 let me let me disconnect and upgrade. \u2014 And so it gives you this thing. Look at that. This is an Apple native set. This is how it found it."
+},
+{
+"start": 2849,
+"text": "I got it. \u2014 Um my app doesn't have that. I don't know why, but there seems to be some type of connection between the app and the device that \u2014 they very well may have done that so people don't do exactly what we're trying to do. \u2014 But David, you don't understand. I'm the kind of person who you tell me this and I'm going to go twice as hard. You know, if you think about it, then then you could end up inadvertently or, you know, very very much so on purpose, just using the B device as a recording device by being able to hook it up as a straight up Bluetooth device."
+},
+{
+"start": 2883,
+"text": "And I got to wonder if B has worked in some kind of layer, some like authentication layer between their device and the app. You know what I mean? \u2014 But this kind of stuff's just made to break. No, because we I mean, look, man, Wallfly is open source and what that means is it's pluggable. You can do whatever you want. You can \u2014 Right. Right. here. You can make it work with any uh \u2014 Oh, I'm not saying stop what you're doing. I'm just saying I'm I have a strong hunch that they've probably they've probably gated it through the app. \u2014 Yeah. Anyway, that's where I am uh right now."
+},
+{
+"start": 2916,
+"text": "I'm just I'm hoping I'm hoping that through the course of this stream. \u2014 Um we'll, you know, we'll we'll be able to finish today with with this. We have like 45 minutes. So, that's what I'm going to keep working on here on the side. Um, have you investigated the 15inute thing? And and while while you answer that, um, I'm gonna get something to drink. Please hold. My mouth is very \u2014 Yeah, go get something to drink. And what I'm going to do is I'm going to start um I'm going to start Well, for one, we got an answer from Bob. Yes, there is in fact uh a 15minute uh constraint. \u2014 Uh, will you show us on your screen?"
+},
+{
+"start": 2948,
+"text": "Oh, yeah. I'm not sharing. I'm not sharing right now. Yeah, \u2014 there we go. Yeah, right there. So, there is in fact one bit of a magic number. So, I need to expose that um I mean there's a con that's associated with but yeah, I I you know what I'll do is I'll put that I'll hook that up to the uh environment file um and uh the NV local and that way we can control it. Um and uh I see what it's doing. I see why that's there and it actually makes sense to a degree, but maybe that's something we can actually add some controls in the app."
+},
+{
+"start": 2984,
+"text": "Um, but then I will also take a stab at the whole asynchronous uh thing that we were talking about a second ago. So, let's go ahead and do that, shall we? \u2014 Taking a stab at the asynchronous thing. \u2014 Yeah. So, right now, if well, you know, there were a set of things in the architecture that need to be updated. We should probably Oh, you got your drink. We should probably We should probably speck that out, right? \u2014 Wait. \u2014 Yep. \u2014 We should have Bob work to merge my branch with the new architecture into me."
+},
+{
+"start": 3020,
+"text": "Oh, you've already got some of it worked out. \u2014 I've done everything. I just haven't proven it. So So it all exists. \u2014 Oh. Oh, dude. All right. All right. All right. \u2014 It's already I've spent the week on it. \u2014 Oh, I see. All right, we're not starting from scratch. \u2014 No, absolutely no. The only thing we don't have is this connecting and proving that my branch works. Uh, so that's the only thing. \u2014 How about this? \u2014 I'm gonna I'm gonna just save this conversation and go to a new conversation so we can come back to that, right?"
+},
+{
+"start": 3051,
+"text": "I don't want to make any changes \u2014 um while we're taking a look here. So, let's see. Whoops. \u2014 There's a branch. \u2014 Are you gonna have Bob guess the branch or \u2014 Oh, let's see. Hey, Bob. Hey, Bob. Hey Bob. Hey Bob. Song. Hey Bob. \u2014 I have no idea. I have no idea. I just Hey, Bob. It just feels fun. Anyway, um uh uh we have a new remote branch that contains some new arc changes."
+},
+{
+"start": 3087,
+"text": "Happy birthday. \u2014 We need who? To who? \u2014 Oh, I thought it was your birthday today. My birthday's coming up. Not yet though. Nove November 7th. November 7th. I turned 50. Whoa. Are you gonna have a huge bash? \u2014 Right. Gonna have a huge bash, man. I'm actually traveling for that, funny enough. \u2014 Yeah. I'm gonna have a wine. I'm going to the Napa Valley. \u2014 Awesome, dude. Drink all the wine. \u2014 Yeah. No. No way to celebrate your mid Well, I don't know if that's my midlife. Who's If I get to 100, wonderful. But one, what a way to celebrate that by, you know, just uh drinking a bunch of toxins that you put into your body."
+},
+{
+"start": 3122,
+"text": "Hey, let's you've earned it, brother. \u2014 Right. Let's see. Okay, so we need a we have a new remote branch. It contains some new arc changes. We need to pull this \u2014 um branch down. Um now, here's a question for you. Are you you didn't merge with Maine, but it sounds like that is your intent, but you want to make sure it works first kind of thing. \u2014 I mean, I'm I'm using it here. Yeah. But but we can have Bob review it and then merge it. \u2014 Do you feel Yeah, I was going to say, do you feel comfortable with just saying, \"Yeah, let's go ahead and review it.\" Merge \u2014 to local main. And then what I want you to do is we'll record another like 15 minutes and then see if it's stable."
+},
+{
+"start": 3156,
+"text": "Right. Right. And then we can just push it. Yeah. \u2014 All right. Let's pull this branch down. Um merge it into main review and test. How many do I have in there? Oh, you're looking at remote branches. I got it. Yeah, I was like, wait a minute. That's right. \u2014 Yeah, I can actually see the branch name on your screen and Bob right now."
+},
+{
+"start": 3189,
+"text": "Oh, here. I should probably go boop boop. \u2014 David, you know what? I think we're gonna finish this app, dude. It's going to be a finished app in a couple weeks or just two weeks out. \u2014 You think so? I think so. \u2014 It is. It is honestly getting closer. I've been using it for a lot of stuff and it works really well. Um, you know, as far as like the conversations aren't going past 15 minutes, but that's configurable. That should be easy to fix. Um, \u2014 also point is pretty cool. \u2014 Yeah. \u2014 We should also talk about um what like our definition of done."
+},
+{
+"start": 3225,
+"text": "You know what I mean? \u2014 Um Yeah. And and I think it's done when I successfully go to a conference and use it all day. \u2014 I like that. \u2014 Yeah. And and here's the thing that Astro database Astro database is shared between you and me and our Devrell team. \u2014 So what if we have a collective repository teamwide conference summaries powered by Wallplay? You know what I So like you take your \u2014 and and what's super cool, not only that, but Astra itself, right?"
+},
+{
+"start": 3259,
+"text": "Like not only is it have has it had [clears throat] vector search and stuff forever, it's got BM25s, it's got lexical, it's got all that, right? So you can when it comes to being able to say search across and that's actually where those summaries come into play, right? That's where the enrich step in the processing is really important because again if you just try to say vectorize raw conversations \u2014 um you get lots of noise in the conversation that semantically um may match. Now by the way there's also a reranker in there right there's the Nvidia ranker all sorts of things."
+},
+{
+"start": 3292,
+"text": "Astra itself has the search capabilities baked right into it. \u2014 Right. So to your point, if we had a set of us all recording things and that kind of deal, it's going into the same database. There's no reason why I cannot ask the question um you know what were tous David, you know, what what were the conversations they had across or like what were the the top takeaways or anything across conversations. There's nothing that limits \u2014 the chat only to one conversation. You can absolutely do that globally. So this is the ultimate Devril developer relations tool then because we could all go to conferences and record a bunch of stuff and then it's like what do developers actually care about about Bob?"
+},
+{
+"start": 3330,
+"text": "Well that yeah and and to that point you could also you know we kind of do it a little bit as it is but we could expand upon it. Um oh I killed the app. Ah yeah I did I we're updating all the things I killed the app. Um but if you remember in there you get that task list. It's not really a a task list like we didn't we've talked about doing that before but we could take add a feature that then essentially says here are all the takeaways like to your point like what are all the things that um you know folks talked about about Bob or whatever it is right at a conference or something like that what are the key takeaways and you could just we could have a pool of those things right that is a part of how the app functions as well so for sure \u2014 and and and you know like what blog posts can we write about this how What what pain points summarize all the pain points they discussed you know like you just don't ham \u2014 incredible \u2014 so what's happening with my brand \u2014 all right let's see what is going on here okay mergers clean okay okay okay so"
+},
+{
+"start": 3393,
+"text": "it's just it's working through I did ask it let's see streaming sidecar so it picked up the right one I believe yep \u2014 oh well \u2014 I mean we didn't tell which one we Just pick up the architecture change one. \u2014 It is. It is. It is that one. It's the right. \u2014 Yeah. No. No. I know. But it's funny, right? Because we didn't tell it. Like it just it looked at the branches that are out there in remote and I was like, \"Yeah, it's that one.\" It was kind of funny, actually. \u2014 Yes, Bob. Well done. \u2014 Okay. Okay. Yeah, we'll do that."
+},
+{
+"start": 3427,
+"text": "Music detection regression. Okay. Right. That's right. This is what you were talking about. \u2014 Okay. No. No. No. No. No. No. Don't push. We need to test locally first. I'll handle that myself. \u2014 Yeah. \u2014 And come back to you when needed. \u2014 Okay. \u2014 We also need to tell it to reconcile the um Oh, hang on."
+},
+{
+"start": 3458,
+"text": "Sorry. to recognize the ASR sidecar hosting change from the B pioneer B branch into this one. So a number three if you scroll down number three there. \u2014 Oh, \u2014 so this \u2014 Oh, you have more than one branch. \u2014 Yeah, I mean that they're separate. So this one just fixes the architecture LIKE WE TALKED THE OTHER \u2014 OH, OKAY. \u2014 The other one adds connectivity for this. So we don't have to worry about that other one for now. Let's just get the architecture. \u2014 Okay. All right. All right. All right. All right. So, um you know, okay."
+},
+{
+"start": 3489,
+"text": "Do we have any new do we have any new um environment variables or anything like that? \u2014 No. \u2014 Or does it use No. Okay. So, it should just kind of go. \u2014 Yep. \u2014 Let's see what happens. \u2014 We're we're entering validation nation. \u2014 Validation nation. All right. So, first first one is okay. They both restarted, right? Do we, you know, basic app functionality? Is it there? Right. It's recording. Are you recording?"
+},
+{
+"start": 3521,
+"text": "Oh, you're recording. \u2014 You're recording something from Berlin. \u2014 My home address. Whoa. Everybody knows. \u2014 Remember, it picks up it picks up your location, dude. \u2014 Thanks. \u2014 Well, we know. Okay. So, you must be recording. Where are you recording from? I mean, not from. I mean, what device? \u2014 Oh, my iPhone. Yeah. I just \u2014 Oh, you're on your Oh my god, that's great. So, it's doing it right now on your iPhone. \u2014 It must be. \u2014 It was. I stopped it, but I don't know why it's still going. \u2014 Should Should I delete this for you, \u2014 please? Yeah. Thanks. \u2014 It's too good."
+},
+{
+"start": 3552,
+"text": "Contagious. \u2014 It never stops. It's durable AF. \u2014 Oh my god, that was great. \u2014 But that's validating that it works. But let's try it on your end. \u2014 Okay, so now what'll be interesting is if we take a look at chat. Um um what are the top takeaways from pages this week? So um what I'm doing right now Oh, I got to fix that. What I'm doing right now doesn't validate it. It's just testing. Just I'm just doing very coarse kind of testing just to make sure the app works right that nothing from the merge changed the basic functionality of the app."
+},
+{
+"start": 3588,
+"text": "This obviously does not um address any of the architecture changes, right? We need to add markdown rendering. \u2014 There is markdown in here, but it renders it after it's done. \u2014 Oh, how lame, dude. \u2014 Yeah, we can. We just Yeah, that I agree. I agree. Okay, so generally speaking, it seems like that's good. So, I'm going to come over here. Record. Let's see what happens. All right. Now, this is interesting already. What are you doing? Okay, I think we have some issues. \u2014 Oh, no. \u2014 Okay, but let's see."
+},
+{
+"start": 3620,
+"text": "Have you tried to record? That's what I'm doing right now. \u2014 And it's not working. \u2014 Correct. Yeah, you see it's it's hung here and I can see in the logs. Um, \u2014 how did I record from my iPhone? \u2014 I don't know. Here, let me try that. Give me a second. \u2014 Wait, wait, wait, wait, wait. I think you're missing a module. Did you npm install? \u2014 I think so, too. Um, here. Die. \u2014 Wow. \u2014 I think you're correct. You are correct."
+},
+{
+"start": 3652,
+"text": "You are. \u2014 Thank you for being correct. \u2014 Please hold. \u2014 Okay. \u2014 Correctness is appreciated. \u2014 All right. Let's see. All right. Let's try that again. Same issue. Okay. So, what I'm going to do \u2014 What's the error? Is there no error in the logs? \u2014 No, there is. Give me a sec. Here we go. I'm just looking. I'm just going to pull it. Okay. \u2014 What's What does it say? Audio PCM work. Bro, this is 100% a dependency issue."
+},
+{
+"start": 3684,
+"text": "Okay, we're missing something. So, here, I'll just give it to Bob. Not even going to give him any context at all. Just give it right to him. No context for you, Bob. Okay, let's see. While you're doing that, I'm also going to look according. Okay. What's going on here? Okay, let's see what live recording session not found. \u2014 That's the 404 it's talking about."
+},
+{
+"start": 3718,
+"text": "Is it because \u2014 is it pointed to the right place? Um because remember uh we were using 3030 not 3000. Um \u2014 that shouldn't have changed. No. \u2014 Yeah. Okay. Okay. wallfly.comdavid. \u2014 We're so close, dude. If we get this working here, I just sent a new build to my phone. Let me check if it connects to the \u2014 Bluetooth."
+},
+{
+"start": 3751,
+"text": "Okay. Okay. Metro treats. Okay. \u2014 Oh, interesting. \u2014 What? Oh, Wallfly WS secret was missing. \u2014 Oh, I guess I do have new envirious. Here, let me stop sharing real quick. Oh, yep, yep, yep, yep. Okay, let's start sharing again. \u2014 Tages, that's why I asked that."
+},
+{
+"start": 3784,
+"text": "Oh my god. What are you What are you doing? \u2014 What are you doing, man? All right. \u2014 The thing is that secret is not really secret, David, because it's just like random bites. It's no one's password, you know. So I \u2014 That's okay. The rest of the stuff in there is. So I All right. Let's see. Let's see what happens this time. \u2014 That was my attempt to get your tokens. \u2014 All right. You've already got my tokens, dude. You have my tokens. All right. Oh, I see live transcription. I see things happening. Tous. Okay. Let's see if it actually is doing stuff for real. \u2014 But here's the thing."
+},
+{
+"start": 3815,
+"text": "Oh, look. It's working. It says cued. \u2014 It does say ceued. It does say cute. All right. \u2014 That's our parallelism, David. That's our parallelism. \u2014 Parallelism. Okay. So, that's fun. Oh. Oh. Oh. No transcript available for recording. Well, you went too soon, dude. \u2014 You went too soon. Oh, no. \u2014 Oh, no. But it says Okay. \u2014 Um, did anything this No errors here. No. But ah, right here. No transcript available for recording."
+},
+{
+"start": 3847,
+"text": "So, \u2014 fail the transcript. Okay. Okay. \u2014 This is the new way to do code review. \u2014 So I guess at this point Okay. Here. Let's go ahead and stop that. Stop. Or stop. It's hung. Interesting. \u2014 Like a horse. \u2014 \u2014 You just teed me up, bro."
+},
+{
+"start": 3887,
+"text": "Oh, dude. Man, \u2014 we're both talking to Bob at the same time and not each other. This is the AI future they warned us about, \u2014 right? Okay, let's see. Yes. Yeah. This is the part when I was saying uh you know like when we were trying to troubleshoot the uh data modeling thing last week \u2014 and like nothing like on a live stream where you're watching like because I don't know about you but when I'm like really dug in and troubleshooting a thing my arms are like up on my desk."
+},
+{
+"start": 3922,
+"text": "I've got my hand like I'm like you know I'm like in like deep read mode like nobody wants to see that you know. \u2014 Yeah. Yeah. I think the there's some connection issue with your sidecar. I don't know why because like everything's supposed to be running locally except obviously Astra. So \u2014 I'm suspicious. Um maybe something went wrong with the Dothling Python version or something. I think that's kind of my guess here. Um because everything else is it it checks out."
+},
+{
+"start": 3956,
+"text": "Um \u2014 well this is why this is why we uh merge and test before push \u2014 you know. \u2014 Yeah \u2014 before before pushing to main kind of thing. \u2014 Yes. \u2014 Interesting. Oh yeah. I didn't see it load the model. Usually you do see that happen. Okay. Let's see. Okay. That's fine. Yeah. It should just load it down when it needs it. I mean the previous one did in fact load it would just load any models from hugging face that it needed for the uh audio transcription and such and so that means the first enrichment would take a little extra time as it waited for that \u2014 the model okay \u2014 time [singing] out \u2014 why was the error was the error a timeout then or \u2014 well no I don't I don't know actually because it just says no transcript available for recording I I think it needs to be a little bit more verbose right like \u2014 I I'll agree with that."
+},
+{
+"start": 4015,
+"text": "Yeah. \u2014 Yeah. I I tend to have I tend to really like very verbose logs when I'm first developing something. Um I mean obviously I'm not alone on that. That's why we have, you know, debug filters, but like um and nowadays it's so easy to do. I remember I remember there was a time, right, when you'd have to write those. \u2014 Uh yeah, \u2014 and now you can just tell it to do it. Okay. \u2014 Oh, interesting. Am I missing? Is it simply that? Where? What's missing here?"
+},
+{
+"start": 4047,
+"text": "No, it wasn't even the same one. Okay. No, it's I don't know what it's looking for. Okay. Uhhuh. \u2014 What are you looking for? \u2014 Right. \u2014 Okay. The sidec cars run for four minutes with 110 megabyte RS. Oh, you're going to kick up my Chrome Dev Tools. Okay, that's fine. But I already had one, so I wonder if it's going to be okay with that or should I kill the one that I had."
+},
+{
+"start": 4079,
+"text": "Let's see what it does. I was in the middle of doing something with something else. So, I do love the fact that most of the AI coding assistants that I work with now uh can just launch and act, you know, like use Playright and stuff and use browsers. And I even had uh something I was building yesterday uh that Bob was literally stepping through. I loved it actually. Um because what I was building was, you know, pretty complex. Um you know, from a from a UX standpoint, there were a lot of little things to test and literally watch it just go and it went through the whole app and tested everything for me."
+},
+{
+"start": 4115,
+"text": "I still did it myself because I like to feel it. I need to feel it to understand, right? But it was it was really neat watching it go through that that whole process on its own. Yeah, that does sound very like you like to drive or you like to watch something drive. \u2014 I don't That's the thing, man. Like, yes, we have this amazing ability, but you still got to drive the thing. You still got to be a part of it, right? If you check out and stuff, then then that's where you get into trouble, right? Okay, here we go. \u2014 David, I'm annoyed, David, \u2014 because I'm annoyed."
+},
+{
+"start": 4149,
+"text": "Nothing can find this. Not even Bee's own app. Dude, remove. Have you already Have you tried to remove it completely? Forget it from Apple. \u2014 I have I put it into pairing mode and now it's not advertising. \u2014 Have you tried turning it on and off again? \u2014 I don't know how. Look, this is the B app. \u2014 Yeah. \u2014 And even the B app is like, I have no idea what this is. \u2014 That's crazy. \u2014 Can you turn the Can you turn the device off? \u2014 No, there's no way other than just let it run out of battery. There's no off button."
+},
+{
+"start": 4180,
+"text": "There's no reset button. \u2014 Oh, really? There's no little pinhole or anything. \u2014 I mean, there's a pinhole, but I think it's a microphone. \u2014 Oh, yeah. Don't Don't stab that one. You might want to look that one up. I don't know why, but it doesn't work now. \u2014 Okay, let me charge it on a cable. I think that that may be some What if I plug in a cable? Will this turn it off? Are you off now? It doesn't give a that it's on a cable, dude. Um, so what's happening with with Bob? \u2014 I'm I'm reading now. Let's see. Um, \u2014 let's try and record something."
+},
+{
+"start": 4212,
+"text": "That's what it said. \u2014 That's what I'm doing. \u2014 Wallfl live transcription. I do like that little update. I see you changed that. \u2014 Thanks. Because it's it's actually live. That's the beauty of it. It's not \u2014 live transcriptions. Okay. So, we see the ceued. We got it last time. And now I never saw the sidecar kick in, but maybe it just didn't. I see this. Oh, same thing."
+},
+{
+"start": 4245,
+"text": "No transcript available for recording. It feels like there's something missing where it's not getting the audio, \u2014 right? Because if there's nothing to process and I'm not seeing the sidecar get invoked at all. \u2014 Yeah. \u2014 Right. Oh, worth raising Matas. I didn't That's hilarious. It must have seen that you authored the branch. \u2014 Yeah. \u2014 So, \u2014 um, \u2014 we have the same error and I noticed I never see the sidecar get invoked."
+},
+{
+"start": 4283,
+"text": "Process the audio that could explain why there is no trans. \u2014 Can you include a prompt to tell it to get more verbose? Yeah. Yeah. Absolutely. Is there a step missing? A step missing. Also, the current errors are a big and need to be a lot more verbose."
+},
+{
+"start": 4315,
+"text": "So, we can troubleshoot this or trouble troubleshoot this effectively. Now, this is actually one of those cases where if we don't see anything happen um within this iteration, I have an idea. And one thing we didn't do is we did not actually do a review, right? We didn't ask like for one, this is I think where um either Bob or Xavier does a really nice job. \u2014 You can say, \"Hey, review like we just made this big merge. \u2014 Review this, \u2014 right?"
+},
+{
+"start": 4347,
+"text": "Let's let's see what you find.\" Um \u2014 and we we kind of skip that step. Let's see. Trace the client start path. See where the socket should open. Yeah, I feel exactly. I feel like it is not connecting somewhere because we never see the sidecar. And I see this. Where were we? Where did we the sidecar before? \u2014 Where? I know. I'm not finishing my statement as I'm \u2014 It's like a new song."
+},
+{
+"start": 4379,
+"text": "You can look. \u2014 Oh, so 52616 \u2014 5261. Are we using the wrong port or something? \u2014 I think I think I we're on a different port, but I don't remember if that was dynamic or if it was something we set explicitly, but it is a different port. \u2014 We can tell Bob to um \u2014 Are we \u2014 We can tell Bob to correct port for the side car. Wait. Okay."
+},
+{
+"start": 4412,
+"text": "Are we using dot? I put a period in there accidentally. I approve your statement. But I'm with you. I feel like I feel like this is something like that. Let's see. Oh, oh, oh, whoa, whoa, whoa, whoa, whoa, whoa, whoa, whoa. Um, you said \u2014 3030, \u2014 right? Aren't we using 3030? \u2014 You're right to ask."
+},
+{
+"start": 4448,
+"text": "You're Yeah, you're right. Something is, but yes. Yes, something is on 3000, but it's not this app. So, I'm Yeah. Right. Okay. So, it's just checking the ports. Checking the ports. Checking the ports. Now, one thing I have not done is I have not wiped out the next cache."
+},
+{
+"start": 4484,
+"text": "I I'm probably going to do that here in a moment. Uh we made a you know a bunch of changes there. I think it's it's probably prudent \u2014 to do that in build. um just to be sure because I have absolutely run into rabbit hole issues that I'm like, \"Yeah, I should have probably just cleared that out and rebuilt and then oh, lo and behold, it worked.\" \u2014 I'm done with the B. Okay, I think so. Here's what I think. You ready? \u2014 Okay. \u2014 I think I think Apple has some affordance in the iPhone to say this hardware only works with this app."
+},
+{
+"start": 4518,
+"text": "That's what I think. \u2014 Yeah, that's Yeah. And well that sucks, David. So um so I I I I don't think it's ever going to work with Wallfly because Apple will not allow it. So either I try this on some Android device or I just get a different device altogether. \u2014 I don't even know if it's an Apple thing. I actually think it's the other way around. I think it's B saying you cannot work with any software but our software. \u2014 That would that would be as a developer as somebody who made a device like that."
+},
+{
+"start": 4549,
+"text": "Think about it, right? You probably don't want anybody to hijack your device for other things. \u2014 So, I could see that being a thing. Yeah. But either way, I agree with you. I mean, there \u2014 I don't think I don't think it's a loss to use a phone or another device. Like, I still think that \u2014 getting it working on the iPhone, like the real iPhone, not the emulator like we have here, that is a big step in the right direction. And that is still technically I mean you could argue it's not a wearable but yeah like \u2014 is it going right now?"
+},
+{
+"start": 4582,
+"text": "It is. Yeah. Recording. \u2014 It says live transcription. \u2014 Um \u2014 Oh okay. Yeah you are. Oh I see your address again. I'm gonna \u2014 Okay. Come come come pull up pull up. I'll feed you. \u2014 Come grab a plate. \u2014 Nice. \u2014 And that's I mean that's the code that you're running there. It's the same branch, right? So um \u2014 that's right. Let's see if you actually get a transcript because then we know for sure it's an issue on your computer with a port or something. Um \u2014 that's right. That's right. Yeah. And I see that it's um it hasn't uploaded yet."
+},
+{
+"start": 4614,
+"text": "So I'm waiting for it to upload. Usually it should have done it I think by now. Uh oh. Is this using your branch or my branch on your phone? \u2014 It's using my br. It's using this Well, we have the same branch because you just pulled right. \u2014 Oh, okay. Yeah, it's using Right. It's using your new stuff. Okay. \u2014 It's using the new architecture. Yes. Gotcha. Got Yeah. Yeah, it's \u2014 and you're feeding it through your computer. Do you see the sidec car kicking in at all? \u2014 Let's take a look. Good question. \u2014 Because I don't see updates into the in the recording itself. So, it might just be a difference in the process. \u2014 Yeah."
+},
+{
+"start": 4644,
+"text": "Uh, let me check the logs here. \u2014 Yeah, because if you're if you're like processing things locally and stuff like that, are you doing the full process every 15 seconds or are you waiting till everything's done and then kind of I I thought from what I saw you ceue it up, but I'm not I'm just not seeing that. Yeah, I'm trying to investigate the logs here. \u2014 Okay. \u2014 Um H not sure. Let me let me zero in here."
+},
+{
+"start": 4675,
+"text": "Whoa. So, turns out battery life is a real constraint. I'm actually figuring out that B is a valuable company by doing this because nobody nobody has tracked all day battery life. Yeah, \u2014 man. Who knows? We might. So, here, um, it's interesting. I have the same problem. \u2014 No, it's not. But maybe it's not exactly the same problem because, um, in my logs, I have model ready false. Um, do you have that model ready false?"
+},
+{
+"start": 4711,
+"text": "Um, hold on real quick. Sorry. Stop ordering burritos, David. \u2014 Um, model ready false. Uh, where is that? What are you talking about? It's \u2014 in the log. It's It's a little Oh. Oh. Oh. Oh, yeah. I don't know yet. Give me just a second. \u2014 Okay. So, my ASR pipeline is failing because the whisper model is not loading."
+},
+{
+"start": 4743,
+"text": "That's the problem. So, I'm I'm working. \u2014 Oh, is that really interesting? Okay. \u2014 I think you have the same problem, right? \u2014 I didn't see it load like I normally do. \u2014 Yeah. I've been I've been recording for 28 minutes, dude. \u2014 Okay. \u2014 And uh Yeah, there's model here. \u2014 Yeah. Yeah. Okay. Interesting. Yeah, you should see it dynamically load. So, it might be just something missing there."
+},
+{
+"start": 4774,
+"text": "All right. So, I have cleared the cache. I rebuilt. I've now started it back up. Um, it actually mentioned that the old sidecar code was running. So, that may have been part of the issue. Um, so that's why I killed everything. And I'm having it uh check. Let's see. Okay. Okay. So, it wants me to record. Six minutes to figure everything out. Okay, we're recording."
+},
+{
+"start": 4805,
+"text": "Okay. Oh. Oh. Oh, I see something new. No. Oh, there. Okay, that's closed. Interesting. Okay. I see some more verbosity. \u2014 Yeah, that's at least that. Yeah. So, I I figured the issue is \u2014 Oh, \u2014 in the in the side car. \u2014 So, \u2014 okay. All right. Let's see what it does. \u2014 Bro, the stop button doesn't work even. \u2014 Yeah, it's been getting it's been getting uh hung. Okay. Oh, this is a different error. Similar, but it gave more information finalized."
+},
+{
+"start": 4840,
+"text": "Oh, okay. So, that's at least something. Okay, I'll just give it that. Interesting. \u2014 What's the \u2014 Oh, I'm sorry. I'm looking at the logs right here. \u2014 Anything interesting? \u2014 Um, just the fact that it's saying that it it gave more information about like the various components that are not being loaded."
+},
+{
+"start": 4873,
+"text": "Let's see. Okay. While you It has Oh, okay. Not a real stop. Okay. Yeah. So the the extra verbosity is at least giving us some information. We'll see if it turns into anything. You know, I've noticed I've noticed a fun pattern here, Tis, is that we uh we record these. We we usually take on some interesting fun thing at the end and then we're troubleshooting up to the end and then we'll take the time to like during the week figure it out and come back and kind of recap. I feel like I feel like we're gonna do that this week, too."
+},
+{
+"start": 4905,
+"text": "Uh, I feel like um it's going to be production ready next week. \u2014 That's that's my \u2014 contagious states production ready next week. \u2014 Yeah, it it is definitely production. By production ready, I mean production, but you're you're using your own like Astra sidecar stuff. I'm not talking about SAS production ready. I'm talking about the app production. \u2014 Yeah. Yeah, I got you. I got you. \u2014 The app being a thin proxy, I think it's definitely realistic because we're almost there, dude. Like we're having like sidecar issues here because of ports and the whisper model doesn't work."
+},
+{
+"start": 4939,
+"text": "Well, I that's the thing is the whisper model that tells me that that feels like a bug because like whisper should be we shouldn't even have to worry about loading that that gets loaded through dockling, right? And and that's kind of unknown, right? Um so the fact that we're not seeing it at all and the duration keeps coming up as zero \u2014 is very telling to me. U I don't even think whisper is being invoked at all because I don't think it's gotten there yet. And and the fact that I'm not seeing the sidecar kick in um tells me and I think your hunch earlier was right."
+},
+{
+"start": 4972,
+"text": "I feel like something something here is not being initialized properly or something like that. It's not even going through the process. Right. \u2014 Yeah. \u2014 So let's see. Okay. \u2014 Yeah. No, the issue is really the model never becomes ready and and by model I mean whisper because I'm looking at the logs right \u2014 and it it it keeps logging out model ready um and it's false and and and similarly there's you will see in the logs of dockling model loaded uh but if you command f if you command f in there and search for the word model loaded you'll never find it because \u2014 that's right I'm not seeing all the dockling logs at all oh okay what's going oh wait Wait, wait, wait."
+},
+{
+"start": 5016,
+"text": "Here we go. \u2014 I loaded a smallen. \u2014 Okay. \u2014 Worker one loaded model small. \u2014 That's something. That is something. \u2014 Oh, here we go. Look at that. \u2014 Okay, we're getting we're getting recordings again. Oh, what did this say? \u2014 But nothing changed. Or did Bob fix it? \u2014 Yeah. No, no, no. Bob was working on it. I I asked I didn't Did you add this? You must have added this where it gives you like \u2014 Yeah. Yeah. Yeah. It's just your transcript."
+},
+{
+"start": 5048,
+"text": "Yeah. Yeah. \u2014 Oh, okay. Oh, neato. Okay. Yeah. No, it's it's doing it now. Yep. There it goes. \u2014 Okay. Nice. So, it does work. It's just this flaky ass sidecar. \u2014 Well, let's see. Let's see. Let's see. Okay. What was Okay, the bug effect web. Okay. So, tear down. Oh. \u2014 Oh, it's a React issue. It's a React issue. Okay. Oh, because I was doing it through the web app. Were you testing it through the phone or did you do both? \u2014 React is on both sides."
+},
+{
+"start": 5080,
+"text": "So, \u2014 it is on both sides, isn't it? Yeah. \u2014 Yeah. Okay. So, it's a react like can we check the bug? The mount effect as a dependency on web you do this each rerun also fire the crash recovery. Crazy. Um, okay. No, wait. That last one you see on the bug the last bullet point there. this one here. \u2014 Mhm. Yeah. \u2014 Okay. Now, the fact that my machine is spinning up tells me it's getting things."
+},
+{
+"start": 5112,
+"text": "Yep. Okay. \u2014 I like this. I like that it does that. That's cool. \u2014 Is that up to date? \u2014 Yeah. \u2014 Let's see. \u2014 Really? Can you scroll down? \u2014 The fact that she's cleaning up tells me it's getting things. Yep. \u2014 And the best thing is, David, these we can actually vectorize because it's not going to have nonsense. It's going to like the chunks are not just 15 seconds naive. They're like actually like segmented, right? As you can see, \u2014 I I don't I don't know if we want to vectorize because the chunks will still be like, okay, that's something. \u2014 That's that's right. Semantically, that sucks, right?"
+},
+{
+"start": 5142,
+"text": "It's not it's not information rich. Yeah, exactly. Or information. Yeah. \u2014 Can you go back to the sorry to the this one? So, the mount effect listener captures a dependency on web. We return a new object every render. Ah, it's \u2014 that was the bullet I \u2014 Yeah, \u2014 it's a use effect bug. Jesus, React continues to ruin our lives. That's insane. Anyway, um, cool. This looks good. Can we commit and merge and pull it and then and then next week we get production ready \u2014 working."
+},
+{
+"start": 5174,
+"text": "Let's commit, sync, and push. \u2014 Uh, because we're on Maine, right? Um, \u2014 do it \u2014 main. This is the \u2014 going for it. Tjas, \u2014 it was everything we just talked about in the terms of the new architecture going live, dude. And and the issue was never an architecture issue. It was the front end that was giving us a new reference to this tearown function every time. That's awesome. Okay. \u2014 Yeah. \u2014 So, in terms of architecture, we are way more solid. We can handle we're more fault tolerant and we persist chunks to disk to retry and when we succeed, we delete them."
+},
+{
+"start": 5211,
+"text": "So, it's all pre, \u2014 you know, I would love, and maybe this is something I'll take on for this week. I would love to prove that. And what I mean by it is, you know, one of the things that I like, \u2014 what's that? \u2014 Kill your network halfway through streaming. \u2014 No, no, no, no. I mean I mean that that would be a way to do it for sure. Um, but uh wait a minute. \u2014 Oh, do we need your B changes, too? You wanna You can \u2014 No, those when you're ready. Okay. Um, I was thinking like a dashboard, right? like to see as they like something that is just like a developer dashboard, not something that the user would use, right?"
+},
+{
+"start": 5247,
+"text": "That as we we can see the different asynchronous requests coming in, their processing step, things like that. Like where you know because \u2014 that building something like that now is cheap, \u2014 right? That used to be like oh wait, you want to spend money and resources on doing you know like now it's it's it's cheap. Um and it might be really neat to kind of see that happening live. I mean you can um obviously we know it's working. I'm still recording. Uh, it's still doing its thing. Um, we're a bunch of lines in and Yep. Yep. It's got it. Yeah, I really like how you did this over here."
+},
+{
+"start": 5277,
+"text": "That's cool. Um, I'm actually gonna real quick because we're at time. I'm going to stop this one. I'm going to go here and do it here as well. \u2014 And we're going to start instant by the way. \u2014 Oh, you mean the trans part? \u2014 Yeah. I don't know why your web app is taking so long because it should have all the chunks already. Like what is that doing? You know, \u2014 over here. Oh, that's a good question. Um, \u2014 why is that taking so long? But it's \u2014 Oh, it's it's processing audio with four minutes. \u2014 I wonder what what it's \u2014 Oh, it might be the end. I wonder if it's stitching. I mean, the previous one it would process each chunk, but then at the end it would stitch them together and do the enrichment."
+},
+{
+"start": 5314,
+"text": "So, \u2014 that that's exactly what's happening. Yeah, you're right. You're totally right. Yeah. \u2014 Yeah. Yeah. Because that's how it's doing the enrichment, right? It stitches them together that way. \u2014 Can we go back and check your mobile app if it's uh doing it? Like now in the web UI, if you go to moments, can we see the \u2014 Oh, but will it keep recording? \u2014 I meant in the web UI. If you go to moments in the web UI. \u2014 Oh, I was waiting for it to finish processing. I guess it doesn't matter. \u2014 Yeah. Oh, yeah. It's still enriching. That's what's it's doing there. \u2014 And you see your phone there with Union Square Street Market San Francisco because that's the simulator's address."
+},
+{
+"start": 5345,
+"text": "It's awesome. \u2014 That's That's hilarious. Actually, \u2014 it works. \u2014 But what's interesting is why don't I have a transcription yet on my phone? I think it maybe takes some time or your phone doesn't have the latest code because your simulator needs to reload and get the new one. \u2014 Oh yeah, I think you're right. \u2014 We're out of time. We're out of time. Let's call it here. \u2014 We are. No, I think this is great. I think it's great. Yeah, I'll reload the stuff on the phone to make sure. Yep, it it definitely doesn't. Okay, \u2014 awesome. David, this was such a blessing. I will see you next week and we're going to take this to production. I'm so hyped."
+},
+{
+"start": 5376,
+"text": "Awesome."
+}
+]

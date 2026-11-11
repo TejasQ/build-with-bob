@@ -408,5 +408,59 @@
     "chapters": [],
     "number": 11,
     "part": 7
+  },
+  {
+    "videoId": "IpfFp5Nrji4",
+    "slug": "building-with-bob-walfly-wearables-app",
+    "project": "unassigned",
+    "youtubeTitle": "Building with Bob: Walfly Wearables App",
+    "date": "2026-10-15",
+    "duration": 5377,
+    "thumbnail": "https://i.ytimg.com/vi/IpfFp5Nrji4/maxresdefault.jpg",
+    "youtubeDescription": "Last episode, we introduced using JEV as a great way to quickly and cheaply organize conversations in real-time. We also tested out recording for the whole session, but ran into what turned out to be a data modeling issue.\n\nThis week, David explains how moving audio chunks into their own table resolved the data-modeling issue, and why human judgment was essential to guide the AI agent toward the right fix. Tejas and David also share progress on a more resilient audio pipeline and discuss why building faster with AI doesn’t mean shipping faster.\n\n00:00 — Welcome to Building with Bob and Wallfly\n00:52 — Wallfly’s passive recording and AI summaries\n03:13 — The long-recording bug\n05:18 — Finding the flaw in the original data model\n09:31 — Fixing the 8 KB indexing limit\n19:15 — Why developers still need to read the code\n23:39 — Blocking transcription and fragile in-memory queues\n32:04 — Build fast, but ship slowly\n41:14 — Designing a thin UI and durable audio pipeline\n1:24:24 — Tracking down the React dependency bug",
+    "chapters": [
+      {
+        "start": 0,
+        "title": "Welcome to Building with Bob and Walfly"
+      },
+      {
+        "start": 52,
+        "title": "Walfly’s passive recording and AI summaries"
+      },
+      {
+        "start": 193,
+        "title": "The long-recording bug"
+      },
+      {
+        "start": 318,
+        "title": "Finding the flaw in the original data model"
+      },
+      {
+        "start": 571,
+        "title": "Fixing the 8 KB indexing limit"
+      },
+      {
+        "start": 1155,
+        "title": "Why developers still need to read the code"
+      },
+      {
+        "start": 1419,
+        "title": "Blocking transcription and fragile in-memory queues"
+      },
+      {
+        "start": 1924,
+        "title": "Build fast, but ship slowly"
+      },
+      {
+        "start": 2474,
+        "title": "Designing a thin UI and durable audio pipeline"
+      },
+      {
+        "start": 5064,
+        "title": "Tracking down the React dependency bug"
+      }
+    ],
+    "number": 12,
+    "part": 1
   }
 ]
