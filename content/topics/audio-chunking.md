@@ -4,7 +4,7 @@ title: "Audio Chunking for Speech-to-Text: 30s Chunks + VAD"
 h1: "How to chunk audio for speech-to-text"
 description: "How to chunk long recordings for Whisper-style ASR: chunk length, voice activity detection, ordering chunks that arrive out of order, and stateless hosting."
 answer: "Split long recordings into chunks of about 30 seconds, and use voice activity detection to close each chunk at the next pause so nobody is cut off mid-sentence. Give every chunk a sequence index so the server can reorder them, and send them to a stateless ASR service that transcribes each chunk, returns the text and deletes the audio."
-updated: "2026-11-03"
+updated: "2026-11-11"
 about:
   [
     "audio chunking",
@@ -22,7 +22,12 @@ episodes:
   - ai-code-review-and-expo-mobile-layout-fixes
   - designing-audio-chunking-and-ephemeral-asr
   - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
+  - durable-audio-pipeline-and-reading-ai-generated-code
 faq:
+  - q: "Where should audio chunking happen, on the phone or the server?"
+    a: "On the server, if battery life matters. In episode 12 the hosts made Walfly's app a thin client that only streams audio bytes and keeps a rolling buffer of chunks on disk. The Next.js server gets transcripts from the Docling sidecar and writes them to Astra DB, so the phone can sleep mid-recording."
+  - q: "Should audio chunks be stored in a vector collection?"
+    a: "Not if they're raw conversation. In episode 12 Walfly moved its chunks out of the vectorized recordings collection, where every field is indexed and capped at 8,000 bytes, into a plain Astra DB table. Only the summary of the stitched transcript gets vectorized, because raw chunks are full of filler words."
   - q: "Should you chunk transcripts by time or by bytes?"
     a: "Chunk by the limit that actually constrains you. Walfly started with about 30 seconds plus a pause, but Astra DB caps an indexed string at 8,000 bytes, so in episode 11 the hosts switched to byte-based chunks of about 7,500 bytes, each stored as its own document with a recording ID."
   - q: "Should transcript chunks overlap?"
@@ -45,7 +50,7 @@ faq:
     a: "That depends on where you are and who is in the room, and this isn't legal advice. On stream, the hosts pointed out that you can get consent from the person you're talking to but rarely from everyone around you. They chose an open-source, stateless design with no speaker diarization and planned end-to-end encryption."
 ---
 
-Walfly records meetings on a phone or wearable and turns them into transcripts, summaries and action items. Its first version transcribed one long file at the end, which broke down as soon as recordings got long. This guide follows the redesign around chunks across episodes 6 to 11 of Building with Bob (parts 2 to 7 of the Walfly build): the reasoning, the numbers we picked, what failed, and why storage limits later forced chunks to be cut by bytes instead of seconds. For the transcription side itself, see our [Docling audio transcription guide](/topics/docling-audio-transcription).
+Walfly records meetings on a phone or wearable and turns them into transcripts, summaries and action items. Its first version transcribed one long file at the end, which broke down as soon as recordings got long. This guide follows the redesign around chunks across episodes 6 to 12 of Building with Bob (parts 2 to 8 of the Walfly build): the reasoning, the numbers we picked, what failed, and why storage limits later forced chunks to be cut by bytes instead of seconds. For the transcription side itself, see our [Docling audio transcription guide](/topics/docling-audio-transcription).
 
 ## Why chunk audio at all?
 
@@ -169,6 +174,25 @@ What changed in the design:
 
 Removing the old 15-second window mattered too: until it was gone, chunks were only 200 to 400 bytes, which meant thousands of tiny rows ([1:12:38](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=4358)). Smaller audio chunks did make the app feel "a lot more real time" while recording ([1:03:22](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=3802)).
 
-An alternative the hosts didn't use: in November 2026, Astra DB's [collection indexing docs](https://docs.datastax.com/en/astra-db-serverless/api-reference/collection-indexes.html) say non-indexed properties "can support larger quantities of data", so you can `deny` a long text field from indexing when you create the collection. A denied field can't be filtered or sorted on, and Walfly needed its transcript searchable.
+An alternative the hosts didn't use: in November 2026, Astra DB's [collection indexing docs](https://docs.datastax.com/en/astra-db-serverless/api-reference/collection-indexes.html) say non-indexed properties "can support larger quantities of data", so you can `deny` a long text field from indexing when you create the collection. A denied field can't be filtered or sorted on. In episode 12 Walfly took a related route: raw chunks moved to a table without that index, and only summaries are vectorized.
+
+## A durable pipeline: thin client, chunk table, chunks on disk
+
+The most reliable place to chunk is behind the client, with every chunk saved until the server confirms it. In [Walfly's Durable Audio Pipeline and When to Read AI Code](/episodes/durable-audio-pipeline-and-reading-ai-generated-code) (episode 12, part 8 of the Walfly build), David first fixed the storage side. The chunks array had lived in the vectorized `recordings` collection, where every field is indexed and capped at 8K ([9:25](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=565)). He moved chunks into their own non-vector Astra DB table, one row per chunk, and kept vectors for the summary only, since raw conversation is too noisy to search semantically ([10:33](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=633)). At processing time all chunks for a recording are stitched and summarized ([12:13](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=733)).
+
+Tejas then read the client code and found five weaknesses ([22:56](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=1376), [24:02](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=1442)):
+
+| Weakness in the first chunking design             | What replaced it                                      |
+| ------------------------------------------------- | ----------------------------------------------------- |
+| The UI cut 15-second chunks behind a silence gate | The app streams raw audio bytes to the Next.js server |
+| Each chunk's transcription request was blocking   | Chunks are queued and processed in parallel           |
+| Audio was never persisted                         | A rolling buffer saves chunks to disk                 |
+| The queue lived in memory                         | Chunks on disk survive the app closing                |
+| Five retries, then the chunk was dropped          | Chunks are retried and deleted only after success     |
+
+> The UI knows more than it should.
+> — Tejas, [22:24](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=1344)
+
+Two caveats came up. David argued for keeping some voice activity detection on the device, because Whisper turns silence into gibberish ([37:37](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=2257)), and wanted battery measurements before removing it. The recorder also stopped at exactly 15 minutes because of a hard-coded constant, which he planned to move into an environment variable ([48:36](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=2916)). Once merged, the new pipeline produced transcripts after a final React `useEffect` fix ([1:26:14](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=5174)).
 
 Follow the rest of the build on the [Walfly project page](/projects/walfly).

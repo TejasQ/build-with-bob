@@ -57,12 +57,13 @@ The trade-off is real: Walfly has no dedicated hardware and is still a work in p
 5. **Reviews and mobile polish** ([episode 9](/episodes/ai-code-review-and-expo-mobile-layout-fixes)): Bob Review and [Xavier](https://xavier.team)'s `/x-review` run side by side, and safe-area and keyboard layout bugs are fixed on mobile.
 6. **Chunked, ephemeral ASR** ([episode 10](/episodes/designing-audio-chunking-and-ephemeral-asr)): a PRD for 30-second, pause-aware audio chunks becomes a stateless ASR service in Docker, and testing exposes the next round of bugs.
 7. **Dogfooding, byte-based chunks and Jev** ([episode 11](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly)): Walfly records the whole livestream, hits Astra DB's 8,000-byte limit on indexed strings, and moves to byte-sized chunk documents linked by a recording ID. Recorded moments are grouped by intent with Jev, TypeSafe AI's System One model.
+8. **A durable audio pipeline** ([episode 12](/episodes/durable-audio-pipeline-and-reading-ai-generated-code)): audio chunks move out of the vectorized recordings collection into their own Astra DB table, and the app becomes a thin client that streams audio bytes to the Next.js server while saving chunks to disk until they're processed.
 
 ## Architecture at a glance
 
 | Layer            | Choice                                                      |
 | ---------------- | ----------------------------------------------------------- |
-| Client           | Expo (React Native) for iOS and web                         |
+| Client           | Expo (React Native) for iOS and web, streaming audio bytes  |
 | API              | Next.js backend in a monorepo                               |
 | Speech-to-text   | Docling ASR with Whisper, run as a stateless Docker service |
 | Storage & search | Astra DB (hybrid keyword and vector search)                 |
@@ -71,4 +72,4 @@ The trade-off is real: Walfly has no dedicated hardware and is still a work in p
 
 ## What's next
 
-As of episode 11 (October 2026), Walfly records long conversations in byte-sized chunks. Next, the team wants each chunk to use the bytes Astra DB allows instead of hundreds of tiny documents, to stitch transcripts together only when a recording is read, and to review the chunk data model against Astra DB and Cassandra best practices ([episode 11](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5550)).
+As of episode 12 (October 2026), Walfly streams audio from a thin client, persists chunks to disk and transcribes them in parallel on the server. Tejas expects the app to be production ready next ([episode 12](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=4905)). Still open: making the 15-minute recording limit configurable, a developer dashboard to prove the pipeline survives failures, and pairing the Bee Pioneer wristband, which wouldn't connect to Walfly on stream ([episode 12](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=5211)). The hosts' definition of done is using Walfly at a conference all day ([episode 12](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=3225)).

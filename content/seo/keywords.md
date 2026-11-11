@@ -816,3 +816,48 @@ Video `1H_H9Sx9-FI`, YouTube title "Building with Bob: Walfly Wearables App". Gl
 - [Astra DB Data API limits](https://docs.datastax.com/en/astra-db-serverless/api-reference/dataapi-limits.html)
 - [TypeSafe AI: Introducing System One Models & Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev)
 - [OpenRouter: What is Jev?](https://openrouter.ai/blog/insights/what-is-jev/)
+
+## 10. Episode 12: `durable-audio-pipeline-and-reading-ai-generated-code` (added 2026-11-11)
+
+Video `IpfFp5Nrji4`, YouTube title "Building with Bob: Walfly Wearables App". Global episode 12, Walfly part 8.
+
+### 10.1 Demand data (Google autocomplete, `suggestqueries.google.com`, 2026-11-11)
+
+| Seed                                                                                                   | Suggestions                                                                                                       | Read                                                                              |
+| ------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `whisper hallucination silence`                                                                        | "whisper hallucination silence threshold", "faster whisper hallucination silence threshold", "openai whisper ..." | Real demand; FAQ "Does Whisper hallucinate on silence?" + VAD source              |
+| `voice activity detection`                                                                             | "voice activity detection (vad)", "... models", "... python", "... silero", "... whisper"                         | Use "voice activity detection (VAD)" on first mention                             |
+| `do you need to read ai generated code`                                                                | "do you read ai generated code"                                                                                   | Low volume but exact GEO phrasing; H2 "Should developers read AI-generated code?" |
+| `useeffect infinite loop object dependency`                                                            | "useeffect object dependency infinite loop"                                                                       | The episode's final React bug; FAQ wording                                        |
+| `thin client architecture`                                                                             | "thin client architecture diagram", "thick and thin client architecture", "... in mobile computing"               | Section angle ("thin client") for the new pipeline                                |
+| `rolling buffer audio`                                                                                 | "ring buffer audio", "rolling audio buffer", "circular buffer audio"                                              | Use "rolling buffer" as in the episode                                            |
+| `bee pioneer`                                                                                          | "bee pioneer review", "bee pioneer wearable", "bee pioneer ai recorder"                                           | Branded demand; FAQ on pairing the Bee Pioneer with a third-party app             |
+| `ai wearable open source`                                                                              | "open source ai wearable recording device", "open source ai wearable device"                                      | Reinforces `/projects/walfly` positioning                                         |
+| `durable audio pipeline`, `astra db table vs collection`, `store audio chunks`, `build fast ship slow` | none                                                                                                              | No autocomplete volume; keep as descriptive H2s, not titles                       |
+
+### 10.2 Primary keywords and placement
+
+- **Title (55 chars):** "Walfly's Durable Audio Pipeline and When to Read AI Code".
+- **H2s:** "Should developers read AI-generated code?", "What was wrong with the old audio pipeline?", "The new architecture: a thin client and a durable pipeline", "Moving audio chunks into their own Astra DB table".
+- **FAQs:** Whisper hallucination on silence, vectorizing raw transcript chunks, one row per chunk in Astra DB, "No transcript available for recording", Bee Pioneer pairing.
+
+### 10.3 Graph updates made
+
+- `/topics/audio-chunking`: new H2 "A durable pipeline: thin client, chunk table, chunks on disk" + 2 FAQs.
+- `/topics/docling-audio-transcription`: H3 "No transcript available for recording" (Whisper model not ready) + VAD note.
+- `/topics/spec-driven-development-ibm-bob`: H3 "Specs don't replace reading the code" + FAQ.
+- `/projects/walfly`: episode 12 in the timeline, new What's next. Episode 11 links forward to episode 12.
+
+### 10.4 GEO prompts → target URL
+
+- "Should developers read AI-generated code?" → `/episodes/durable-audio-pipeline-and-reading-ai-generated-code`
+- "Does Whisper hallucinate on silence?" → same
+- "Where should audio chunking happen in a mobile recording app?" → `/topics/audio-chunking`
+- "Should I store transcript chunks in an Astra DB collection or table?" → same episode
+
+### 10.5 Sources consulted
+
+- [Astra DB: Manage collections and tables](https://docs.datastax.com/en/astra-db-serverless/databases/manage-collections.html)
+- [Astra DB Data API limits](https://docs.datastax.com/en/astra-db-serverless/api-reference/dataapi-limits.html)
+- [Dograh: Why Whisper hallucinates on silence](https://www.dograh.com/feeds/blog/whisper-hallucination-silence)
+- [Amazon: Bee Frontier and Bee Eclipse](https://www.aboutamazon.com/news/devices/amazon-personal-ai-bee-frontier-bee-eclipse)

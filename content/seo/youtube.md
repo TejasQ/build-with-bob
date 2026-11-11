@@ -271,3 +271,28 @@ Tejas and David record the whole livestream with Walfly to test their new audio 
 
 Building with Bob: Tejas Kumar and David Jones-Gilardi build open-source apps live with IBM Bob. https://build-with-bob.vercel.app
 ```
+
+## Episode 12: https://www.youtube.com/watch?v=IpfFp5Nrji4
+
+- **Current title:** Building with Bob: Walfly Wearables App
+- **New title:** Building with Bob #12: Walfly's Durable Audio Pipeline and When to Read AI Code
+
+```text
+David fixes Walfly's long-recording bug by moving audio chunks out of the vectorized recordings collection into their own Astra DB table. Tejas reads the code, finds the client doing too much, and rebuilds the pipeline so the app only streams audio and saves chunks to disk. A React useEffect bug is the last thing standing in the way.
+
+📖 Full write-up, key takeaways, FAQ and searchable transcript: https://build-with-bob.vercel.app/episodes/durable-audio-pipeline-and-reading-ai-generated-code
+🧰 Project: https://build-with-bob.vercel.app/projects/walfly
+
+0:00 Welcome to Building with Bob and Walfly
+0:52 Walfly’s passive recording and AI summaries
+3:13 The long-recording bug
+5:18 Finding the flaw in the original data model
+9:31 Fixing the 8 KB indexing limit
+19:15 Why developers still need to read the code
+23:39 Blocking transcription and fragile in-memory queues
+32:04 Build fast, but ship slowly
+41:14 Designing a thin UI and durable audio pipeline
+1:24:24 Tracking down the React dependency bug
+
+Building with Bob: Tejas Kumar and David Jones-Gilardi build open-source apps live with IBM Bob. https://build-with-bob.vercel.app
+```

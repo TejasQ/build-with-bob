@@ -411,8 +411,8 @@
   },
   {
     "videoId": "IpfFp5Nrji4",
-    "slug": "building-with-bob-walfly-wearables-app",
-    "project": "unassigned",
+    "slug": "durable-audio-pipeline-and-reading-ai-generated-code",
+    "project": "walfly",
     "youtubeTitle": "Building with Bob: Walfly Wearables App",
     "date": "2026-10-15",
     "duration": 5377,
@@ -461,6 +461,6 @@
       }
     ],
     "number": 12,
-    "part": 1
+    "part": 8
   }
 ]

@@ -4,7 +4,7 @@ title: "Docling Audio Transcription: ASR, Whisper and Fixes"
 h1: "How to transcribe audio with Docling"
 description: "Transcribe audio with open-source Docling's ASR pipeline and Whisper: hosted vs local, docling-serve, MLX Whisper on Mac, VTT output and common errors."
 answer: 'Install open-source Docling with the ASR extra (pip install "docling[asr]"), make sure ffmpeg is on your PATH, and convert the file with Docling''s AsrPipeline in Python. Docling runs Whisper for you, using MLX Whisper on Apple silicon. In August 2026 the hosted deployment we used had no ASR pipeline, so we ran Docling locally.'
-updated: "2026-10-31"
+updated: "2026-11-11"
 about:
   [
     "Docling",
@@ -23,6 +23,7 @@ episodes:
   - local-first-transcription-python-sidecar-and-coordinating-agents
   - designing-audio-chunking-and-ephemeral-asr
   - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
+  - durable-audio-pipeline-and-reading-ai-generated-code
 faq:
   - q: "Can Docling transcribe audio?"
     a: 'Yes. Open-source Docling has an ASR (automatic speech recognition) pipeline that transcribes WAV, MP3, M4A, AAC, OGG and FLAC files with Whisper and returns a DoclingDocument with timestamped segments. You install it with pip install "docling[asr]" and need ffmpeg on your PATH.'
@@ -196,6 +197,12 @@ In episode 8 a recording failed with this message ([1:27:57](/episodes/local-fir
 ### "Network error uploading chunk 0. Failed to fetch"
 
 In [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly) (episode 11, October 2026), the first chunk of a recording never reached the service on Tejas's machine ([1:06:53](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=4013)). It wasn't Docling at all: a cached base URL pointed at port 3000 instead of 3030 because an environment variable wasn't set. When an upload fails before transcription starts, check the URL the client is actually calling.
+
+### "No transcript available for recording"
+
+In [Walfly's Durable Audio Pipeline and When to Read AI Code](/episodes/durable-audio-pipeline-and-reading-ai-generated-code) (episode 12, October 2026), recordings showed as queued but never produced text after a big merge ([1:03:35](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=3815)). The error was too terse, so the hosts asked IBM Bob for more verbose logs ([1:11:23](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=4283)). Those logs showed the Whisper model never reporting ready ([1:18:31](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=4711)). After clearing the Next.js cache and killing old sidecar code that was still running ([1:19:34](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=4774)), a worker loaded Whisper's small model and transcripts appeared ([1:23:36](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=5016)). If Docling's ASR seems silent, check that the model actually loaded before debugging anything else.
+
+The same episode is a reminder that Whisper needs speech to anchor to: given silence, it produces gibberish ([37:37](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=2257)). Running [voice activity detection before Whisper](https://www.dograh.com/feeds/blog/whisper-hallucination-silence) is the common fix.
 
 ### Known Docling issues
 

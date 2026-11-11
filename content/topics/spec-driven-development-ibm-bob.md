@@ -4,7 +4,7 @@ title: "Spec-Driven Development With IBM Bob: A Real Workflow"
 h1: "How do you do spec-driven development with IBM Bob?"
 description: "Spec coding in IBM Bob on a live build: a custom mode and skill for requirements, design and tasks, numbered IDs, validation, and when to just vibe."
 answer: "Give IBM Bob a written spec-coding process and have it turn that into a custom mode and skill. For each new feature, Bob writes requirements with numbered IDs and acceptance criteria, then a design, then a task list, validating each against the requirements and pausing for your review. You implement only after the spec is right."
-updated: "2026-10-31"
+updated: "2026-11-11"
 about: ["IBM Bob", "spec-driven development", "custom modes", "skills", "KillrCtx"]
 episodes:
   - killrctx-open-source-notebooklm-clone-with-openrag-and-ibm-bob
@@ -15,7 +15,10 @@ episodes:
   - walfly-record-button-redesign-and-astra-db-setup
   - designing-audio-chunking-and-ephemeral-asr
   - astra-db-8000-byte-limit-and-jev-clustering-in-walfly
+  - durable-audio-pipeline-and-reading-ai-generated-code
 faq:
+  - q: "Do you still need to read the code with spec-driven development?"
+    a: "Yes, at the right moments. Even with specs, the hosts say you can't think of everything up front. In episode 12 they read Walfly's code when a limit broke recordings and when thinking about real usage raised a battery constraint, and found architectural flaws the spec had missed."
   - q: "Does IBM Bob support spec-driven development?"
     a: "Yes, through its extension points rather than a single spec button. Bob's custom modes and skills let you encode a requirements, design and tasks process, and David Jones-Gilardi did exactly that by pointing Bob at his spec-coding process repo. Bob's built-in plan mode is also spec-like: it asks questions and returns subtasks with IDs."
   - q: "Is spec-driven development just waterfall?"
@@ -98,6 +101,13 @@ A week later, in [Astra DB's 8,000-Byte Limit and Jev Clustering in Walfly](/epi
 - **A rule nobody wrote down.** Each chunk was stitched onto the stored transcript until it broke the limit again; the rule the hosts settled on, "we should only be reading stitched chunks", is exactly the kind of line a design doc would hold ([1:27:32](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=5252)).
 
 David's suggestion for the next change of this size was a lighter version of the spec loop: write the PRD with Xavier, then open a new session and say "now create the tasks" ([42:57](/episodes/astra-db-8000-byte-limit-and-jev-clustering-in-walfly?t=2577)). It keeps the planning context out of the build session and still leaves a written record.
+
+### Specs don't replace reading the code
+
+Even a good spec misses things, so plan for moments when a human reads the code. In [Walfly's Durable Audio Pipeline and When to Read AI Code](/episodes/durable-audio-pipeline-and-reading-ai-generated-code) (episode 12, October 2026), the hosts opened by calling their method "vibes and specs": start with a spec, vibe a little, then go back to specking ([0:00](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=0)). David described spec coding as having to think of everything up front, "but you're not going to" ([25:32](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=1532)). Two triggers sent them back into the code:
+
+- **Something broke.** David traced the 8,000-byte failures to chunks stored in an indexed field, then guided Bob to a separate chunk table ([20:12](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=1212)).
+- **Using the product raised a constraint.** Tejas imagined a phone left asleep on a conference desk and found the client doing chunking, blocking on transcription and holding its queue in memory ([27:07](/episodes/durable-audio-pipeline-and-reading-ai-generated-code?t=1627)).
 
 ## When vibe coding is fine
 
